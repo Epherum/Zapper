@@ -1,0 +1,434 @@
+.headline {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: min(5rem, 4.2vw);
+
+  .title {
+    h1 {
+      font-size: min(2.6rem, 2.2vw);
+      font-weight: 400;
+      margin-bottom: min(1rem, .8vw);
+
+      span {
+        font-weight: 500;
+      }
+    }
+
+    p {
+      font-size: 1.22rem;
+      font-size: min(1.22rem, 1vw);
+      color: #9B9B9B;
+    }
+  }
+
+  .timeAndButton {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .timeAndIcon {
+      color: #9B9B9B;
+      display: flex;
+      align-items: center;
+      font-size: min(1.1rem, .9vw);
+      border: 1px solid #d8d8d8;
+      padding: min(.8rem, .6vw) min(1.5rem, 1.2vw);
+      border-radius: 13px;
+      font-weight: 500;
+
+      svg {
+        margin-right: min(.7rem, .5vw);
+        font-size: min(1.9rem, 1.6vw);
+      }
+
+    }
+
+    .button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: min(.8rem, .6vw) min(1.7rem, 1.3vw);
+      font-size: min(1.25rem, 1.1vw);
+      border-radius: 13px;
+      background-color: #000;
+      color: #fff;
+      margin-left: min(1rem, .8vw);
+      transition: all .3s ease-in-out;
+
+      &:hover {
+        background-color: #fff;
+        color: #000;
+        cursor: pointer;
+      }
+
+      svg {
+        margin-right: min(.5rem, .4vw);
+        font-size: min(1.5rem, 1.3vw);
+      }
+    }
+  }
+}
+
+.overview {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: min(3.5rem, 2.8vw);
+  margin-bottom: min(4rem, 3.5vw);
+
+  .overviewItem {
+    padding: min(1rem, .8vw) min(1.5rem, 1.2vw);
+    padding-right: min(3.5rem, 2.8vw);
+    border: 1px solid #e1e1e1;
+    border-radius: 10px;
+
+    .overviewItemTitle {
+      font-size: min(1.5rem, 1.3vw);
+      font-weight: 500;
+      margin-bottom: min(3.4rem, 2.8vw);
+      // letter-spacing: .4px;
+    }
+
+    .overviewItemContent {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+
+      p:first-child {
+        font-size: min(3rem, 2.5vw);
+        font-weight: 600;
+
+        span {
+          font-size: min(1.5rem, 1.3vw);
+          font-weight: 400;
+        }
+      }
+
+      p:last-child {
+        display: flex;
+        align-items: center;
+        gap: min(.4rem, .3vw);
+        font-weight: 500;
+        margin-bottom: min(.2rem, .1vw);
+        margin-right: min(-1.7rem, -1.4vw);
+        color: #28BFFF;
+        background-color: #E5F7FF;
+        border-radius: 10px;
+        padding: min(.3rem, .2vw) min(.5rem, .4vw);
+        font-size: min(1.2rem, .8vw);
+
+        svg {
+          font-size: min(1.2rem, 1vw);
+        }
+      }
+    }
+
+  }
+
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 32.9% 43.5% auto;
+  grid-gap: min(3.5rem, 2.8vw);
+
+  .mytasks {
+    grid-column: 1/2;
+    grid-row: 1/3;
+
+    .tasksHeadline {
+      font-size: min(1.7rem, 1.4vw);
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: min(3rem, 2.5vw);
+
+      svg {
+        font-size: min(1.5rem, 1.3vw);
+      }
+
+    }
+
+    .tasks {
+      display: flex;
+      flex-direction: column;
+      gap: min(1rem, .8vw);
+
+      .task {
+        border-radius: 10px;
+        transition: background-color .3s ease-out;
+        padding: min(1.5rem, 1.2vw) min(1.7rem, 1.4vw);
+        padding-right: min(1.4rem, 1.1vw);
+        border: 1px solid #e1e1e1;
+        cursor: pointer;
+
+        &:hover {
+          background-color: #EFEDF9;
+        }
+
+        &.expanded {
+          background-color: #EFEDF9;
+          border: none;
+          cursor: auto;
+
+          .taskDescription {
+            max-height: 1000px;
+            /* Set a high value to allow for the expansion */
+          }
+        }
+
+        button {
+          all: unset;
+          cursor: pointer;
+        }
+
+        .taskHeadline {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+
+          svg {
+            margin-bottom: min(.8rem, .6vw);
+            font-size: min(1.5rem, 1.3vw);
+          }
+        }
+
+        .taskID {
+          color: #9B9B9B;
+          font-size: min(1rem, .8vw);
+          font-weight: 400;
+          margin-bottom: min(.2rem, .1vw);
+        }
+
+        .taskName {
+          font-size: min(1.3rem, 1.1vw);
+          margin-bottom: min(1.1rem, .9vw);
+          letter-spacing: -.3px;
+        }
+
+        .taskPriority {
+          display: inline-block;
+          background-color: #FF8080;
+          font-size: min(.9rem, .7vw);
+          font-weight: 500;
+          padding: min(.4rem, .3vw) min(.5rem, .4vw);
+          border-radius: 4px;
+        }
+
+        .expandedtaskPriority {
+          display: none;
+        }
+
+
+        .taskDescription {
+          font-size: min(1rem, .8vw);
+          font-weight: 300;
+          color: #9B9B9B;
+          line-height: min(1.3rem, 1.1vw);
+          width: 90%;
+          margin-bottom: min(2.9rem, 2.4vw);
+          max-height: 0;
+          overflow: hidden;
+          transition: max-height 0.3s ease-in-out;
+        }
+
+        .taskRow {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+
+          button {
+            all: unset;
+            cursor: pointer;
+            font-size: min(1.5rem, 1.3vw);
+          }
+
+          .rowInfo {
+            display: flex;
+            align-items: center;
+            gap: min(8rem, 6.5vw);
+
+            .taskDate {
+              font-size: min(.9rem, .7vw);
+              letter-spacing: .4px;
+            }
+          }
+        }
+
+
+
+      }
+
+      .addTask {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: min(1.2rem, 1vw);
+        color: #7164C6;
+        padding: min(3rem, 2.5vw) min(2rem, 1.6vw);
+        border: .1rem dashed #A695FF;
+      }
+    }
+  }
+
+  .statistics {
+    grid-column: 2/3;
+    margin-bottom: min(.7rem, .5vw);
+
+    .statisticsHeadline {
+      font-size: min(1.7rem, 1.4vw);
+      font-weight: 600;
+      margin-bottom: min(2.5rem, 2vw);
+
+      p:first-child {
+        margin-bottom: min(.6rem, .5vw);
+      }
+
+      p:last-child {
+        font-size: min(1rem, .8vw);
+        letter-spacing: -.3px;
+        font-weight: 400;
+        color: #C9C9C9;
+      }
+    }
+
+    .statisticsChart {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 200px;
+    }
+  }
+
+  .progress {
+    grid-column: 3/4;
+    grid-row: 1/2;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+
+    .progressDate {
+      font-size: min(1.2rem, 1vw);
+      font-weight: 500;
+      margin-bottom: min(2.5rem, 2vw);
+    }
+
+    .progressCircle {
+      width: min(185px, 8.5vw);
+      height: min(185px, 8.5vw);
+      border-radius: 50%;
+      border: min(6px, .3vw) solid #26BCFF;
+      ;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: min(3rem, 2vw);
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      margin-bottom: min(1.5rem, 1.2vw);
+
+      span {
+        font-size: min(1.8rem, 1.5vw);
+        font-weight: 400;
+      }
+
+      p:last-child {
+        font-size: min(1.1rem, .9vw);
+        font-weight: 400;
+        color: #C9C9C9;
+      }
+    }
+
+    .progressSummary {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+
+      p:first-child {
+        font-size: min(1rem, .8vw);
+        font-weight: 500;
+        margin-bottom: min(.3rem, .2vw);
+      }
+
+      p:last-child {
+        font-size: min(1.1rem, .9vw);
+        color: #C9C9C9;
+        letter-spacing: -.5px;
+      }
+    }
+  }
+
+  .projects {
+    grid-column: 2/4;
+    grid-row: 2/3;
+
+    .projectsHeadline {
+      font-size: min(1.7rem, 1.4vw);
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: min(2rem, 1.6vw);
+
+      svg {
+        font-size: min(1.5rem, 1.3vw);
+      }
+
+    }
+
+    .projectsList {
+      display: flex;
+      flex-direction: column;
+      gap: min(1rem, .8vw);
+
+      .projectsItem {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: min(1.5rem, 1.2vw) min(2rem, 1.6vw);
+        cursor: pointer;
+        transition: background-color .3s ease-out;
+
+        &:hover {
+          background-color: #E5F7FF;
+        }
+
+        .rightProjectSide {
+          display: flex;
+          align-items: center;
+          gap: min(2rem, 1.6vw);
+
+          .projectLetters {
+            font-size: min(1.5rem, 1.3vw);
+          }
+
+          .projectInfo {
+            font-size: min(1.3rem, 1.1vw);
+
+            p:first-child {
+              font-weight: 500;
+              margin-bottom: min(.6rem, .5vw);
+            }
+
+            p:last-child {
+              font-size: min(1rem, .8vw);
+              color: #C9C9C9;
+              font-weight: 400;
+            }
+          }
+        }
+
+        .leftProjectSide {
+          display: flex;
+          align-items: center;
+          gap: min(3rem, 2.4vw);
+          color: #C9C9C9;
+          font-size: min(1.1rem, .9vw);
+        }
+      }
+    }
+  }
+}

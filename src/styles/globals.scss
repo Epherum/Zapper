@@ -1,0 +1,58 @@
+:root {
+    $max-width: 1920px;
+    $min-width: 320px;
+
+
+
+}
+
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+html,
+body {
+    max-width: 100vw;
+    overflow-x: hidden;
+}
+
+body {
+    padding: min(2.5rem, 2vw) min(4.2rem, 3.3vw) min(2rem, 1.6vw) min(11.3%, 11vw);
+    color: #000;
+    background-color: #fff;
+
+
+}
+
+body {
+    overflow: auto;
+}
+
+body::-webkit-scrollbar {
+    width: 0px;
+}
+
+body::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+body::-webkit-scrollbar-thumb {
+    background: #636363;
+    border-radius: 20px;
+}
+
+body::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+li {
+    list-style: none;
+}

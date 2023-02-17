@@ -1,0 +1,49 @@
+.search {
+    display: flex;
+    justify-content: space-between;
+    margin-top: min(.4rem, .3vw);
+    margin-bottom: min(4.4rem, 3.5vw);
+
+    .searchInput {
+        border-radius: 5px;
+        outline: none;
+        font-size: min(2rem, 1.6vw);
+        display: flex;
+        align-items: center;
+        color: #9B9B9B;
+
+        input {
+            border: none;
+            outline: none;
+            font-size: min(1.3rem, 1.1vw);
+            padding-left: min(.8rem, .7vw);
+
+            &::placeholder {
+                color: #9B9B9B;
+                font-weight: 400;
+            }
+        }
+    }
+
+    .icons {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: min(13rem, 10.5vw);
+        font-size: min(2.5rem, 2vw);
+        color: #9B9B9B;
+
+        .notificationGear {
+            font-size: min(1.7rem, 1.4vw);
+            display: flex;
+            justify-content: space-between;
+            width: min(5.5rem, 4.5vw);
+        }
+
+        &>svg {
+            font-size: min(2.8rem, 2.3vw);
+        }
+
+
+    }
+}
