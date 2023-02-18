@@ -1,52 +1,23 @@
 import styles from "@/styles/taskDetails.module.scss";
-import { useEffect, useState } from "react";
-import { MdOutlineDateRange } from "react-icons/md";
+import { useState } from "react";
 import { AiOutlinePlus } from "react-icons/ai";
 import { CgArrowsExpandRight } from "react-icons/cg";
 import { FiSend } from "react-icons/fi";
 import { ImAttachment } from "react-icons/im";
+import Headline from "@/components/Headline";
 import { VscAccount } from "react-icons/vsc";
 
 function TaskDetails() {
   const [filter, setFilter] = useState("list");
-  const [dateState, setDateState] = useState(new Date());
-  useEffect(() => {
-    setInterval(() => setDateState(new Date()), 30000);
-  }, []);
+
   return (
     <>
       <div className="circleBlue" />
       <div className="circleGreen" />
-      <div className={styles.headline}>
-        <div className={styles.title}>
-          <p>
-            home &gt; Projects &gt; <span>ID LG-21</span>
-          </p>
-          <h1>Laptop screen blinks</h1>
-        </div>
-        <div className={styles.timeAndButton}>
-          <div className={styles.timeAndIcon}>
-            <MdOutlineDateRange />
-            <p className={styles.time}>
-              {dateState.toLocaleDateString("en-GB", {
-                month: "short",
-                day: "numeric",
-                year: "numeric",
-              })}
-              &nbsp;
-              {dateState.toLocaleString("en-US", {
-                hour: "numeric",
-                minute: "numeric",
-                hour12: true,
-              })}
-            </p>
-          </div>
-          <button className={styles.button}>
-            <AiOutlinePlus />
-            <p>New Task</p>
-          </button>
-        </div>
-      </div>
+      <Headline
+        title="Laptop screen blinks"
+        location={["home", "projects", "missguided", "ID LG-23"]}
+      />
       <div className={styles.filters}>
         <div className={styles.status}>
           <p>Status:</p>

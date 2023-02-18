@@ -1,53 +1,21 @@
 import styles from "@/styles/projects.module.scss";
-import { useEffect, useState } from "react";
-import { MdOutlineDateRange } from "react-icons/md";
-import { AiOutlinePlus } from "react-icons/ai";
+import { useState } from "react";
 import { CgArrowsExpandRight } from "react-icons/cg";
 import Project from "@/components/ProjectsProject";
 import Task from "@/components/ProjectsTask";
 import { projectsData, tasksData } from "@/data/mockData";
 import Link from "next/link";
+import Headline from "@/components/Headline";
 
 function Projects() {
   const [filter, setFilter] = useState("active");
-  const [dateState, setDateState] = useState(new Date());
-  useEffect(() => {
-    setInterval(() => setDateState(new Date()), 30000);
-  }, []);
+
   return (
     <>
       <div className="circleBlue" />
       <div className="circleGreen" />
-      <div className={styles.headline}>
-        <div className={styles.title}>
-          <p>
-            home &gt; <span>Projects</span>
-          </p>
-          <h1>Projects</h1>
-        </div>
-        <div className={styles.timeAndButton}>
-          <div className={styles.timeAndIcon}>
-            <MdOutlineDateRange />
-            <p className={styles.time}>
-              {dateState.toLocaleDateString("en-GB", {
-                month: "short",
-                day: "numeric",
-                year: "numeric",
-              })}
-              &nbsp;
-              {dateState.toLocaleString("en-US", {
-                hour: "numeric",
-                minute: "numeric",
-                hour12: true,
-              })}
-            </p>
-          </div>
-          <button className={styles.button}>
-            <AiOutlinePlus />
-            <p>New Task</p>
-          </button>
-        </div>
-      </div>
+      <Headline title="Projects" location={["home", "Projects"]} />
+
       <div className={styles.filters}>
         <button
           className={filter === "all" ? styles.active : ""}
