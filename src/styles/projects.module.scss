@@ -267,6 +267,7 @@
             .projectDetailsTasksList {
                 display: flex;
                 flex-direction: column;
+                gap: min(.5rem, .4vw);
 
                 .projectDetailsTasksListItem {
                     display: flex;

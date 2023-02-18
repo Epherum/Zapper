@@ -56,3 +56,31 @@ a {
 li {
     list-style: none;
 }
+
+.circleBlue {
+    position: absolute;
+    top: -8vw;
+    right: 2vw;
+    transform: translate(-50%, -50%);
+    width: 40vw;
+    height: 40vw;
+    max-width: 50rem;
+    max-height: 50rem;
+    background-color: #E5F7FF;
+    border-radius: 50%;
+    z-index: -1;
+}
+
+.circleGreen {
+    position: fixed;
+    bottom: -5vw;
+    left: 5vw;
+    transform: translate(-50%, 50%);
+    width: 35vw;
+    height: 35vw;
+    max-width: 50rem;
+    max-height: 50rem;
+    background-color: #E7F5EC;
+    border-radius: 50%;
+    z-index: -1;
+}

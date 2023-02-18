@@ -388,6 +388,8 @@
                 grid-template-columns: 2fr 4fr;
                 gap: min(1.5rem, 1.2vw);
 
+
+
                 p:first-child {
                     font-size: min(1rem, .8vw);
                     color: #9B9B9B;
@@ -399,12 +401,17 @@
                 }
 
                 .priority {
+                    //width is necessary else it takes the whole width of the grid
+                    //display: inline-block; doesnt work
+                    width: min(6rem, 5vw);
+                    text-align: center;
                     background-color: #FFE0B2;
                     font-size: min(.9rem, .8vw);
                     font-weight: 500;
                     padding: min(.4rem, .3vw) min(.5rem, .4vw);
-                    border-radius: 4px;
+                    border-radius: 5px;
                 }
+
             }
         }
     }

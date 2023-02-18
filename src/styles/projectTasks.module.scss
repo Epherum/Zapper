@@ -270,6 +270,8 @@
                 }
 
                 .priority {
+                    width: min(6rem, 5vw);
+                    text-align: center;
                     background-color: #FFE0B2;
                     font-size: min(.9rem, .8vw);
                     font-weight: 500;

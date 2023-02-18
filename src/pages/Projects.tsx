@@ -16,6 +16,8 @@ function Projects() {
   }, []);
   return (
     <>
+      <div className="circleBlue" />
+      <div className="circleGreen" />
       <div className={styles.headline}>
         <div className={styles.title}>
           <p>
