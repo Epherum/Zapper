@@ -30,7 +30,7 @@ export const overviewData = [
 ];
 export const tasksData = [
   {
-    title: "Reports animation",
+    title: "Logo design",
     id: "KL-2",
     description:
       "Create storyboards that depict the script and narrative. Craft a dynamic portfolio ond reel.",
@@ -43,16 +43,16 @@ export const tasksData = [
     id: "KL-2",
     description:
       "Create storyboards that depict the script and narrative. Craft a dynamic portfolio ond reel.",
-    priority: "medium",
+    priority: "low",
     date: "Jul 2 - Jul 16",
     backgroundColor: "#FFE0B2",
   },
   {
-    title: "Dashboard animation",
+    title: "Dashboard animations",
     id: "KL-2",
     description:
       "Create storyboards that depict the script and narrative. Craft a dynamic portfolio ond reel.",
-    priority: "low",
+    priority: "medium",
     date: "Jul 2 - Jul 16",
     backgroundColor: "#DFFFDE",
   },

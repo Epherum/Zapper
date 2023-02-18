@@ -261,20 +261,18 @@
             h3 {
                 font-size: min(1.5rem, 1.3vw);
                 font-weight: 500;
-                margin-bottom: min(.5rem, .4vw);
+                margin-bottom: min(1.2rem, 1vw);
             }
 
             .projectDetailsTasksList {
                 display: flex;
                 flex-direction: column;
-                gap: min(1.5rem, 1.2vw);
 
                 .projectDetailsTasksListItem {
                     display: flex;
                     align-items: flex-end;
                     justify-content: space-between;
-                    padding: min(1.2rem, 1vw) min(1.6rem, 1.4vw);
-                    padding-right: 0;
+                    padding: min(.5rem, .4vw) min(1rem, .8vw);
                     cursor: pointer;
                     transition: background-color .3s ease-out;
 
@@ -329,7 +327,7 @@
             .projectDetailsProgressHeadline {
                 font-size: min(1.5rem, 1.3vw);
                 font-weight: 500;
-                margin-bottom: min(1.5rem, 1.3vw);
+                margin-bottom: min(2.4rem, 2vw);
             }
 
             .projectDetailsProgressLine {
@@ -340,10 +338,14 @@
 
                 //line 
                 div {
-                    width: 100%;
+                    width: 85%;
                     height: min(.5rem, .4vw);
                     border-radius: 10px;
                     background-color: black;
+                }
+
+                p {
+                    font-size: min(1rem, .8vw);
                 }
 
 

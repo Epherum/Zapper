@@ -3,6 +3,9 @@ import { useEffect, useState } from "react";
 import { MdOutlineDateRange } from "react-icons/md";
 import { AiOutlinePlus } from "react-icons/ai";
 import { CgArrowsExpandRight } from "react-icons/cg";
+import { FiSend } from "react-icons/fi";
+import { ImAttachment } from "react-icons/im";
+import { VscAccount } from "react-icons/vsc";
 
 function TaskDetails() {
   const [filter, setFilter] = useState("list");
@@ -117,6 +120,65 @@ function TaskDetails() {
             </div>
           </div>
         </div>
+
+        <div className={styles.activity}>
+          <h2 className={styles.activityHeadline}>Activity</h2>
+          <div className={styles.activityList}>
+            <div className={styles.activityItem}>
+              <div className={styles.activityItemHeadline}>
+                <div className={styles.activityItemHeadlineLeftSide}>
+                  <p>Yulia B</p>
+                  <p>added comment</p>
+                </div>
+                <p className={styles.activityItemHeadlineRightSide}>
+                  1 hour ago
+                </p>
+              </div>
+              <div className={styles.activityItemDescription}>
+                <p>
+                  what the fuck did you just fucking say about me, you little
+                  bitch? I'll have you know I graduated top of my class in the
+                  Navy Seals, and I've been
+                </p>
+              </div>
+            </div>
+            <div className={styles.activityItem}>
+              <div className={styles.activityItemHeadline}>
+                <div className={styles.activityItemHeadlineLeftSide}>
+                  <p>Yulia B</p>
+                  <p>added comment</p>
+                </div>
+                <p className={styles.activityItemHeadlineRightSide}>
+                  1 hour ago
+                </p>
+              </div>
+              <div className={styles.activityItemDescription}>
+                <p>
+                  what the fuck did you just fucking say about me, you little
+                  bitch? I'll have you know I graduated top of my class in the
+                  Navy Seals, and I've been
+                </p>
+              </div>
+            </div>
+          </div>
+          <div className={styles.activityComment}>
+            <p className={styles.commentProfile}>
+              <VscAccount />
+            </p>
+            <div className={styles.commentRightSide}>
+              <input type="text" placeholder="Add a comment" />
+              <div className={styles.commentIcons}>
+                <button>
+                  <FiSend />
+                </button>
+                <button>
+                  <ImAttachment />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div className={styles.gridLineDivider} />
 
         <div className={styles.taskDetails}>
@@ -158,6 +220,10 @@ function TaskDetails() {
               <p>Luminous Group</p>
             </div>
           </div>
+        </div>
+        <div className={styles.createdAt}>
+          <p>Created July 22, 2023 4:43 PM by Julia B</p>
+          <p>Last updated Oct 12, 2023 2:00 AM by Julia B</p>
         </div>
       </div>
     </>
