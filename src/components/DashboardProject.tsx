@@ -1,5 +1,6 @@
 import styles from "@/styles/dashboard.module.scss";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 interface DashboardProjectProps {
   title: string;
@@ -14,16 +15,22 @@ export default function DashboardProject({
   overdue,
   date,
 }: DashboardProjectProps) {
+  const router = useRouter();
   return (
     <Link href="/Projects">
       <div className={styles.projectsItem}>
         <div className={styles.rightProjectSide}>
-          <p className={styles.projectLetters}>
-            {title
-              .split(" ")
-              .map((word) => word[0].toUpperCase())
-              .join("")}
-          </p>
+          {router.pathname === "/" ? (
+            <p className={styles.projectLetters}>
+              {title
+                .split(" ")
+                .map((word) => word[0].toUpperCase())
+                .join("")}
+            </p>
+          ) : (
+            ""
+          )}
+
           <div className={styles.projectInfo}>
             <p>{title}</p>
             <p>

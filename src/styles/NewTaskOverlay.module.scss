@@ -1,0 +1,125 @@
+.overlay {
+    position: absolute;
+    top: 35%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #F2F3F5;
+    width: 59rem;
+    width: min(59rem, 50vw);
+    z-index: 5;
+    padding: min(1.5rem, 1.2vw) min(1.3rem, 1vw);
+    //add blur
+    border-radius: 10px;
+    box-shadow: 0 0 100px 0 rgba(0, 0, 0, 0.4);
+
+
+
+    .top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: min(1rem, .8vw);
+
+        div {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            gap: min(1rem, .8vw);
+
+            .project {
+                all: unset;
+                cursor: pointer;
+                font-size: min(.9rem, .7vw);
+                color: #A8A8B3;
+                border: 1px solid #d4d4d4;
+                border-radius: 5px;
+                padding: min(.3rem, .2vw) min(.5rem, .4vw);
+            }
+
+            svg {
+                margin-right: min(-.5rem, -.4vw);
+                font-size: min(1rem, .8vw);
+                rotate: -90deg;
+
+            }
+
+            .newTask {
+                font-size: min(.9rem, .7vw);
+
+            }
+        }
+
+        .close {
+            all: unset;
+            font-size: min(1rem, .8vw);
+            font-weight: 600;
+            cursor: pointer;
+        }
+    }
+
+    .title {
+        all: unset;
+        display: inline-block;
+        font-size: min(1.5rem, 1.3vw);
+        font-weight: 500;
+        width: 100%;
+        margin-bottom: min(1.2rem, .9vw);
+
+        &::placeholder {
+            color: #A8A8B3;
+        }
+
+    }
+
+    .description {
+        all: unset;
+        display: inline-block;
+        font-size: min(1.2rem, 1vw);
+        font-weight: 500;
+        width: 100%;
+        margin-bottom: min(1.7rem, 1.4vw);
+
+        &::placeholder {
+            color: #A8A8B3;
+        }
+    }
+
+    .bottom {
+        display: flex;
+        align-items: center;
+        gap: min(1rem, .8vw);
+        margin-bottom: min(1rem, .8vw);
+
+        button {
+            all: unset;
+            cursor: pointer;
+            display: inline-block;
+            font-size: min(1rem, .8vw);
+            border: 1px solid #d4d4d4;
+            color: #5C5D63;
+            border-radius: 10px;
+            padding: min(.4rem, .3vw) min(.8rem, .6vw);
+        }
+    }
+
+    .submit {
+        display: flex;
+        justify-content: flex-end;
+
+        button {
+            all: unset;
+            cursor: pointer;
+            display: inline-block;
+            font-size: min(1rem, .8vw);
+            color: #7164C6;
+            border-radius: 10px;
+            padding: min(1rem, .8vw) min(2.5rem, 2vw);
+            background-color: #EFEDF9;
+            transition: background-color .2s ease-out;
+
+            &:hover {
+                background-color: #e1dcff;
+            }
+        }
+    }
+}

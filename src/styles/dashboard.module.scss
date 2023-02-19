@@ -108,7 +108,7 @@
         display: flex;
         align-items: center;
         gap: min(.4rem, .3vw);
-        font-weight: 500;
+        font-weight: 600;
         margin-bottom: min(.2rem, .1vw);
         margin-right: min(-1.7rem, -1.4vw);
         color: #28BFFF;
@@ -195,7 +195,7 @@
         }
 
         .taskID {
-          color: #9B9B9B;
+          color: #c3c3c3;
           font-size: min(1rem, .8vw);
           font-weight: 400;
           margin-bottom: min(.2rem, .1vw);
@@ -222,9 +222,7 @@
 
 
         .taskDescription {
-          font-size: min(1rem, .8vw);
-          font-weight: 300;
-          color: #9B9B9B;
+          font-size: min(1.05rem, .85vw);
           line-height: min(1.3rem, 1.1vw);
           width: 90%;
           margin-bottom: min(2.9rem, 2.4vw);
@@ -250,7 +248,7 @@
             gap: min(8rem, 6.5vw);
 
             .taskDate {
-              font-size: min(.9rem, .7vw);
+              font-size: min(1rem, .8vw);
               letter-spacing: .4px;
             }
           }
@@ -319,11 +317,10 @@
       height: min(185px, 8.5vw);
       border-radius: 50%;
       border: min(6px, .3vw) solid #26BCFF;
-      ;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: min(3rem, 2vw);
+      font-size: min(4.8rem, 2.4vw);
       font-weight: 500;
       display: flex;
       align-items: center;
@@ -361,73 +358,74 @@
     }
   }
 
-  .projects {
-    grid-column: 2/4;
-    grid-row: 2/3;
+}
 
-    .projectsHeadline {
-      font-size: min(1.7rem, 1.4vw);
-      font-weight: 600;
+.projects {
+  grid-column: 2/4;
+  grid-row: 2/3;
+
+  .projectsHeadline {
+    font-size: min(1.7rem, 1.4vw);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: min(2rem, 1.6vw);
+
+    svg {
+      font-size: min(1.5rem, 1.3vw);
+    }
+
+  }
+
+  .projectsList {
+    display: flex;
+    flex-direction: column;
+    gap: min(1rem, .8vw);
+
+    .projectsItem {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: min(2rem, 1.6vw);
+      padding: min(1.5rem, 1.2vw) min(2rem, 1.6vw);
+      cursor: pointer;
+      transition: background-color .3s ease-out;
 
-      svg {
-        font-size: min(1.5rem, 1.3vw);
+      &:hover {
+        background-color: #E5F7FF;
       }
 
-    }
-
-    .projectsList {
-      display: flex;
-      flex-direction: column;
-      gap: min(1rem, .8vw);
-
-      .projectsItem {
+      .rightProjectSide {
         display: flex;
         align-items: center;
-        justify-content: space-between;
-        padding: min(1.5rem, 1.2vw) min(2rem, 1.6vw);
-        cursor: pointer;
-        transition: background-color .3s ease-out;
+        gap: min(2rem, 1.6vw);
 
-        &:hover {
-          background-color: #E5F7FF;
+        .projectLetters {
+          font-size: min(1.5rem, 1.3vw);
         }
 
-        .rightProjectSide {
-          display: flex;
-          align-items: center;
-          gap: min(2rem, 1.6vw);
+        .projectInfo {
+          font-size: min(1.3rem, 1.1vw);
 
-          .projectLetters {
-            font-size: min(1.5rem, 1.3vw);
+          p:first-child {
+            font-weight: 500;
+            margin-bottom: min(.6rem, .5vw);
           }
 
-          .projectInfo {
-            font-size: min(1.3rem, 1.1vw);
-
-            p:first-child {
-              font-weight: 500;
-              margin-bottom: min(.6rem, .5vw);
-            }
-
-            p:last-child {
-              font-size: min(1rem, .8vw);
-              color: #C9C9C9;
-              font-weight: 400;
-            }
+          p:last-child {
+            font-size: min(1rem, .8vw);
+            color: #C9C9C9;
+            font-weight: 400;
           }
         }
+      }
 
-        .leftProjectSide {
-          display: flex;
-          align-items: center;
-          gap: min(3rem, 2.4vw);
-          color: #C9C9C9;
-          font-size: min(1.1rem, .9vw);
-        }
+      .leftProjectSide {
+        display: flex;
+        align-items: center;
+        gap: min(3rem, 2.4vw);
+        color: #C9C9C9;
+        font-size: min(1.1rem, .9vw);
       }
     }
   }

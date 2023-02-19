@@ -1,5 +1,4 @@
 import styles from "@/styles/projectTasks.module.scss";
-import { useEffect, useState } from "react";
 import { MdExpandMore } from "react-icons/md";
 
 interface ProjectTasksTasksProps {

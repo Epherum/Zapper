@@ -7,6 +7,7 @@ import { CgArrowsExpandRight } from "react-icons/cg";
 import Task from "@/components/DashboardTask";
 import Project from "@/components/DashboardProject";
 import LineChart from "@/components/LineChart";
+import NewTaskOverlay from "@/components/NewTaskOverlay";
 import {
   overviewData,
   tasksData,
@@ -15,10 +16,10 @@ import {
 } from "@/data/mockData";
 
 function HomePage() {
-  const [dateState, setDateState] = useState(new Date());
-  useEffect(() => {
-    setInterval(() => setDateState(new Date()), 30000);
-  }, []);
+  // const [dateState, setDateState] = useState(new Date());
+  // useEffect(() => {
+  //   setInterval(() => setDateState(new Date()), 30000);
+  // }, []);
 
   return (
     <>

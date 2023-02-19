@@ -18,17 +18,17 @@ export default function Menu() {
             </Link>
           </li>
           <li className={styles.icon}>
-            <Link href="/">
+            <Link href="/Profile">
               <VscAccount />
             </Link>
           </li>
           <li className={styles.icon}>
-            <Link href="/">
+            <Link href="/ProjectTasks">
               <BiTask />
             </Link>
           </li>
           <li className={styles.icon}>
-            <Link href="/">
+            <Link href="/Projects">
               <BsListTask />
             </Link>
           </li>

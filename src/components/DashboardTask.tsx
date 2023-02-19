@@ -1,4 +1,5 @@
 import styles from "@/styles/dashboard.module.scss";
+import Link from "next/link";
 import { useState } from "react";
 import { CgArrowsExpandRight } from "react-icons/cg";
 import { MdExpandLess } from "react-icons/md";
@@ -54,10 +55,12 @@ export default function Task({
           </div>
         </div>
         {expanded ? (
-          <button onClick={handleExpandClick}>
+          <Link href="/TaskDetails">
             <CgArrowsExpandRight />
-          </button>
+          </Link>
         ) : (
+          // <button onClick={handleExpandClick}>
+          // </button>
           <button onClick={handleExpandClick}>
             <MdExpandMore />
           </button>
