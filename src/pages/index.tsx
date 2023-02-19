@@ -32,7 +32,7 @@ function HomePage() {
         <div className={styles.timeAndButton}>
           <div className={styles.timeAndIcon}>
             <MdOutlineDateRange />
-            <p className={styles.time}>
+            {/* <p className={styles.time}>
               {dateState.toLocaleDateString("en-GB", {
                 month: "short",
                 day: "numeric",
@@ -44,7 +44,7 @@ function HomePage() {
                 minute: "numeric",
                 hour12: true,
               })}
-            </p>
+            </p> */}
           </div>
           <button className={styles.button}>
             <AiOutlinePlus />

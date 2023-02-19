@@ -1,5 +1,5 @@
 import styles from "@/styles/projectTasks.module.scss";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import List from "@/components/ProjectTasksList";
 import Board from "@/components/ProjectTasksBoard";
 import Headline from "@/components/Headline";

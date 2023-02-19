@@ -10,9 +10,9 @@ function ProjectTasksList() {
       <div className={styles.tasks}>
         <h2 className={`${styles.tasksHeadline} ${styles.first}`}>To do</h2>
         <div className={styles.tasksList}>
-          {tasksData.slice(0, 3).map((task) => (
+          {tasksData.slice(0, 3).map((task, index) => (
             <Tasks
-              key={task.id}
+              key={index}
               id={task.id}
               title={task.title}
               priority={task.priority}

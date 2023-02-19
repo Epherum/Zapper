@@ -110,8 +110,8 @@ function TaskDetails() {
               <div className={styles.activityItemDescription}>
                 <p>
                   what the fuck did you just fucking say about me, you little
-                  bitch? I'll have you know I graduated top of my class in the
-                  Navy Seals, and I've been
+                  bitch? Ill have you know I graduated top of my class in the
+                  Navy Seals, and Ive been
                 </p>
               </div>
             </div>
@@ -128,8 +128,8 @@ function TaskDetails() {
               <div className={styles.activityItemDescription}>
                 <p>
                   what the fuck did you just fucking say about me, you little
-                  bitch? I'll have you know I graduated top of my class in the
-                  Navy Seals, and I've been
+                  bitch? Ill have you know I graduated top of my class in the
+                  Navy Seals, and Ive been
                 </p>
               </div>
             </div>

@@ -1,3 +1,5 @@
+import { v4 as uuid } from "uuid";
+
 export const overviewData = [
   {
     title: "Completed Tasks",
@@ -149,3 +151,87 @@ export const chartData = () => {
     ],
   };
 };
+
+export const boardTasks = [
+  {
+    id: uuid(),
+    title: "Logo design",
+    idd: "ID LG-12",
+    status: "To do",
+    priority: "medium",
+    members: "John Doe",
+    Date: "Jul 12 - Jul 17",
+  },
+  {
+    id: uuid(),
+    title: "Laptop screen blinks",
+    idd: "ID LG-12",
+    status: "Backlog",
+    priority: "low",
+    members: "John Doe",
+    Date: "Jul 12 - Jul 17",
+  },
+  {
+    id: uuid(),
+    title: "First task",
+    idd: "ID LG-12",
+    status: "To do",
+    priority: "high",
+    members: "John Doe",
+    Date: "Jul 12 - Jul 17",
+  },
+  {
+    id: uuid(),
+    title: "First task",
+    idd: "ID LG-12",
+    status: "In progress",
+    priority: "high",
+    members: "John Doe",
+    Date: "Jul 12 - Jul 17",
+  },
+  {
+    id: uuid(),
+    title: "First task",
+    idd: "ID LG-12",
+    status: "To do",
+    priority: "high",
+    members: "John Doe",
+    Date: "Jul 12 - Jul 17",
+  },
+  {
+    id: uuid(),
+    title: "First task",
+    idd: "ID LG-12",
+    status: "To do",
+    priority: "high",
+    members: "John Doe",
+    Date: "Jul 12 - Jul 17",
+  },
+  {
+    id: uuid(),
+    title: "First task",
+    idd: "ID LG-12",
+    status: "To do",
+    priority: "high",
+    members: "John Doe",
+    Date: "Jul 12 - Jul 17",
+  },
+  {
+    id: uuid(),
+    title: "First task",
+    idd: "ID LG-12",
+    status: "To do",
+    priority: "high",
+    members: "John Doe",
+    Date: "Jul 12 - Jul 17",
+  },
+  {
+    id: uuid(),
+    title: "First task",
+    idd: "ID LG-12",
+    status: "To do",
+    priority: "high",
+    members: "John Doe",
+    Date: "Jul 12 - Jul 17",
+  },
+];
