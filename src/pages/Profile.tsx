@@ -8,9 +8,10 @@ import profilepic from "../../public/profile.png";
 import Tasks from "@/components/ProjectTasksTasks";
 import Image from "next/image";
 import { overviewData, tasksData, projectsData } from "@/data/mockData";
+
 function Profile() {
   return (
-    <main>
+    <section>
       <div className="circleBlue" />
       <div className="circleGreen" />
 
@@ -99,7 +100,7 @@ function Profile() {
           </div>
         </div>
       </div>
-    </main>
+    </section>
   );
 }
 

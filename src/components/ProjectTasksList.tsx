@@ -1,8 +1,9 @@
 import styles from "@/styles/projectTasks.module.scss";
 import { CgArrowsExpandRight } from "react-icons/cg";
 import Tasks from "@/components/ProjectTasksTasks";
-import Link from "next/link";
 import { tasksData } from "@/data/mockData";
+import { useEffect } from "react";
+import Link from "@/components/Link";
 
 function ProjectTasksList() {
   return (

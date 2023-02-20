@@ -3,7 +3,8 @@ import { GrHomeRounded } from "react-icons/gr";
 import { VscAccount } from "react-icons/vsc";
 import { BiTask } from "react-icons/bi";
 import { BsListTask } from "react-icons/bs";
-import Link from "next/link";
+import Link from "@/components/Link";
+
 export default function Menu() {
   return (
     <div className={styles.container}>

@@ -1,9 +1,9 @@
 import styles from "@/styles/dashboard.module.scss";
-import Link from "next/link";
 import { useState } from "react";
 import { CgArrowsExpandRight } from "react-icons/cg";
 import { MdExpandLess } from "react-icons/md";
 import { MdExpandMore } from "react-icons/md";
+import Link from "@/components/Link";
 
 interface TaskProps {
   title: string;

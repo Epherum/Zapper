@@ -4,14 +4,14 @@ import { CgArrowsExpandRight } from "react-icons/cg";
 import Project from "@/components/ProjectsProject";
 import Task from "@/components/ProjectsTask";
 import { projectsData, tasksData } from "@/data/mockData";
-import Link from "next/link";
 import Headline from "@/components/Headline";
+import Link from "@/components/Link";
 
 function Projects() {
   const [filter, setFilter] = useState("active");
 
   return (
-    <>
+    <section>
       <div className="circleBlue" />
       <div className="circleGreen" />
       <Headline title="Projects" location={["home", "Projects"]} />
@@ -124,7 +124,7 @@ function Projects() {
           </div>
         </div>
       </div>
-    </>
+    </section>
   );
 }
 export default Projects;

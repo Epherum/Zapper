@@ -11,8 +11,8 @@ import { BsCircle } from "react-icons/bs";
 import { BsCircleHalf } from "react-icons/bs";
 import { TbCircleDotted } from "react-icons/tb";
 import { AiOutlineCheckCircle } from "react-icons/ai";
-import Link from "next/link";
 import { boardTasks } from "@/data/mockData";
+import Link from "@/components/Link";
 
 const boardColumns = {
   [uuid()]: {

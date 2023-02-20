@@ -12,7 +12,7 @@ function TaskDetails() {
   const [filter, setFilter] = useState("list");
 
   return (
-    <>
+    <section>
       <div className="circleBlue" />
       <div className="circleGreen" />
       <Headline
@@ -200,7 +200,7 @@ function TaskDetails() {
           <p>Last updated Oct 12, 2023 2:00 AM by Julia B</p>
         </div>
       </div>
-    </>
+    </section>
   );
 }
 

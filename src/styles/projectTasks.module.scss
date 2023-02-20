@@ -238,7 +238,7 @@
                 gap: min(.5rem, .4vw);
 
                 h2 {
-                    font-size: min(2.1rem, 1.7vw);
+                    font-size: min(2rem, 1.6vw);
                     font-weight: 500;
                 }
 
@@ -266,6 +266,7 @@
                 border: 1px solid $border-dark-gray;
                 border-radius: 10px;
                 margin-bottom: min(2rem, 1.6vw);
+                background-color: #fff;
 
                 .itemTopHalf {
                     display: flex;

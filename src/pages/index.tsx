@@ -14,6 +14,7 @@ import {
   projectsData,
   chartData,
 } from "@/data/mockData";
+import { motion } from "framer-motion";
 
 function HomePage() {
   // const [dateState, setDateState] = useState(new Date());
@@ -22,7 +23,11 @@ function HomePage() {
   // }, []);
 
   return (
-    <>
+    <motion.section
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+    >
       <div className={styles.headline}>
         <div className={styles.title}>
           <h1>
@@ -140,7 +145,7 @@ function HomePage() {
           </div>
         </div>
       </div>
-    </>
+    </motion.section>
   );
 }
 

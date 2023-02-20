@@ -1,6 +1,6 @@
 import styles from "@/styles/dashboard.module.scss";
-import Link from "next/link";
 import { useRouter } from "next/router";
+import Link from "@/components/Link";
 
 interface DashboardProjectProps {
   title: string;
