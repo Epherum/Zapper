@@ -18,7 +18,8 @@
     p {
       font-size: 1.22rem;
       font-size: min(1.22rem, 1vw);
-      color: #9B9B9B;
+      color: #AEAEAE;
+      color: $dark-gray;
     }
   }
 
@@ -28,11 +29,11 @@
     align-items: center;
 
     .timeAndIcon {
-      color: #9B9B9B;
+      color: $dark-gray;
       display: flex;
       align-items: center;
       font-size: min(1.1rem, .9vw);
-      border: 1px solid #d8d8d8;
+      border: 1px solid $border-gray;
       padding: min(.8rem, .6vw) min(1.5rem, 1.2vw);
       border-radius: 13px;
       font-weight: 500;
@@ -79,14 +80,13 @@
   .overviewItem {
     padding: min(1rem, .8vw) min(1.5rem, 1.2vw);
     padding-right: min(3.5rem, 2.8vw);
-    border: 1px solid #e1e1e1;
+    border: 2px solid $border-gray;
     border-radius: 10px;
 
     .overviewItemTitle {
       font-size: min(1.5rem, 1.3vw);
       font-weight: 500;
       margin-bottom: min(3.4rem, 2.8vw);
-      // letter-spacing: .4px;
     }
 
     .overviewItemContent {
@@ -109,11 +109,11 @@
         align-items: center;
         gap: min(.4rem, .3vw);
         font-weight: 600;
-        margin-bottom: min(.2rem, .1vw);
-        margin-right: min(-1.7rem, -1.4vw);
+        margin-bottom: min(.5rem, .4vw);
+        margin-right: min(-1.1rem, -.8vw);
         color: #28BFFF;
         background-color: #E5F7FF;
-        border-radius: 10px;
+        border-radius: 5px;
         padding: min(.3rem, .2vw) min(.5rem, .4vw);
         font-size: min(1.2rem, .8vw);
 
@@ -160,15 +160,15 @@
         transition: background-color .3s ease-out;
         padding: min(1.5rem, 1.2vw) min(1.7rem, 1.4vw);
         padding-right: min(1.4rem, 1.1vw);
-        border: 1px solid #e1e1e1;
+        // border: 1px solid $border-gray;
         cursor: pointer;
 
         &:hover {
-          background-color: #EFEDF9;
+          background-color: $light-purple;
         }
 
         &.expanded {
-          background-color: #EFEDF9;
+          background-color: $light-purple;
           border: none;
           cursor: auto;
 
@@ -196,6 +196,7 @@
 
         .taskID {
           color: #c3c3c3;
+          color: $light-gray;
           font-size: min(1rem, .8vw);
           font-weight: 400;
           margin-bottom: min(.2rem, .1vw);
@@ -209,7 +210,7 @@
 
         .taskPriority {
           display: inline-block;
-          background-color: #FF8080;
+          background-color: $red;
           font-size: min(.9rem, .7vw);
           font-weight: 500;
           padding: min(.4rem, .3vw) min(.5rem, .4vw);
@@ -263,7 +264,7 @@
         align-items: center;
         justify-content: space-between;
         font-size: min(1.2rem, 1vw);
-        color: #7164C6;
+        color: $purple;
         padding: min(3rem, 2.5vw) min(2rem, 1.6vw);
         border: .1rem dashed #A695FF;
       }
@@ -287,7 +288,7 @@
         font-size: min(1rem, .8vw);
         letter-spacing: -.3px;
         font-weight: 400;
-        color: #C9C9C9;
+        color: $light-gray;
       }
     }
 
@@ -316,7 +317,7 @@
       width: min(185px, 8.5vw);
       height: min(185px, 8.5vw);
       border-radius: 50%;
-      border: min(6px, .3vw) solid #26BCFF;
+      border: min(6px, .3vw) solid $blue;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -335,7 +336,7 @@
       p:last-child {
         font-size: min(1.1rem, .9vw);
         font-weight: 400;
-        color: #C9C9C9;
+        color: $light-gray;
       }
     }
 
@@ -352,7 +353,7 @@
 
       p:last-child {
         font-size: min(1.1rem, .9vw);
-        color: #C9C9C9;
+        color: $light-gray;
         letter-spacing: -.5px;
       }
     }
@@ -392,7 +393,7 @@
       transition: background-color .3s ease-out;
 
       &:hover {
-        background-color: #E5F7FF;
+        background-color: $light-blue;
       }
 
       .rightProjectSide {
@@ -414,7 +415,7 @@
 
           p:last-child {
             font-size: min(1rem, .8vw);
-            color: #C9C9C9;
+            color: $light-gray;
             font-weight: 400;
           }
         }
@@ -424,7 +425,7 @@
         display: flex;
         align-items: center;
         gap: min(3rem, 2.4vw);
-        color: #C9C9C9;
+        color: $light-gray;
         font-size: min(1.1rem, .9vw);
       }
     }

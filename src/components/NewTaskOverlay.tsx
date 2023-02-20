@@ -1,4 +1,4 @@
-import styles from "@/styles/NewTaskOverlay.module.scss";
+import styles from "@/styles/newTaskOverlay.module.scss";
 import { GrClose } from "react-icons/gr";
 import { MdExpandMore } from "react-icons/md";
 

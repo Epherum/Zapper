@@ -10,7 +10,7 @@
         font-size: min(2rem, 1.6vw);
         display: flex;
         align-items: center;
-        color: #9B9B9B;
+        color: $dark-gray;
 
         input {
             border: none;
@@ -19,7 +19,7 @@
             padding-left: min(.8rem, .7vw);
 
             &::placeholder {
-                color: #9B9B9B;
+                color: $dark-gray;
                 font-weight: 400;
             }
         }
@@ -31,7 +31,7 @@
         align-items: center;
         width: min(13rem, 10.5vw);
         font-size: min(2.5rem, 2vw);
-        color: #9B9B9B;
+        color: $dark-gray;
 
         .notificationGear {
             font-size: min(1.7rem, 1.4vw);

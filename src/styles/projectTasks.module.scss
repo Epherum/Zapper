@@ -8,9 +8,12 @@
         font-size: min(1.2rem, 1vw);
         font-weight: 500;
         padding: min(.5rem, .4vw) min(1rem, .8vw);
-        border-radius: 10px;
+        border-radius: 5px;
         transition: all .3s ease-in-out;
-        background-color: #F0F0F0;
+
+        &:hover {
+            background-color: #F0F0F0;
+        }
 
         &.active {
             background-color: #000;
@@ -22,7 +25,7 @@
 .lineDivider {
     width: 100%;
     height: 1.5px;
-    background-color: #d8d8d8;
+    background-color: $border-gray;
     margin-top: min(1rem, .8vw);
 }
 
@@ -69,7 +72,7 @@
 
                     p:first-child {
                         font-size: min(1rem, .8vw);
-                        color: #9B9B9B;
+                        color: $dark-gray;
                         margin-bottom: min(.4rem, .3vw);
                     }
 
@@ -86,13 +89,13 @@
 
                     p:first-child {
                         font-size: min(1rem, .8vw);
-                        color: #9B9B9B;
+                        color: $dark-gray;
                     }
 
                     //2nd p tag
                     p:nth-child(2) {
                         display: inline-block;
-                        background-color: #FF8080;
+                        background-color: $red;
                         font-size: min(.9rem, .8vw);
                         font-weight: 500;
                         padding: min(.4rem, .3vw) min(.5rem, .4vw);
@@ -108,7 +111,7 @@
 
                     svg {
                         font-size: min(1.5rem, 1.3vw);
-                        color: #9B9B9B;
+                        color: $dark-gray;
                         rotate: -90deg;
                     }
                 }
@@ -124,12 +127,11 @@
         margin: 0 auto;
         width: 1.5px;
         height: 100%;
-        background-color: #d8d8d8;
+        background-color: $border-gray;
         margin-bottom: min(5rem, 4vw);
     }
 
     .taskDetails {
-        position: sticky;
         grid-column: 3;
         grid-row: 1;
         margin-top: min(5rem, 4vw);
@@ -144,7 +146,7 @@
 
             &:hover {
                 cursor: pointer;
-                background-color: #EFEDF9;
+                background-color: $light-purple;
             }
 
             div {
@@ -160,15 +162,14 @@
 
                 p {
                     display: inline-block;
-                    background-color: #DFFFDE;
-                    font-size: min(.9rem, .8vw);
+                    background-color: $light-green;
+                    font-size: min(.9rem, .6vw);
                     font-weight: 500;
-                    padding: min(.4rem, .3vw) min(.5rem, .4vw);
+                    padding: min(.4rem, .7vw) min(1rem, .8vw);
                     border-radius: 4px;
 
                 }
             }
-
 
             svg {
                 font-size: min(1.5rem, 1.3vw);
@@ -187,7 +188,7 @@
 
                 p:first-child {
                     font-size: min(1rem, .8vw);
-                    color: #9B9B9B;
+                    color: $dark-gray;
                 }
 
                 p:last-child {
@@ -196,10 +197,10 @@
                 }
 
                 .priority {
-                    width: min(6rem, 5vw);
+                    width: min(5rem, 4vw);
                     text-align: center;
-                    background-color: #FFE0B2;
-                    font-size: min(.9rem, .8vw);
+                    background-color: $yellow;
+                    font-size: min(.7rem, .7vw) !important;
                     font-weight: 500;
                     padding: min(.4rem, .3vw) min(.5rem, .4vw);
                     border-radius: 4px;
@@ -228,7 +229,7 @@
             margin-bottom: min(1rem, .8vw);
 
             svg {
-                color: #9B9B9B;
+                color: $dark-gray;
             }
 
             .columnHeadlineLeftSide {
@@ -237,13 +238,13 @@
                 gap: min(.5rem, .4vw);
 
                 h2 {
-                    font-size: min(2rem, 1.6vw);
+                    font-size: min(2.1rem, 1.7vw);
                     font-weight: 500;
                 }
 
                 p {
                     font-size: min(1rem, .8vw);
-                    color: #9B9B9B;
+                    color: $dark-gray;
                 }
 
                 svg {
@@ -262,7 +263,7 @@
                 user-select: none;
                 width: 100%;
                 padding: min(.8rem, .6vw) min(1rem, .8vw);
-                border: 1px solid #d8d8d8;
+                border: 1px solid $border-dark-gray;
                 border-radius: 10px;
                 margin-bottom: min(2rem, 1.6vw);
 
@@ -274,14 +275,12 @@
 
                     a:first-child {
                         font-size: min(1.3rem, 1.1vw);
-                        font-weight: 500;
                         cursor: pointer;
                     }
 
                     p:last-child {
                         font-size: min(.7rem, .6vw);
-                        font-weight: 500;
-                        color: #9B9B9B;
+                        color: $light-gray;
                     }
                 }
 
@@ -293,17 +292,15 @@
                     p:first-child {
                         display: inline-block;
                         text-align: center;
-                        background-color: #FFE0B2;
                         font-size: min(.8rem, .7vw);
-                        font-weight: 500;
-                        padding: min(.2rem, .2vw) min(.7rem, .6vw);
+                        padding: min(.2rem, .2vw) min(.6rem, .5vw);
                         border-radius: 5px;
                         margin-bottom: min(.8rem, .7vw);
                     }
 
                     p:last-child {
                         font-size: .8rem;
-                        font-size: min(.8rem, .7vw);
+                        font-size: min(.75rem, .65vw);
                     }
                 }
             }

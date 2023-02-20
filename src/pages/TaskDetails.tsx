@@ -6,6 +6,7 @@ import { FiSend } from "react-icons/fi";
 import { ImAttachment } from "react-icons/im";
 import Headline from "@/components/Headline";
 import { VscAccount } from "react-icons/vsc";
+import { MdExpandLess } from "react-icons/md";
 
 function TaskDetails() {
   const [filter, setFilter] = useState("list");
@@ -27,7 +28,7 @@ function TaskDetails() {
               setFilter("all");
             }}
           >
-            in progress
+            in progress <MdExpandLess />
           </button>
         </div>
         <div className={styles.priority}>

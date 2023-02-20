@@ -1,5 +1,5 @@
 import Headline from "@/components/Headline";
-import styles from "@/styles/Profile.module.scss";
+import styles from "@/styles/profile.module.scss";
 import styles2 from "@/styles/projectTasks.module.scss";
 import styles3 from "@/styles/dashboard.module.scss";
 import { CgArrowsExpandRight } from "react-icons/cg";
@@ -24,7 +24,8 @@ function Profile() {
             placeholder="blur" // Optional blur-up while loading
           />
           <h2>Michael Scott</h2>
-          <p>notmichaelscott123@gmail.com</p>
+          <p className={styles.role}>Project Manager</p>
+          <p className={styles.email}>notmichaelscott123@gmail.com</p>
         </div>
         <div className={styles.overview}>
           <div className={styles.overviewCard}>
