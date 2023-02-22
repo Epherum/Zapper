@@ -7,22 +7,22 @@ import Link from "@/components/Link";
 
 interface TaskProps {
   title: string;
-  id: string;
+  idd: string;
   description: string;
   priority: string;
   date: string;
-  backgroundColor: string;
+  expandedFirst?: boolean;
 }
 
 export default function Task({
   title,
-  id,
+  idd,
   description,
   priority,
   date,
-  backgroundColor,
+  expandedFirst = false,
 }: TaskProps) {
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState(expandedFirst);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -37,7 +37,7 @@ export default function Task({
         <div>
           <div className={styles.taskID}>
             <p>
-              ID: <span>{id}</span>
+              <span>{idd}</span>
             </p>
           </div>
           <div className={styles.taskName}>
@@ -47,9 +47,13 @@ export default function Task({
             className={`${styles.taskPriority}  ${
               expanded ? styles.expandedtaskPriority : ""
             }`}
-            style={{
-              backgroundColor: backgroundColor,
-            }}
+            style={
+              priority === "high"
+                ? { backgroundColor: "#FF8080" }
+                : priority === "medium"
+                ? { backgroundColor: "#FFE0B2" }
+                : { backgroundColor: "#DFFFDE" }
+            }
           >
             <p>{priority}</p>
           </div>
@@ -75,9 +79,13 @@ export default function Task({
             <div className={styles.rowInfo}>
               <div
                 className={styles.taskPriority}
-                style={{
-                  backgroundColor: backgroundColor,
-                }}
+                style={
+                  priority === "high"
+                    ? { backgroundColor: "#FF8080" }
+                    : priority === "medium"
+                    ? { backgroundColor: "#FFE0B2" }
+                    : { backgroundColor: "#DFFFDE" }
+                }
               >
                 <p>{priority}</p>
               </div>

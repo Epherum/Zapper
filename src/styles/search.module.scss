@@ -12,6 +12,11 @@
         align-items: center;
         color: $dark-gray;
 
+        button {
+            all: unset;
+            margin-top: min(.2rem, .15vw);
+        }
+
         input {
             border: none;
             outline: none;
@@ -40,7 +45,7 @@
             width: min(5.5rem, 4.5vw);
         }
 
-        &>svg {
+        .profile {
             font-size: min(2.8rem, 2.3vw);
         }
 

@@ -32,40 +32,99 @@ export const overviewData = [
 ];
 export const tasksData = [
   {
+    id: "1",
     title: "Logo design",
-    id: "KL-2",
-    description:
-      "Create storyboards that depict the script and narrative. Craft a dynamic portfolio ond reel.",
-    priority: "high",
-    date: "Jul 2 - Jul 16",
-    backgroundColor: "#FF8080",
-  },
-  {
-    title: "Homepage illustration",
-    id: "KL-2",
-    description:
-      "Create storyboards that depict the script and narrative. Craft a dynamic portfolio ond reel.",
+    idd: "ID LG-12",
+    status: "To do",
     priority: "low",
-    date: "Jul 2 - Jul 16",
-    backgroundColor: "#FFE0B2",
+    members: "John Doe",
+    description:
+      "Create storyboards that depict the script and narrative. Craft a dynamic portfolio ond reel.",
+    date: "Jul 12 - Jul 17",
   },
+
   {
+    id: "2",
     title: "Dashboard animations",
-    id: "KL-2",
+    idd: "ID LG-12",
+    status: "Backlog",
+    priority: "low",
+    members: "John Doe",
     description:
       "Create storyboards that depict the script and narrative. Craft a dynamic portfolio ond reel.",
-    priority: "medium",
-    date: "Jul 2 - Jul 16",
-    backgroundColor: "#DFFFDE",
+    date: "Jul 12 - Jul 17",
   },
+
   {
-    title: "Circle progress",
-    id: "KL-2",
+    id: "3",
+    title: "Android app",
+    idd: "ID LG-12",
+    status: "Backlog",
+    priority: "low",
+    members: "John Doe",
     description:
       "Create storyboards that depict the script and narrative. Craft a dynamic portfolio ond reel.",
+    date: "Jul 12 - Jul 17",
+  },
+
+  {
+    id: "4",
+    title: "IOS app",
+    idd: "ID LG-12",
+    status: "To do",
     priority: "high",
-    date: "Jul 2 - Jul 16",
-    backgroundColor: "#FF8080",
+    members: "John Doe",
+    description:
+      "Create storyboards that depict the script and narrative. Craft a dynamic portfolio ond reel.",
+    date: "Jul 12 - Jul 17",
+  },
+
+  {
+    id: "5",
+    title: "Circle color",
+    idd: "ID LG-12",
+    status: "Done",
+    priority: "high",
+    members: "John Doe",
+    description:
+      "Create storyboards that depict the script and narrative. Craft a dynamic portfolio ond reel.",
+    date: "Jul 12 - Jul 17",
+  },
+
+  {
+    id: "6",
+    title: "App speed",
+    idd: "ID LG-12",
+    status: "In progress",
+    priority: "high",
+    members: "John Doe",
+    description:
+      "Create storyboards that depict the script and narrative. Craft a dynamic portfolio ond reel.",
+    date: "Jul 12 - Jul 17",
+  },
+
+  {
+    id: "7",
+    title: "Dashboard colors",
+    idd: "ID LG-12",
+    status: "In progress",
+    priority: "medium",
+    members: "John Doe",
+    description:
+      "Create storyboards that depict the script and narrative. Craft a dynamic portfolio ond reel.",
+    date: "Jul 12 - Jul 17",
+  },
+
+  {
+    id: "8",
+    title: "Task modal",
+    idd: "ID LG-12",
+    status: "In progress",
+    priority: "medium",
+    members: "John Doe",
+    description:
+      "Create storyboards that depict the script and narrative. Craft a dynamic portfolio ond reel.",
+    date: "Jul 12 - Jul 17",
   },
 ];
 export const projectsData = [
@@ -119,6 +178,8 @@ export const chartData = () => {
         borderWidth: 1.5,
         backgroundColor: "transparent",
         borderCapStyle: "round",
+        pointBackgroundColor: "black", // set the color of the filled dot
+        pointBorderColor: "black",
         pointRadius: 0,
         pointHitRadius: 100,
         tension: 0.5,
@@ -129,6 +190,8 @@ export const chartData = () => {
         borderColor: "black",
         borderWidth: 0,
         borderCapStyle: "round",
+        pointBackgroundColor: "#9bffbf", // set the color of the filled dot
+        pointBorderColor: "black",
         pointRadius: 0,
         pointHitRadius: 100,
         tension: 0.5,
@@ -151,87 +214,3 @@ export const chartData = () => {
     ],
   };
 };
-
-export const boardTasks = [
-  {
-    id: uuid(),
-    title: "Logo design",
-    idd: "ID LG-12",
-    status: "To do",
-    priority: "medium",
-    members: "John Doe",
-    Date: "Jul 12 - Jul 17",
-  },
-  {
-    id: uuid(),
-    title: "Laptop screen blinks",
-    idd: "ID LG-12",
-    status: "Backlog",
-    priority: "low",
-    members: "John Doe",
-    Date: "Jul 12 - Jul 17",
-  },
-  {
-    id: uuid(),
-    title: "First task",
-    idd: "ID LG-12",
-    status: "To do",
-    priority: "high",
-    members: "John Doe",
-    Date: "Jul 12 - Jul 17",
-  },
-  {
-    id: uuid(),
-    title: "First task",
-    idd: "ID LG-12",
-    status: "In progress",
-    priority: "high",
-    members: "John Doe",
-    Date: "Jul 12 - Jul 17",
-  },
-  {
-    id: uuid(),
-    title: "First task",
-    idd: "ID LG-12",
-    status: "To do",
-    priority: "high",
-    members: "John Doe",
-    Date: "Jul 12 - Jul 17",
-  },
-  {
-    id: uuid(),
-    title: "First task",
-    idd: "ID LG-12",
-    status: "To do",
-    priority: "high",
-    members: "John Doe",
-    Date: "Jul 12 - Jul 17",
-  },
-  {
-    id: uuid(),
-    title: "First task",
-    idd: "ID LG-12",
-    status: "To do",
-    priority: "high",
-    members: "John Doe",
-    Date: "Jul 12 - Jul 17",
-  },
-  {
-    id: uuid(),
-    title: "First task",
-    idd: "ID LG-12",
-    status: "To do",
-    priority: "high",
-    members: "John Doe",
-    Date: "Jul 12 - Jul 17",
-  },
-  {
-    id: uuid(),
-    title: "First task",
-    idd: "ID LG-12",
-    status: "To do",
-    priority: "high",
-    members: "John Doe",
-    Date: "Jul 12 - Jul 17",
-  },
-];

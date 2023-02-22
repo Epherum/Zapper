@@ -15,12 +15,28 @@ import {
   chartData,
 } from "@/data/mockData";
 import { motion } from "framer-motion";
+import {
+  title,
+  subtitle,
+  buttons,
+  overview,
+  overviewItem,
+  tasks,
+  taskItem,
+  projects,
+  projectItem,
+  chart,
+  chartHeadline,
+  progress,
+  tasksHeadline,
+  projectsHeadline,
+} from "@/animations/index";
 
 function HomePage() {
-  // const [dateState, setDateState] = useState(new Date());
-  // useEffect(() => {
-  //   setInterval(() => setDateState(new Date()), 30000);
-  // }, []);
+  const [dateState, setDateState] = useState(new Date());
+  useEffect(() => {
+    setInterval(() => setDateState(new Date()), 30000);
+  }, []);
 
   return (
     <motion.section
@@ -30,12 +46,19 @@ function HomePage() {
     >
       <div className={styles.headline}>
         <div className={styles.title}>
-          <h1>
+          <motion.h1 variants={title} initial="hidden" animate="visible">
             Welcome back, <span>Royal</span>
-          </h1>
-          <p>Track, manage and forecast projects and timeline</p>
+          </motion.h1>
+          <motion.p variants={subtitle} initial="hidden" animate="visible">
+            Track, manage and forecast projects and timeline
+          </motion.p>
         </div>
-        <div className={styles.timeAndButton}>
+        <motion.div
+          variants={buttons}
+          initial="hidden"
+          animate="visible"
+          className={styles.timeAndButton}
+        >
           <div className={styles.timeAndIcon}>
             <MdOutlineDateRange />
             {/* <p className={styles.time}>
@@ -56,11 +79,20 @@ function HomePage() {
             <AiOutlinePlus />
             <p>New Task</p>
           </button>
-        </div>
+        </motion.div>
       </div>
-      <div className={styles.overview}>
+      <motion.div
+        variants={overview}
+        initial="hidden"
+        animate="visible"
+        className={styles.overview}
+      >
         {overviewData.map((item, index) => (
-          <div key={index} className={styles.overviewItem}>
+          <motion.div
+            variants={overviewItem}
+            key={index}
+            className={styles.overviewItem}
+          >
             <h2 className={styles.overviewItemTitle}>{item.title}</h2>
             <div className={styles.overviewItemContent}>
               <p>
@@ -76,43 +108,69 @@ function HomePage() {
                 <MdOutlineFilterList /> 1 Filter
               </p>
             </div>
-          </div>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
       <div className={styles.grid}>
         <div className={styles.mytasks}>
-          <div className={styles.tasksHeadline}>
+          <motion.div
+            variants={tasksHeadline}
+            initial="hidden"
+            animate="visible"
+            className={styles.tasksHeadline}
+          >
             <p>My tasks</p>
             <CgArrowsExpandRight />
-          </div>
-          <div className={styles.tasks}>
-            {tasksData.map((item, index) => (
-              <Task
-                key={index}
-                title={item.title}
-                id={item.id}
-                description={item.description}
-                priority={item.priority}
-                date={item.date}
-                backgroundColor={item.backgroundColor}
-              />
+          </motion.div>
+          <motion.div
+            variants={tasks}
+            initial="hidden"
+            animate="visible"
+            className={styles.tasks}
+          >
+            {tasksData.map((task, index) => (
+              <motion.div variants={taskItem} key={index}>
+                <Task
+                  title={task.title}
+                  date={task.date}
+                  description={task.description}
+                  idd={task.idd}
+                  priority={task.priority}
+                  expandedFirst={index === 0 ? true : false}
+                />
+              </motion.div>
             ))}
             <div className={`${styles.task} ${styles.addTask}`}>
               <p>Add new task</p>
               <AiOutlinePlus />
             </div>
-          </div>
+          </motion.div>
         </div>
         <div className={styles.statistics}>
-          <div className={styles.statisticsHeadline}>
+          <motion.div
+            variants={chartHeadline}
+            initial="hidden"
+            animate="visible"
+            className={styles.statisticsHeadline}
+          >
             <p>Statistics</p>
             <p>tasks created vs tasks completed vs tasks overdue</p>
-          </div>
-          <div className={styles.statisticsChart}>
+          </motion.div>
+          <motion.div
+            variants={chart}
+            initial="hidden"
+            animate="visible"
+            className={styles.statisticsChart}
+          >
             <LineChart chartData={chartData()} />
-          </div>
+          </motion.div>
         </div>
-        <div className={styles.progress}>
+        <motion.div
+          variants={progress}
+          initial="hidden"
+          animate="visible"
+          className={styles.progress}
+        >
           <div className={styles.progressDate}>
             <p>June 30 - July 30</p>
           </div>
@@ -126,23 +184,34 @@ function HomePage() {
             <p>You&apos;re doing good!</p>
             <p>You almost reached your goal</p>
           </div>
-        </div>
+        </motion.div>
         <div className={styles.projects}>
-          <div className={styles.projectsHeadline}>
+          <motion.div
+            variants={projectsHeadline}
+            initial="hidden"
+            animate="visible"
+            className={styles.projectsHeadline}
+          >
             <p>My projects</p>
             <CgArrowsExpandRight />
-          </div>
-          <div className={styles.projectsList}>
+          </motion.div>
+          <motion.div
+            variants={projects}
+            initial="hidden"
+            animate="visible"
+            className={styles.projectsList}
+          >
             {projectsData.map((item, index) => (
-              <Project
-                key={index}
-                title={item.title}
-                tasks={item.tasks}
-                overdue={item.overdue}
-                date={item.date}
-              />
+              <motion.div variants={projectItem} key={index}>
+                <Project
+                  title={item.title}
+                  tasks={item.tasks}
+                  overdue={item.overdue}
+                  date={item.date}
+                />
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </div>
     </motion.section>

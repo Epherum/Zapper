@@ -3,20 +3,34 @@ import { IoSearchOutline } from "react-icons/io5";
 import { VscAccount } from "react-icons/vsc";
 import { RxGear } from "react-icons/rx";
 import { BsBell } from "react-icons/bs";
+import { motion } from "framer-motion";
+import { search, icons } from "@/animations/search";
 export default function Search() {
   return (
     <div className={styles.search}>
-      <div className={styles.searchInput}>
+      <motion.div
+        variants={search}
+        initial="hidden"
+        animate="visible"
+        className={styles.searchInput}
+      >
         <IoSearchOutline />
         <input type="text" placeholder="Search anything here" />
-      </div>
-      <div className={styles.icons}>
+      </motion.div>
+      <motion.div
+        variants={icons}
+        initial="hidden"
+        animate="visible"
+        className={styles.icons}
+      >
         <div className={styles.notificationGear}>
           <BsBell />
           <RxGear />
         </div>
-        <VscAccount />
-      </div>
+        <div className={styles.profile}>
+          <VscAccount />
+        </div>
+      </motion.div>
     </div>
   );
 }

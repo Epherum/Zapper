@@ -11,25 +11,25 @@ import { BsCircle } from "react-icons/bs";
 import { BsCircleHalf } from "react-icons/bs";
 import { TbCircleDotted } from "react-icons/tb";
 import { AiOutlineCheckCircle } from "react-icons/ai";
-import { boardTasks } from "@/data/mockData";
 import Link from "@/components/Link";
+import { tasksData } from "@/data/mockData";
 
 const boardColumns = {
   [uuid()]: {
     name: "To do",
-    items: boardTasks.filter((item) => item.status === "To do"),
+    items: tasksData.filter((item) => item.status === "To do"),
   },
   [uuid()]: {
     name: "In progress",
-    items: boardTasks.filter((item) => item.status === "In progress"),
+    items: tasksData.filter((item) => item.status === "In progress"),
   },
   [uuid()]: {
     name: "Backlog",
-    items: boardTasks.filter((item) => item.status === "Backlog"),
+    items: tasksData.filter((item) => item.status === "Backlog"),
   },
   [uuid()]: {
     name: "Done",
-    items: boardTasks.filter((item) => item.status === "Done"),
+    items: tasksData.filter((item) => item.status === "Done"),
   },
 };
 
@@ -159,7 +159,7 @@ function App() {
                                           >
                                             {item.priority}
                                           </p>
-                                          <p>{item.Date}</p>
+                                          <p>{item.date}</p>
                                         </div>
                                         <p>{item.members}</p>
                                       </div>
