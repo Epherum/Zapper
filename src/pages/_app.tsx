@@ -11,21 +11,20 @@ import PageTransition from "@/components/PageTransition";
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
   return (
-    <main className={inter.className}>
-      <div
-        style={{
-          maxWidth: "1920px",
-          margin: "0 auto",
-        }}
-      >
-        <Menu />
-        <Search />
-        <PageTransition mode="wait">
-          <motion.div key={router.route}>
-            <Component {...pageProps} />
-          </motion.div>
-        </PageTransition>
-      </div>
+    <main
+      className={inter.className}
+      style={{
+        maxWidth: "1920px",
+        margin: "0 auto",
+      }}
+    >
+      <Menu />
+      <Search />
+      <PageTransition mode="wait">
+        <motion.div key={router.route}>
+          <Component {...pageProps} />
+        </motion.div>
+      </PageTransition>
     </main>
   );
 }

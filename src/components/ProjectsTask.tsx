@@ -10,7 +10,7 @@ function ProjectsTask({ id, title, priority }: ProjectsTaskProps) {
   return (
     <div className={styles.projectDetailsTasksListItem}>
       <div className={styles.projectDetailsTasksListItemLeft}>
-        <p>ID {id}</p>
+        <p>{id}</p>
         <p>{title}</p>
       </div>
       <div className={styles.projectDetailsTasksListItemRight}>

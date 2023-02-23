@@ -10,17 +10,11 @@ export default function PageTransition({ children }: any) {
   const ANIMATION_DURATION = 0.3;
   const controls = useAnimationControls();
   const variants1 = {
-    hidden: {
-      opacity: 0,
-      x: -20,
-      transition: { duration: 0.3, ease: "easeOut" },
-    },
     visible: {
       opacity: 1,
       x: 0,
-      transition: { duration: 0.3, ease: "easeOut" },
+      transition: { duration: 0, ease: "easeOut" },
     },
-    reset: { opacity: 0, x: -20, transition: { duration: 0 } },
     exit: {
       opacity: 0,
       x: 20,
@@ -53,9 +47,7 @@ export default function PageTransition({ children }: any) {
 
     /* After route change complete, animate enter */
     const handleRouteChangeComplete = () => {
-      controls.start("reset").then(() => {
-        controls.start("visible");
-      });
+      controls.start("visible");
     };
 
     /* Event listeners */

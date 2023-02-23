@@ -4,8 +4,8 @@
     align-items: center;
     margin-bottom: min(2.3rem, 1.8vw);
 
-    .title {
-        h1 {
+    .crumbsAndTitle {
+        .title {
             font-size: min(2.6rem, 2.2vw);
             font-weight: 600;
 
@@ -14,7 +14,7 @@
             }
         }
 
-        p {
+        .crumbs {
             margin-bottom: min(1.6rem, 1.3vw);
             font-size: min(1.22rem, 1vw);
             color: $dark-gray;

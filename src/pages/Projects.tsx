@@ -1,128 +1,152 @@
 import styles from "@/styles/projects.module.scss";
 import { useState } from "react";
-import { CgArrowsExpandRight } from "react-icons/cg";
 import Project from "@/components/ProjectsProject";
-import Task from "@/components/ProjectsTask";
-import { projectsData, tasksData } from "@/data/mockData";
+import ProjectDetails from "@/components/ProjectDetails";
+import { projectsData } from "@/data/mockData";
 import Headline from "@/components/Headline";
-import Link from "@/components/Link";
+import { AiOutlinePlus } from "react-icons/ai";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  filters,
+  filterItem,
+  projectsHeadline,
+  projects,
+  projectItem,
+  circleBlue,
+  circleGreen,
+  divider,
+} from "@/animations/projects";
 
 function Projects() {
   const [filter, setFilter] = useState("active");
-
+  const [selectedProject, setSelectedProject] = useState("");
+  const [prevSelectedProject, setPrevSelectedProject] = useState("");
+  const [switchP, setSwitchP] = useState(false);
   return (
     <section>
-      <div className="circleBlue" />
-      <div className="circleGreen" />
+      <motion.div
+        // variants={circleBlue}
+        // initial="hidden"
+        // animate="visible"
+        className="circleBlue"
+      />
+      <motion.div
+        // variants={circleGreen}
+        // initial="hidden"
+        // animate="visible"
+        className="circleGreen"
+      />
       <Headline title="Projects" location={["home", "Projects"]} />
 
-      <div className={styles.filters}>
-        <button
-          className={filter === "all" ? styles.active : ""}
-          onClick={() => {
-            setFilter("all");
-          }}
-        >
-          all
-        </button>
-        <button
-          className={filter === "active" ? styles.active : ""}
-          onClick={() => {
-            setFilter("active");
-          }}
-        >
-          active
-        </button>
-        <button
-          className={filter === "archived" ? styles.active : ""}
-          onClick={() => {
-            setFilter("archived");
-          }}
-        >
-          archived
-        </button>
-      </div>
-
-      <div className={styles.lineDivider} />
+      <motion.div
+        variants={filters}
+        initial="hidden"
+        animate="visible"
+        className={styles.filters}
+      >
+        {["all", "active", "archived"].map((filterName, index) => (
+          <motion.button
+            key={index}
+            variants={filterItem}
+            className={filter === `${filterName}` ? styles.active : ""}
+            onClick={() => {
+              setFilter(`${filterName}`);
+            }}
+          >
+            {filterName}
+          </motion.button>
+        ))}
+      </motion.div>
+      <motion.div
+        variants={divider}
+        initial="hidden"
+        animate="visible"
+        className={styles.lineDivider}
+      />
 
       <div className={styles.grid}>
         <div className={styles.projects}>
-          <h2 className={styles.projectsHeadline}>
+          <motion.h2
+            variants={projectsHeadline}
+            initial="hidden"
+            animate="visible"
+            className={styles.projectsHeadline}
+          >
             {filter.charAt(0).toUpperCase() + filter.slice(1)} projects
-          </h2>
-          <div className={styles.projectsList}>
+          </motion.h2>
+          <motion.div
+            variants={projects}
+            initial="hidden"
+            animate="visible"
+            className={styles.projectsList}
+          >
             {projectsData.map((project, index) => (
-              <Project
+              <motion.div
+                variants={projectItem}
+                whileHover={{
+                  scale: 1.02,
+                  transition: { duration: 0.2, ease: "easeOut" },
+                }}
+                whileTap={{ scale: 0.98 }}
                 key={index}
-                title={project.title}
-                tasks={project.tasks}
-                overdue={project.overdue}
-                dateRange={project.date}
-              />
+                className={
+                  selectedProject === project.title ? styles.active : ""
+                }
+                onClick={() => {
+                  //TODO fix the bug where if you click on
+                  //TODO the same project twice, it animates for no reason
+                  setPrevSelectedProject(selectedProject);
+                  setSelectedProject(project.title);
+                  setSwitchP((prev) => !prev);
+                }}
+              >
+                <Project
+                  title={project.title}
+                  tasks={project.tasks}
+                  overdue={project.overdue}
+                  dateRange={project.date}
+                />
+              </motion.div>
             ))}
-          </div>
+            <div className={styles.addProject}>
+              <p>Create new project</p>
+              <AiOutlinePlus />
+            </div>
+          </motion.div>
         </div>
-        {/* <div className={styles.addProject}>
-          <p>Create new project</p>
-          <AiOutlinePlus />
-        </div> */}
 
-        <div className={styles.gridLineDivider} />
-
-        <div className={styles.projectDetails}>
-          <div className={styles.projectDetailsHeadline}>
-            <h2>Missguided</h2>
-            <CgArrowsExpandRight />
-          </div>
-          <p className={styles.projectDetailsDescription}>
-            tasks created vs tasks completed vs tasks overdue tasks created vs
-            tasks completed vs tasks overduetasks created vs tasks completed vs
-            tasks overduetasks created vs tasks completed vs tasks overdue
-          </p>
-          <div className={styles.projectDetailsInfo}>
-            <div className={styles.projectDetailsInfoItem}>
-              <p>Status</p>
-              <p>Active</p>
-            </div>
-            <div className={styles.projectDetailsInfoItem}>
-              <p>Project manager</p>
-              <p>Michael Scott</p>
-            </div>
-            <div className={styles.projectDetailsInfoItem}>
-              <p>Start date</p>
-              <p>Jul 13, 2023</p>
-            </div>
-            <div className={styles.projectDetailsInfoItem}>
-              <p>Target date</p>
-              <p>Oct 20, 2023</p>
-            </div>
-            <div className={styles.projectDetailsInfoItem}>
-              <p>Members</p>
-              <p>John Doe</p>
-            </div>
-          </div>
-          <div className={styles.projectDetailsTasks}>
-            <h3>Recent tasks</h3>
-            <div className={styles.projectDetailsTasksList}>
-              {tasksData.slice(0, 3).map((task, index) => (
-                <Link href="/ProjectTasks" key={index}>
-                  <Task
-                    id={task.id}
-                    title={task.title}
-                    priority={task.priority}
-                  />
-                </Link>
-              ))}
-            </div>
-          </div>
-          <div className={styles.projectDetailsProgress}>
-            <h2 className={styles.projectDetailsProgressHeadline}>Progress</h2>
-            <div className={styles.projectDetailsProgressLine}>
-              <div />
-              <p>43%</p>
-            </div>
-          </div>
-        </div>
+        <motion.div
+          variants={divider}
+          initial="hidden"
+          animate="visible"
+          className={styles.gridLineDivider}
+        />
+        <AnimatePresence mode="wait">
+          {selectedProject && switchP && (
+            <motion.div
+              key="1"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.2, ease: "easeOut" }}
+              exit={{ opacity: 0, y: 20 }}
+              className={styles.projectDetails}
+            >
+              <ProjectDetails selectedProject={selectedProject} />
+            </motion.div>
+          )}
+          {selectedProject && !switchP && (
+            <motion.div
+              key="2"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.2, ease: "easeOut" }}
+              exit={{ opacity: 0, y: 20 }}
+              className={styles.projectDetails}
+            >
+              <ProjectDetails selectedProject={selectedProject} />
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </section>
   );

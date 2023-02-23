@@ -6,7 +6,7 @@ const title = {
     y: 0,
     opacity: 1,
     transition: {
-      delay: 0.1 + delay,
+      delay: 0 + delay,
       duration: 0.5,
       ease: "easeOut",
     },
@@ -18,7 +18,7 @@ const subtitle = {
     y: 0,
     opacity: 1,
     transition: {
-      delay: 0.2 + delay,
+      delay: 0.1 + delay,
       duration: 0.5,
       ease: "easeOut",
     },
@@ -31,7 +31,7 @@ const buttons = {
     y: 0,
     opacity: 1,
     transition: {
-      delay: 0.3 + delay,
+      delay: 0.2 + delay,
       duration: 0.5,
       ease: "easeOut",
     },
@@ -45,7 +45,7 @@ const overview = {
     y: 0,
     opacity: 1,
     transition: {
-      delayChildren: 0.5 + delay,
+      delayChildren: 0.2 + delay,
       staggerChildren: 0.1,
       ease: "easeOut",
     },
@@ -59,6 +59,18 @@ const overviewItem = {
     opacity: 1,
 
     transition: {
+      ease: "easeOut",
+    },
+  },
+};
+const tasksHeadline = {
+  hidden: { y: 20, opacity: 0 },
+  visible: {
+    y: 0,
+    opacity: 1,
+    transition: {
+      delay: 0.4 + delay,
+      duration: 0.5,
       ease: "easeOut",
     },
   },
@@ -78,37 +90,12 @@ const tasks = {
   },
 };
 
-const tasksHeadline = {
-  hidden: { y: 20, opacity: 0 },
-  visible: {
-    y: 0,
-    opacity: 1,
-    transition: {
-      delay: 0.5 + delay,
-      duration: 0.5,
-      ease: "easeOut",
-    },
-  },
-};
-
 const taskItem = {
   hidden: { y: 20, opacity: 0 },
   visible: {
     y: 0,
     opacity: 1,
     transition: {
-      ease: "easeOut",
-    },
-  },
-};
-const chart = {
-  hidden: { y: 20, opacity: 0 },
-  visible: {
-    y: 0,
-    opacity: 1,
-    transition: {
-      delay: 0.4 + delay,
-      duration: 0.5,
       ease: "easeOut",
     },
   },
@@ -121,6 +108,18 @@ const chartHeadline = {
     opacity: 1,
     transition: {
       delay: 0.5 + delay,
+      duration: 0.5,
+      ease: "easeOut",
+    },
+  },
+};
+const chart = {
+  hidden: { y: 20, opacity: 0 },
+  visible: {
+    y: 0,
+    opacity: 1,
+    transition: {
+      delay: 0.6 + delay,
       duration: 0.5,
       ease: "easeOut",
     },
@@ -147,8 +146,8 @@ const projects = {
     y: 0,
     opacity: 1,
     transition: {
-      delayChildren: 0.4 + delay,
-      staggerChildren: 0.2,
+      delayChildren: 1 + delay,
+      staggerChildren: 0.1,
       ease: "easeOut",
     },
   },
@@ -160,7 +159,7 @@ const projectsHeadline = {
     y: 0,
     opacity: 1,
     transition: {
-      delay: 0.6 + delay,
+      delay: 0.9 + delay,
       duration: 0.5,
       ease: "easeOut",
     },

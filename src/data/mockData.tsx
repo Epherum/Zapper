@@ -127,36 +127,72 @@ export const tasksData = [
     date: "Jul 12 - Jul 17",
   },
 ];
+
 export const projectsData = [
   {
     title: "Zara",
     tasks: 13,
     overdue: 4,
     date: "Jul 2 - Jul 16",
+    status: "Active",
+    manager: "Michael Scott",
+    startDate: "Jul 13, 2023",
+    targetDate: "Oct 20, 2023",
+    members: "John Doe",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsam sequi mollitia amet iste commodi velit ad ab totam veritatis accusantium.",
   },
   {
     title: "Burger King",
     tasks: 11,
     overdue: 2,
     date: "Jul 2 - Jul 16",
+    status: "Active",
+    manager: "Michael Scott",
+    startDate: "Jul 13, 2023",
+    targetDate: "Oct 20, 2023",
+    members: "John Doe",
+    description:
+      "Lsssssssssssorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsam sequi mollitia amet iste commodi velit ad ab totam veritatis accusantium.",
   },
   {
     title: "Luminous Group",
     tasks: 9,
     overdue: 1,
     date: "Jul 2 - Jul 16",
+    status: "Active",
+    manager: "Michael Scott",
+    startDate: "Jul 13, 2023",
+    targetDate: "Oct 20, 2023",
+    members: "John Doe",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsam sequi mollitia amet iste commodi velit ad ab totam veritatis accusantium.",
   },
   {
     title: "Missguided",
     tasks: 9,
     overdue: 1,
     date: "Jul 2 - Jul 16",
+    status: "Active",
+    manager: "Michael Scott",
+    startDate: "Jul 13, 2023",
+    targetDate: "Oct 20, 2023",
+    members: "John Doe",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsam sequi mollitia amet iste commodi velit ad ab totam veritatis accusantium.",
   },
   {
     title: "Paramount pictures",
     tasks: 9,
     overdue: 1,
     date: "Jul 2 - Jul 16",
+    status: "Active",
+    manager: "Michael Scott",
+    startDate: "Jul 13, 2023",
+    targetDate: "Oct 20, 2023",
+    members: "John Doe",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsam sequi mollitia amet iste commodi velit ad ab totam veritatis accusantium.",
   },
 ];
 export const chartData = () => {

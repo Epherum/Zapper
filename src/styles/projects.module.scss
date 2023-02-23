@@ -9,7 +9,7 @@
         font-weight: 500;
         padding: min(.5rem, .4vw) min(1rem, .8vw);
         border-radius: 10px;
-        transition: all .3s ease-in-out;
+        transition: background-color .3s ease-in-out;
 
         &:hover {
             background-color: #F0F0F0;
@@ -41,13 +41,20 @@
             font-size: min(2rem, 1.6vw);
             margin-bottom: min(1.8rem, 1.5vw);
             font-weight: 500;
-
         }
 
         .projectsList {
             display: flex;
             flex-direction: column;
             gap: min(1.2rem, 1vw);
+
+
+            .active {
+                background-color: #000000;
+                color: #dddddd;
+                border-radius: 10px;
+                transition: background-color .3s ease-in-out, color .3s ease-in-out;
+            }
 
             .project {
                 display: flex;
@@ -57,10 +64,6 @@
                 padding-right: min(2.5rem, 2.2vw);
                 cursor: pointer;
                 transition: background-color .3s ease-out;
-
-                &:hover {
-                    background-color: $light-purple;
-                }
 
                 .projectRightSide {
                     display: flex;
@@ -98,23 +101,22 @@
     }
 
     .addProject {
-        display: inline-block;
         display: flex;
         align-items: center;
         justify-content: center;
-        width: min(35%, 25vw);
-        grid-column: 1;
-        align-self: end;
+        width: min(18rem, 15vw);
+        // grid-column: 1/2;
         gap: min(2rem, 1.6vw);
-        margin-top: min(5rem, 4vw);
+        margin-top: min(13rem, 10vw);
         padding: min(1.5rem, 1.2vw) min(1rem, .8vw);
+        font-size: min(1.2rem, 1vw);
         border-radius: 13px;
         color: $purple;
         border: 3px dashed $border-purple;
         transition: background-color .3s ease-in-out;
+        cursor: pointer;
 
         &:hover {
-            cursor: pointer;
             background-color: $light-purple;
         }
 
@@ -131,153 +133,156 @@
         margin-bottom: min(5rem, 4vw);
     }
 
-    .projectDetails {
-        grid-column: 3;
-        grid-row: 1;
-        margin-top: min(5rem, 4vw);
+}
 
-        .projectDetailsHeadline {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: min(2.8rem, 2.3vw);
+.projectDetails {
+    grid-column: 3;
+    grid-row: 1/2;
+    margin-top: min(5rem, 4vw);
 
-            h2 {
-                font-size: min(2rem, 1.6vw);
-                font-weight: 500;
 
-            }
+    .projectDetailsHeadline {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: min(2.8rem, 2.3vw);
 
-            svg {
-                font-size: min(1.5rem, 1.3vw);
-            }
+        h2 {
+            font-size: min(2rem, 1.6vw);
+            font-weight: 500;
+
         }
 
-        .projectDetailsDescription {
-            font-size: min(1.2rem, 1vw);
-            color: $dark-gray;
-            line-height: min(1.7rem, 1.4vw);
-            font-weight: 300;
-            margin-bottom: min(2.9rem, 2.4vw);
+        svg {
+            font-size: min(1.5rem, 1.3vw);
+        }
+    }
+
+    .projectDetailsDescription {
+        font-size: min(1.2rem, 1vw);
+        color: $dark-gray;
+        line-height: min(1.7rem, 1.4vw);
+        font-weight: 300;
+        margin-bottom: min(2.9rem, 2.4vw);
+    }
+
+    .projectDetailsInfo {
+        display: flex;
+        flex-direction: column;
+        gap: min(2rem, 1.6vw);
+        margin-bottom: min(5rem, 4vw);
+
+        .projectDetailsInfoItem {
+            display: grid;
+            grid-template-columns: 2fr 4fr;
+            gap: min(1.5rem, 1.2vw);
+
+            p:first-child {
+                font-size: min(1rem, .8vw);
+                color: $light-gray;
+            }
+
+            p:last-child {
+                font-size: min(1.2rem, 1vw);
+            }
+        }
+    }
+
+    .projectDetailsTasks {
+        h3 {
+            font-size: min(1.5rem, 1.3vw);
+            font-weight: 500;
+            margin-bottom: min(1.2rem, 1vw);
         }
 
-        .projectDetailsInfo {
+        .projectDetailsTasksList {
             display: flex;
             flex-direction: column;
-            gap: min(2rem, 1.6vw);
-            margin-bottom: min(5rem, 4vw);
+            gap: min(.5rem, .4vw);
 
-            .projectDetailsInfoItem {
-                display: grid;
-                grid-template-columns: 2fr 4fr;
-                gap: min(1.5rem, 1.2vw);
-
-                p:first-child {
-                    font-size: min(1rem, .8vw);
-                    color: $light-gray;
-                }
-
-                p:last-child {
-                    font-size: min(1.2rem, 1vw);
-                }
-            }
-        }
-
-        .projectDetailsTasks {
-            h3 {
-                font-size: min(1.5rem, 1.3vw);
-                font-weight: 500;
-                margin-bottom: min(1.2rem, 1vw);
-            }
-
-            .projectDetailsTasksList {
+            .projectDetailsTasksListItem {
                 display: flex;
-                flex-direction: column;
-                gap: min(.5rem, .4vw);
+                align-items: flex-end;
+                justify-content: space-between;
+                padding: min(.5rem, .4vw) min(1rem, .8vw);
+                border-radius: 10px;
+                cursor: pointer;
+                transition: background-color .3s ease-out;
 
-                .projectDetailsTasksListItem {
+                &:hover {
+                    background-color: $light-purple;
+                }
+
+                .projectDetailsTasksListItemLeft {
                     display: flex;
-                    align-items: flex-end;
-                    justify-content: space-between;
-                    padding: min(.5rem, .4vw) min(1rem, .8vw);
-                    border-radius: 10px;
-                    cursor: pointer;
-                    transition: background-color .3s ease-out;
+                    flex-direction: column;
+                    font-size: min(1.1rem, .9vw);
 
-                    &:hover {
-                        background-color: $light-purple;
+                    p:first-child {
+                        font-size: min(.9rem, .8vw);
+                        color: $light-gray;
+                        margin-bottom: min(.6rem, .5vw);
                     }
 
-                    .projectDetailsTasksListItemLeft {
-                        display: flex;
-                        flex-direction: column;
-                        font-size: min(1.1rem, .9vw);
-
-                        p:first-child {
-                            font-size: min(.9rem, .8vw);
-                            color: $light-gray;
-                            margin-bottom: min(.6rem, .5vw);
-                        }
-
-                        p:last-child {
-                            font-size: min(1.3rem, 1.1vw);
-                        }
-
+                    p:last-child {
+                        font-size: min(1.3rem, 1.1vw);
                     }
 
-                    .projectDetailsTasksListItemRight {
-                        display: flex;
-                        align-items: center;
-                        gap: min(1.2rem, 1vw);
+                }
 
-                        p {
-                            display: inline-block;
-                            background-color: $red;
-                            font-size: min(.9rem, .8vw);
-                            font-weight: 500;
-                            padding: min(.4rem, .3vw) min(.5rem, .4vw);
-                            border-radius: 4px;
-                        }
+                .projectDetailsTasksListItemRight {
+                    display: flex;
+                    align-items: center;
+                    gap: min(1.2rem, 1vw);
 
-                        svg {
-                            font-size: min(1.5rem, 1.3vw);
-                            rotate: -90deg;
-                        }
+                    p {
+                        display: inline-block;
+                        background-color: $red;
+                        font-size: min(.9rem, .8vw);
+                        font-weight: 500;
+                        padding: min(.4rem, .3vw) min(.5rem, .4vw);
+                        border-radius: 4px;
+                    }
+
+                    svg {
+                        font-size: min(1.5rem, 1.3vw);
+                        rotate: -90deg;
                     }
                 }
             }
         }
+    }
 
-        .projectDetailsProgress {
-            margin-top: min(2.5rem, 2.1vw);
+    .projectDetailsProgress {
+        margin-top: min(2.5rem, 2.1vw);
+        margin-bottom: min(5rem, 4vw);
 
-            .projectDetailsProgressHeadline {
-                font-size: min(1.5rem, 1.3vw);
-                font-weight: 500;
-                margin-bottom: min(2.4rem, 2vw);
+        .projectDetailsProgressHeadline {
+            font-size: min(1.5rem, 1.3vw);
+            font-weight: 500;
+            margin-bottom: min(2.4rem, 2vw);
+        }
+
+        .projectDetailsProgressLine {
+            display: flex;
+            align-items: center;
+            gap: min(2rem, 1.6vw);
+            padding-left: min(1.5rem, 1.3vw);
+
+            //line 
+            div {
+                width: 85%;
+                height: min(.5rem, .4vw);
+                border-radius: 10px;
+                background-color: black;
             }
 
-            .projectDetailsProgressLine {
-                display: flex;
-                align-items: center;
-                gap: min(2rem, 1.6vw);
-                padding-left: min(1.5rem, 1.3vw);
-
-                //line 
-                div {
-                    width: 85%;
-                    height: min(.5rem, .4vw);
-                    border-radius: 10px;
-                    background-color: black;
-                }
-
-                p {
-                    font-size: min(1rem, .8vw);
-                }
-
-
+            p {
+                font-size: min(1rem, .8vw);
             }
+
 
         }
+
     }
 }
