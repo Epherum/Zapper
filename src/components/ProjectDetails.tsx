@@ -7,10 +7,10 @@ import Link from "@/components/Link";
 function ProjectDetails({ selectedProject }: { selectedProject: string }) {
   return (
     <>
-      <div className={styles.projectDetailsHeadline}>
+      <Link href="/ProjectTasks" className={styles.projectDetailsHeadline}>
         <h2>{selectedProject}</h2>
         <CgArrowsExpandRight />
-      </div>
+      </Link>
       <p className={styles.projectDetailsDescription}>
         {
           projectsData.filter((project) => project.title === selectedProject)[0]

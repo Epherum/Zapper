@@ -4,32 +4,39 @@ import List from "@/components/ProjectTasksList";
 import Board from "@/components/ProjectTasksBoard";
 import Headline from "@/components/Headline";
 import { motion, AnimatePresence } from "framer-motion";
+import { filters, filterItem, divider } from "@/animations/projectTasks";
 
 function ProjectTasks() {
   const [filter, setFilter] = useState("list");
   const [listVisible, setListVisible] = useState(true);
   const [boardVisible, setBoardVisible] = useState(false);
+
   return (
     <section>
-      <div className="circleBlue" />
-      <div className="circleGreen" />
       <Headline
         title="Missguided"
         location={["home", "projects", "Missguided"]}
       />
 
-      <div className={styles.filters}>
-        <button
+      <motion.div
+        variants={filters}
+        initial="hidden"
+        animate="visible"
+        className={styles.filters}
+      >
+        <motion.button
+          variants={filterItem}
           className={filter === "board" ? styles.active : ""}
           onClick={() => {
             setFilter("board");
-            setBoardVisible(true);
             setListVisible(false);
+            setBoardVisible(true);
           }}
         >
           board
-        </button>
-        <button
+        </motion.button>
+        <motion.button
+          variants={filterItem}
           className={filter === "list" ? styles.active : ""}
           onClick={() => {
             setFilter("list");
@@ -38,9 +45,16 @@ function ProjectTasks() {
           }}
         >
           list
-        </button>
-      </div>
-      <div className={styles.lineDivider} />
+        </motion.button>
+      </motion.div>
+
+      <motion.div
+        variants={divider}
+        initial="hidden"
+        animate="visible"
+        className={styles.lineDivider}
+      />
+
       <AnimatePresence mode="wait">
         {boardVisible && (
           <motion.div

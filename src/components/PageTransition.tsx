@@ -7,7 +7,7 @@ export default function PageTransition({ children }: any) {
   const [variantOne, VariantOne] = useState(true);
 
   /* Animation settings */
-  const ANIMATION_DURATION = 0.3;
+  const ANIMATION_DURATION = 3;
   const controls = useAnimationControls();
   const variants1 = {
     visible: {
@@ -18,7 +18,7 @@ export default function PageTransition({ children }: any) {
     exit: {
       opacity: 0,
       x: 20,
-      transition: { duration: 0.3, ease: "easeOut" },
+      transition: { duration: 0.2, ease: "easeOut" },
     },
   };
   const variants2 = {

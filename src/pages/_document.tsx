@@ -26,7 +26,11 @@ class MyDocument extends Document<Props> {
   render() {
     return (
       <Html lang="en">
-        <Head></Head>
+        <Head>
+          <title>Zapper</title>
+          <meta name="description" content="A simple project management app" />
+          <meta charSet="utf-8" />
+        </Head>
         <body>
           <Main />
           <NextScript />

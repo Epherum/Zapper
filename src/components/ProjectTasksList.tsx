@@ -2,95 +2,95 @@ import styles from "@/styles/projectTasks.module.scss";
 import { CgArrowsExpandRight } from "react-icons/cg";
 import Tasks from "@/components/ProjectTasksTasks";
 import { tasksData } from "@/data/mockData";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import Link from "@/components/Link";
-
+import TaskDetails from "@/components/TaskDetails";
+import { AnimatePresence, motion } from "framer-motion";
+import {
+  filters,
+  filterItem,
+  tasksHeadline,
+  tasks,
+  taskItem,
+  divider,
+} from "@/animations/projectTasks";
 function ProjectTasksList() {
+  const [selectedTask, setselectedTask] = useState("");
+  const [switchP, setSwitchP] = useState(false);
+
   return (
     <div className={styles.grid}>
-      <div className={styles.tasks}>
-        <h2 className={`${styles.tasksHeadline} ${styles.first}`}>To do</h2>
-        <div className={styles.tasksList}>
-          {tasksData.slice(0, 3).map((task, index) => (
-            <Tasks
-              key={index}
-              id={task.id}
-              title={task.title}
-              priority={task.priority}
-              date={task.date}
-            />
-          ))}
+      {["To do", "In progress", "Backlog", "Done"].map((title, index) => (
+        <div className={styles.tasks} key={index}>
+          <motion.h2
+            variants={tasksHeadline}
+            initial="hidden"
+            animate="visible"
+            className={`${styles.tasksHeadline} ${index === 0 && styles.first}`}
+          >
+            {title}
+          </motion.h2>
+          <motion.div
+            variants={tasks}
+            initial="hidden"
+            animate="visible"
+            className={styles.tasksList}
+          >
+            {tasksData
+              .filter((task) => task.status === title)
+              .map((task, index) => (
+                <motion.div
+                  variants={taskItem}
+                  key={task.id}
+                  className={selectedTask === task.title ? styles.active : ""}
+                  onClick={() => {
+                    //TODO fix the bug where if you click on
+                    //TODO the same project twice, it animates for no reason
+                    setselectedTask(task.title);
+                    setSwitchP((prev) => !prev);
+                  }}
+                >
+                  <Tasks
+                    key={index}
+                    id={task.id}
+                    title={task.title}
+                    priority={task.priority}
+                    date={task.date}
+                  />
+                </motion.div>
+              ))}
+          </motion.div>
         </div>
-        <h2 className={styles.tasksHeadline}>In progress</h2>
-        <div className={styles.tasksList}>
-          {tasksData.map((task) => (
-            <Tasks
-              key={task.id}
-              id={task.id}
-              title={task.title}
-              priority={task.priority}
-              date={task.date}
-            />
-          ))}
-        </div>
-        <h2 className={styles.tasksHeadline}>Backlog</h2>
-        <div className={styles.tasksList}>
-          {tasksData.map((task) => (
-            <Tasks
-              key={task.id}
-              id={task.id}
-              title={task.title}
-              priority={task.priority}
-              date={task.date}
-            />
-          ))}
-        </div>
-      </div>
+      ))}
 
       <div className={styles.gridLineDivider} />
 
-      <div className={styles.taskDetails}>
-        <Link href="/TaskDetails">
-          <div className={styles.taskDetailsHeadline}>
-            <div>
-              <h2>Task details</h2>
-              <p>ID LG-2</p>
-            </div>
-            <CgArrowsExpandRight />
-          </div>
-        </Link>
-
-        <div className={styles.taskDetailsInfo}>
-          <div className={styles.taskDetailsInfoItem}>
-            <p>name</p>
-            <p>Landing Page</p>
-          </div>
-          <div className={styles.taskDetailsInfoItem}>
-            <p>Status</p>
-            <p>In progress</p>
-          </div>
-          <div className={styles.taskDetailsInfoItem}>
-            <p>Priority</p>
-            <p className={styles.priority}>medium</p>
-          </div>
-          <div className={styles.taskDetailsInfoItem}>
-            <p>Assignee</p>
-            <p>Yulia B</p>
-          </div>
-          <div className={styles.taskDetailsInfoItem}>
-            <p>Start date</p>
-            <p>Jul 13, 2023</p>
-          </div>
-          <div className={styles.taskDetailsInfoItem}>
-            <p>Tagret date</p>
-            <p>Oct 20, 2023</p>
-          </div>
-          <div className={styles.taskDetailsInfoItem}>
-            <p>Project</p>
-            <p>Luminous Group</p>
-          </div>
-        </div>
-      </div>
+      <AnimatePresence mode="wait">
+        {selectedTask && switchP && (
+          <motion.div
+            key="1"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+            exit={{ opacity: 0, y: 20 }}
+            className={styles.taskDetails}
+          >
+            <TaskDetails selectedTask={selectedTask} />
+          </motion.div>
+        )}
+        {selectedTask && !switchP && (
+          <motion.div
+            key="2"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+            exit={{ opacity: 0, y: 20 }}
+            className={styles.taskDetails}
+          >
+            <TaskDetails selectedTask={selectedTask} />
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

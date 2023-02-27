@@ -1,0 +1,27 @@
+.circleBlue {
+    position: absolute;
+    top: -28vw;
+    right: 20vw;
+    transform: translate(-50%, -50%);
+    width: 40vw;
+    height: 40vw;
+    max-width: 50rem;
+    max-height: 50rem;
+    background-color: $light-blue;
+    border-radius: 50%;
+    z-index: -1;
+}
+
+.circleGreen {
+    position: fixed;
+    bottom: -23vw;
+    left: -12vw;
+    transform: translate(-50%, 50%);
+    width: 35vw;
+    height: 35vw;
+    max-width: 50rem;
+    max-height: 50rem;
+    background-color: #E7F5EC;
+    border-radius: 50%;
+    z-index: -1;
+}

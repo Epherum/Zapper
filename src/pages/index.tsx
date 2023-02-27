@@ -33,17 +33,37 @@ import {
 } from "@/animations/index";
 
 function HomePage() {
-  const [dateState, setDateState] = useState(new Date());
+  const [formattedDate, setFormattedDate] = useState("");
+
+  const formatDate = () => {
+    const currentDate = new Date();
+    const month = currentDate.toLocaleString("default", { month: "long" });
+    const day = currentDate.getDate();
+    const year = currentDate.getFullYear();
+    const hours = currentDate.getHours();
+    const minutes = currentDate.getMinutes();
+    const ampm = hours >= 12 ? "PM" : "AM";
+
+    const formattedHours = hours % 12 || 12;
+    const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+
+    const newFormattedDate = `${month} ${day} ${year} ${formattedHours}:${formattedMinutes} ${ampm}`;
+
+    setFormattedDate(newFormattedDate);
+  };
+
   useEffect(() => {
-    setInterval(() => setDateState(new Date()), 30000);
+    formatDate();
+
+    const intervalId = setInterval(() => {
+      formatDate();
+    }, 30000);
+
+    return () => clearInterval(intervalId);
   }, []);
 
   return (
-    <motion.section
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
-    >
+    <motion.section>
       <div className={styles.headline}>
         <div className={styles.title}>
           <motion.h1 variants={title} initial="hidden" animate="visible">
@@ -61,19 +81,7 @@ function HomePage() {
         >
           <div className={styles.timeAndIcon}>
             <MdOutlineDateRange />
-            {/* <p className={styles.time}>
-              {dateState.toLocaleDateString("en-GB", {
-                month: "short",
-                day: "numeric",
-                year: "numeric",
-              })}
-              &nbsp;
-              {dateState.toLocaleString("en-US", {
-                hour: "numeric",
-                minute: "numeric",
-                hour12: true,
-              })}
-            </p> */}
+            <p className={styles.time}>{formattedDate}</p>
           </div>
           <button className={styles.button}>
             <AiOutlinePlus />

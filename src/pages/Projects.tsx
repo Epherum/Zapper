@@ -12,30 +12,15 @@ import {
   projectsHeadline,
   projects,
   projectItem,
-  circleBlue,
-  circleGreen,
   divider,
 } from "@/animations/projects";
 
 function Projects() {
   const [filter, setFilter] = useState("active");
   const [selectedProject, setSelectedProject] = useState("");
-  const [prevSelectedProject, setPrevSelectedProject] = useState("");
   const [switchP, setSwitchP] = useState(false);
   return (
     <section>
-      <motion.div
-        // variants={circleBlue}
-        // initial="hidden"
-        // animate="visible"
-        className="circleBlue"
-      />
-      <motion.div
-        // variants={circleGreen}
-        // initial="hidden"
-        // animate="visible"
-        className="circleGreen"
-      />
       <Headline title="Projects" location={["home", "Projects"]} />
 
       <motion.div
@@ -95,7 +80,6 @@ function Projects() {
                 onClick={() => {
                   //TODO fix the bug where if you click on
                   //TODO the same project twice, it animates for no reason
-                  setPrevSelectedProject(selectedProject);
                   setSelectedProject(project.title);
                   setSwitchP((prev) => !prev);
                 }}
@@ -121,6 +105,7 @@ function Projects() {
           animate="visible"
           className={styles.gridLineDivider}
         />
+
         <AnimatePresence mode="wait">
           {selectedProject && switchP && (
             <motion.div
