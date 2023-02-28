@@ -8,7 +8,7 @@ import Link from "@/components/Link";
 function TaskDetails({ selectedTask }: { selectedTask: string }) {
   return (
     <div className={styles.taskDetails}>
-      <Link href="/TaskDetails">
+      <Link href="/TaskDetails/">
         <div className={styles.taskDetailsHeadline}>
           <div>
             <h2>{selectedTask}</h2>

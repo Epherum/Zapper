@@ -43,8 +43,7 @@ function BarChart({ chartData }: any) {
               context.mode === "default" &&
               !delayed
             ) {
-              delay =
-                context.dataIndex * 80 + context.datasetIndex * -100 + 400;
+              delay = context.dataIndex * 80 + context.datasetIndex * 100 + 600;
             }
             return delay;
           },

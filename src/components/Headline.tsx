@@ -4,10 +4,11 @@ import { MdOutlineDateRange } from "react-icons/md";
 import { AiOutlinePlus } from "react-icons/ai";
 import { motion } from "framer-motion";
 import { crumbs, headline, buttons } from "@/animations/headline";
-
+import { useRouter } from "next/router";
 function Headline({ title, location }: { title: string; location: string[] }) {
   const [formattedDate, setFormattedDate] = useState("");
-
+  const [titleText, setText] = useState(title);
+  const router = useRouter();
   const formatDate = () => {
     const currentDate = new Date();
     const month = currentDate.toLocaleString("default", { month: "long" });
@@ -44,7 +45,6 @@ function Headline({ title, location }: { title: string; location: string[] }) {
           animate="visible"
           className={styles.crumbs}
         >
-          {/* home &gt; <span>Missguided tasks</span> */}
           {location.map((item, index) => {
             if (index === location.length - 1) {
               return (
@@ -57,14 +57,27 @@ function Headline({ title, location }: { title: string; location: string[] }) {
             }
           })}
         </motion.p>
-        <motion.h1
-          variants={headline}
-          initial="hidden"
-          animate="visible"
-          className={styles.title}
-        >
-          {title}
-        </motion.h1>
+        {router.pathname === "/TaskDetails" && (
+          <motion.h1
+            contentEditable={true}
+            variants={headline}
+            initial="hidden"
+            animate="visible"
+            className={styles.title}
+          >
+            {titleText}
+          </motion.h1>
+        )}
+        {router.pathname !== "/TaskDetails" && (
+          <motion.h1
+            variants={headline}
+            initial="hidden"
+            animate="visible"
+            className={styles.title}
+          >
+            {titleText}
+          </motion.h1>
+        )}
       </motion.div>
 
       <motion.div

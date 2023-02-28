@@ -63,7 +63,7 @@ function HomePage() {
   }, []);
 
   return (
-    <motion.section>
+    <section>
       <div className={styles.headline}>
         <div className={styles.title}>
           <motion.h1 variants={title} initial="hidden" animate="visible">
@@ -164,6 +164,7 @@ function HomePage() {
             <p>Statistics</p>
             <p>tasks created vs tasks completed vs tasks overdue</p>
           </motion.div>
+
           <motion.div
             variants={chart}
             initial="hidden"
@@ -222,7 +223,7 @@ function HomePage() {
           </motion.div>
         </div>
       </div>
-    </motion.section>
+    </section>
   );
 }
 

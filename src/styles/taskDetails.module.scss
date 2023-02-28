@@ -75,7 +75,7 @@
             font-size: min(2rem, 1.6vw);
             font-weight: 500;
             padding: min(.8rem, .6vw) 0;
-            margin-bottom: min(1.7rem, 1.5vw);
+            margin-bottom: min(1.5rem, 1.3vw);
         }
 
         .taskDescription {
@@ -83,8 +83,16 @@
             color: $dark-gray;
             line-height: 1.4;
             width: 85%;
-            margin-bottom: min(2rem, 1.6vw);
-            // color: #5D5D5D
+            margin-bottom: min(1.8rem, 1.4vw);
+            outline: 2px solid transparent;
+            transition: outline-color .3s ease-in-out;
+            margin-left: min(.2rem, .1vw);
+            padding: min(.5rem, .4vw) 0;
+
+            &:focus {
+                outline-color: $border-purple;
+
+            }
         }
 
         .subtasks {
@@ -114,18 +122,18 @@
                         align-items: center;
 
                         p:first-child {
-                            font-size: min(1.2rem, 1vw);
+                            font-size: min(1rem, .8vw);
                             color: $dark-gray;
                         }
 
                         p:last-child {
-                            font-size: min(1.3rem, 1.1vw);
+                            font-size: min(1.2rem, 1vw);
                             margin-left: min(1rem, .8vw);
                         }
                     }
 
                     .subtaskRightSide {
-                        font-size: min(1.2rem, 1vw);
+                        font-size: min(1rem, .8vw);
                         color: $dark-gray;
                     }
                 }

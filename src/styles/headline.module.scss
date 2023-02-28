@@ -2,20 +2,34 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: min(2.3rem, 1.8vw);
+    margin-bottom: min(2.2rem, 1.7vw);
 
     .crumbsAndTitle {
+        width: 60%;
+
+
         .title {
             font-size: min(2.6rem, 2.2vw);
             font-weight: 600;
+            word-wrap: break-word;
+            border-radius: 5px;
+            padding: min(.5rem, .4vw) 0;
+            margin-left: min(.2rem, .1vw);
+            outline: 2px solid transparent;
+            transition: outline-color .3s ease-in-out;
+
+            &:focus {
+                outline-color: $border-purple;
+            }
 
             span {
                 font-weight: 500;
             }
+
         }
 
         .crumbs {
-            margin-bottom: min(1.6rem, 1.3vw);
+            margin-bottom: min(.8rem, .6vw);
             font-size: min(1.22rem, 1vw);
             color: $dark-gray;
 

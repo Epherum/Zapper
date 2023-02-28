@@ -89,6 +89,7 @@ function TaskDetails() {
             initial="hidden"
             animate="visible"
             className={styles.taskDescription}
+            contentEditable="true"
           >
             what the fuck did you just fucking say about me, you little bitch?
             I&apos;ll have you know I graduated top of my class in the Navy
