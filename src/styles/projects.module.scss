@@ -100,6 +100,17 @@
                         gap: min(3rem, 2.4vw);
                         font-size: min(1rem, .8vw);
 
+                        .members {
+                            display: flex;
+                            margin-right: min(2rem, 1.8vw);
+
+                            .member {
+                                width: min(2rem, 1.7vw);
+                                height: min(2rem, 1.7vw);
+                                margin-right: min(-.5rem, -.4vw);
+                            }
+                        }
+
                     }
 
                     .projectLeftSide {
@@ -221,6 +232,17 @@
 
                 p:last-child {
                     font-size: min(1.2rem, 1vw);
+                }
+            }
+
+            .members {
+                display: flex;
+                margin-right: min(2rem, 1.8vw);
+
+                .member {
+                    width: min(2rem, 1.7vw);
+                    height: min(2rem, 1.7vw);
+                    margin-right: min(-.5rem, -.4vw);
                 }
             }
         }

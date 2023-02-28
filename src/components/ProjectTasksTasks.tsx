@@ -1,5 +1,6 @@
 import styles from "@/styles/projectTasks.module.scss";
 import { MdExpandMore } from "react-icons/md";
+import Image from "next/image";
 
 interface ProjectTasksTasksProps {
   id: string;
@@ -17,11 +18,27 @@ function ProjectTasksTasks({
   return (
     <div className={styles.taskItem}>
       <div className={styles.taskLeftSide}>
-        <p>ID {id}</p>
+        <p>{id}</p>
         <p>{title}</p>
       </div>
       <div className={styles.taskRightSide}>
-        <p>Design</p>
+        <div className={styles.members}>
+          {[
+            "/profile1.png",
+            "/profile2.png",
+            "/profile.png",
+            "/profile.png",
+          ].map((item, index) => (
+            <Image
+              key={index}
+              src={item}
+              width={35}
+              height={35}
+              alt="Picture of the author"
+              className={styles.member}
+            />
+          ))}
+        </div>
         <p
           style={
             priority === "high"

@@ -246,11 +246,22 @@
           .rowInfo {
             display: flex;
             align-items: center;
-            gap: min(8rem, 6.5vw);
+            gap: min(2rem, 1.6vw);
 
             .taskDate {
               font-size: min(1rem, .8vw);
               letter-spacing: .4px;
+            }
+
+            .members {
+              display: flex;
+              margin-right: min(1.2rem, 1vw);
+
+              .member {
+                width: min(2rem, 1.7vw);
+                height: min(2rem, 1.7vw);
+                margin-right: min(-.5rem, -.4vw);
+              }
             }
           }
         }
@@ -399,6 +410,20 @@
       .rightProjectSide {
         display: flex;
         align-items: center;
+        gap: 4rem;
+        color: $light-gray;
+        font-size: min(1.1rem, .9vw);
+
+        .member {
+          margin-right: -.5rem;
+          width: min(2.1rem, 1.85vw);
+          height: min(2.1rem, 1.85vw);
+        }
+      }
+
+      .leftProjectSide {
+        display: flex;
+        align-items: center;
         gap: min(2rem, 1.6vw);
 
         .projectLetters {
@@ -421,13 +446,7 @@
         }
       }
 
-      .leftProjectSide {
-        display: flex;
-        align-items: center;
-        gap: min(3rem, 2.4vw);
-        color: $light-gray;
-        font-size: min(1.1rem, .9vw);
-      }
+
     }
   }
 }

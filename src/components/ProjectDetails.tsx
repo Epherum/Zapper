@@ -3,6 +3,7 @@ import { CgArrowsExpandRight } from "react-icons/cg";
 import Task from "@/components/ProjectsTask";
 import { projectsData, tasksData } from "@/data/mockData";
 import Link from "@/components/Link";
+import Image from "next/image";
 
 function ProjectDetails({ selectedProject }: { selectedProject: string }) {
   return (
@@ -36,7 +37,23 @@ function ProjectDetails({ selectedProject }: { selectedProject: string }) {
         </div>
         <div className={styles.projectDetailsInfoItem}>
           <p>Members</p>
-          <p>John Doe</p>
+          <div className={styles.members}>
+            {[
+              "/profile1.png",
+              "/profile2.png",
+              "/profile.png",
+              "/profile.png",
+            ].map((item, index) => (
+              <Image
+                key={index}
+                src={item}
+                width={35}
+                height={35}
+                alt="Picture of the author"
+                className={styles.member}
+              />
+            ))}
+          </div>
         </div>
       </div>
       <div className={styles.projectDetailsTasks}>

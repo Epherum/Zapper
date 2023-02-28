@@ -7,6 +7,7 @@ import { ImAttachment } from "react-icons/im";
 import Headline from "@/components/Headline";
 import { VscAccount } from "react-icons/vsc";
 import { MdExpandLess } from "react-icons/md";
+import Image from "next/image";
 import {
   filters,
   filterItem,
@@ -89,7 +90,6 @@ function TaskDetails() {
             initial="hidden"
             animate="visible"
             className={styles.taskDescription}
-            contentEditable="true"
           >
             what the fuck did you just fucking say about me, you little bitch?
             I&apos;ll have you know I graduated top of my class in the Navy
@@ -155,42 +155,37 @@ function TaskDetails() {
             animate="visible"
             className={styles.activityList}
           >
-            <motion.div variants={activityItem} className={styles.activityItem}>
-              <div className={styles.activityItemHeadline}>
-                <div className={styles.activityItemHeadlineLeftSide}>
-                  <p>Yulia B</p>
-                  <p>added comment</p>
+            {["1", "2"].map((item, index) => (
+              <motion.div
+                key={index}
+                variants={activityItem}
+                className={styles.activityItem}
+              >
+                <div className={styles.activityItemHeadline}>
+                  <div className={styles.activityItemHeadlineLeftSide}>
+                    <Image
+                      src={"/profile2.png"}
+                      width={35}
+                      height={35}
+                      alt="Picture of the author"
+                      className={styles.member}
+                    />
+                    <p>Mark B</p>
+                    <p>added comment</p>
+                  </div>
+                  <p className={styles.activityItemHeadlineRightSide}>
+                    1 hour ago
+                  </p>
                 </div>
-                <p className={styles.activityItemHeadlineRightSide}>
-                  1 hour ago
-                </p>
-              </div>
-              <div className={styles.activityItemDescription}>
-                <p>
-                  what the fuck did you just fucking say about me, you little
-                  bitch? Ill have you know I graduated top of my class in the
-                  Navy Seals, and Ive been
-                </p>
-              </div>
-            </motion.div>
-            <div className={styles.activityItem}>
-              <div className={styles.activityItemHeadline}>
-                <div className={styles.activityItemHeadlineLeftSide}>
-                  <p>Yulia B</p>
-                  <p>added comment</p>
+                <div className={styles.activityItemDescription}>
+                  <p>
+                    what the fuck did you just fucking say about me, you little
+                    bitch? Ill have you know I graduated top of my class in the
+                    Navy Seals, and Ive been
+                  </p>
                 </div>
-                <p className={styles.activityItemHeadlineRightSide}>
-                  1 hour ago
-                </p>
-              </div>
-              <div className={styles.activityItemDescription}>
-                <p>
-                  what the fuck did you just fucking say about me, you little
-                  bitch? Ill have you know I graduated top of my class in the
-                  Navy Seals, and Ive been
-                </p>
-              </div>
-            </div>
+              </motion.div>
+            ))}
           </motion.div>
 
           <motion.div
@@ -269,7 +264,16 @@ function TaskDetails() {
               className={styles.taskDetailsInfoItem}
             >
               <p>Assignee</p>
-              <p>Yulia B</p>
+              <div className={styles.assignee}>
+                <Image
+                  src={"/profile1.png"}
+                  width={35}
+                  height={35}
+                  alt="Picture of the author"
+                  className={styles.member}
+                />
+                <p>Yulia B</p>
+              </div>
             </motion.div>
             <motion.div
               variants={taskDetailsItem}

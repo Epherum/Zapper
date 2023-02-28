@@ -1,9 +1,7 @@
 import styles from "@/styles/projectTasks.module.scss";
 import { CgArrowsExpandRight } from "react-icons/cg";
-import Tasks from "@/components/ProjectTasksTasks";
-import { tasksData } from "@/data/mockData";
-import { useState, useEffect } from "react";
 import Link from "@/components/Link";
+import Image from "next/image";
 
 function TaskDetails({ selectedTask }: { selectedTask: string }) {
   return (
@@ -29,7 +27,16 @@ function TaskDetails({ selectedTask }: { selectedTask: string }) {
         </div>
         <div className={styles.taskDetailsInfoItem}>
           <p>Assignee</p>
-          <p>Yulia B</p>
+          <div className={styles.assignee}>
+            <Image
+              src={"/profile1.png"}
+              width={35}
+              height={35}
+              alt="Picture of the author"
+              className={styles.member}
+            />
+            <p>Yulia B</p>
+          </div>
         </div>
         <div className={styles.taskDetailsInfoItem}>
           <p>Start date</p>

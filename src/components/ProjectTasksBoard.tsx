@@ -13,6 +13,7 @@ import { TbCircleDotted } from "react-icons/tb";
 import { AiOutlineCheckCircle } from "react-icons/ai";
 import Link from "@/components/Link";
 import { tasksData } from "@/data/mockData";
+import Image from "next/image";
 
 const boardColumns = {
   [uuid()]: {
@@ -161,7 +162,21 @@ function App() {
                                           </p>
                                           <p>{item.date}</p>
                                         </div>
-                                        <p>{item.members}</p>
+                                        <div className={styles.members}>
+                                          {[
+                                            "/profile1.png",
+                                            "/profile2.png",
+                                          ].map((item, index) => (
+                                            <Image
+                                              key={index}
+                                              src={item}
+                                              width={35}
+                                              height={35}
+                                              alt="Picture of the author"
+                                              className={styles.member}
+                                            />
+                                          ))}
+                                        </div>
                                       </div>
                                     </div>
                                   );

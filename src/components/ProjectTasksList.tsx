@@ -52,7 +52,7 @@ function ProjectTasksList() {
                 >
                   <Tasks
                     key={index}
-                    id={task.id}
+                    id={task.idd}
                     title={task.title}
                     priority={task.priority}
                     date={task.date}

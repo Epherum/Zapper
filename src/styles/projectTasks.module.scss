@@ -119,6 +119,17 @@
                         color: $dark-gray;
                         rotate: -90deg;
                     }
+
+                    .members {
+                        display: flex;
+                        margin-right: min(2rem, 1.8vw);
+
+                        .member {
+                            width: min(2rem, 1.7vw);
+                            height: min(2rem, 1.7vw);
+                            margin-right: min(-.5rem, -.4vw);
+                        }
+                    }
                 }
 
             }
@@ -213,6 +224,18 @@
                     font-weight: 500;
                     padding: min(.4rem, .3vw) min(.5rem, .4vw);
                     border-radius: 4px;
+                }
+
+                .assignee {
+                    display: flex;
+                    align-items: center;
+                    gap: .5rem;
+                    gap: min(.5rem, .4vw);
+
+                    .member {
+                        width: min(2rem, 1.7vw);
+                        height: min(2rem, 1.7vw);
+                    }
                 }
             }
         }
@@ -311,6 +334,17 @@
                     p:last-child {
                         font-size: .8rem;
                         font-size: min(.75rem, .65vw);
+                    }
+
+                    .members {
+                        display: flex;
+                        margin-right: min(.8rem, .4vw);
+
+                        .member {
+                            width: min(2rem, 1.7vw);
+                            height: min(2rem, 1.7vw);
+                            margin-right: min(-.5rem, -.4vw);
+                        }
                     }
                 }
             }

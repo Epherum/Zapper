@@ -60,27 +60,14 @@ function Headline({ title, location }: { title: string; location: string[] }) {
             }
           })}
         </motion.p>
-        {router.pathname === "/TaskDetails" && (
-          <motion.h1
-            contentEditable={true}
-            variants={headline}
-            initial="hidden"
-            animate="visible"
-            className={styles.title}
-          >
-            {titleText}
-          </motion.h1>
-        )}
-        {router.pathname !== "/TaskDetails" && (
-          <motion.h1
-            variants={headline}
-            initial="hidden"
-            animate="visible"
-            className={styles.title}
-          >
-            {titleText}
-          </motion.h1>
-        )}
+        <motion.h1
+          variants={headline}
+          initial="hidden"
+          animate="visible"
+          className={styles.title}
+        >
+          {titleText}
+        </motion.h1>
       </motion.div>
 
       <motion.div

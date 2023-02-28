@@ -185,10 +185,14 @@
                         display: flex;
                         align-items: center;
                         gap: min(1rem, .8vw);
-                        margin-left: min(3.3rem, 2.7vw);
 
                         p:first-child {
                             font-size: min(1rem, .8vw);
+                        }
+
+                        .member {
+                            width: min(2rem, 1.7vw);
+                            height: min(2rem, 1.7vw);
                         }
                     }
 
@@ -319,8 +323,6 @@
             }
         }
 
-
-
         .taskDetailsInfo {
             display: flex;
             flex-direction: column;
@@ -330,8 +332,6 @@
                 display: grid;
                 grid-template-columns: 2fr 4fr;
                 gap: min(1.5rem, 1.2vw);
-
-
 
                 p:first-child {
                     font-size: min(1rem, .8vw);
@@ -352,6 +352,12 @@
                     font-weight: 500;
                     padding: min(.4rem, .3vw) min(.5rem, .4vw);
                     border-radius: 4px;
+                }
+
+                .assignee {
+                    display: flex;
+                    align-items: center;
+                    gap: min(.5rem, .4vw);
                 }
 
             }

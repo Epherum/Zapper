@@ -4,6 +4,7 @@ import { CgArrowsExpandRight } from "react-icons/cg";
 import { MdExpandLess } from "react-icons/md";
 import { MdExpandMore } from "react-icons/md";
 import Link from "@/components/Link";
+import Image from "next/image";
 
 interface TaskProps {
   title: string;
@@ -77,7 +78,7 @@ export default function Task({
           </div>
           <div className={styles.taskRow}>
             <div className={styles.rowInfo}>
-              <div
+              <p
                 className={styles.taskPriority}
                 style={
                   priority === "high"
@@ -87,11 +88,21 @@ export default function Task({
                     : { backgroundColor: "#DFFFDE" }
                 }
               >
-                <p>{priority}</p>
+                {priority}
+              </p>
+              <div className={styles.members}>
+                {["/profile1.png", "/profile2.png"].map((item, index) => (
+                  <Image
+                    key={index}
+                    src={item}
+                    width={35}
+                    height={35}
+                    alt="Picture of the author"
+                    className={styles.member}
+                  />
+                ))}
               </div>
-              <div className={styles.taskDate}>
-                <p>{date}</p>
-              </div>
+              <p className={styles.taskDate}>{date}</p>
             </div>
             <button onClick={handleExpandClick}>
               <MdExpandLess />

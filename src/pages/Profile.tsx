@@ -110,7 +110,7 @@ function Profile() {
             {tasksData.slice(0, 6).map((task, index) => (
               <motion.div key={index} variants={projectItem}>
                 <Tasks
-                  id={task.id}
+                  id={task.idd}
                   title={task.title}
                   priority={task.priority}
                   date={task.date}
