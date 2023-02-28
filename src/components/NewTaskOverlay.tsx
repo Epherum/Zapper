@@ -1,11 +1,26 @@
 import styles from "@/styles/newTaskOverlay.module.scss";
 import { GrClose } from "react-icons/gr";
 import { MdExpandMore } from "react-icons/md";
+import { useModalDimContext } from "@/contexts/ModalDimContext";
 
 function NewTaskOverlay() {
+  const { isModalDimmed, setIsModalDimmed } = useModalDimContext();
+
   return (
-    <div className={styles.overlay}>
-      <div className={styles.top}>
+    <div
+      className={styles.overlay}
+      style={{
+        zIndex: isModalDimmed ? "11" : "-1",
+        opacity: isModalDimmed ? "1" : "0",
+      }}
+    >
+      <div
+        className={styles.top}
+        style={{
+          zIndex: isModalDimmed ? "11" : "-1",
+          opacity: isModalDimmed ? "1" : "0",
+        }}
+      >
         <div>
           <button className={styles.project}>TES</button>
           <MdExpandMore />

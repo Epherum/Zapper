@@ -3,16 +3,20 @@ import type { AppProps } from "next/app";
 import { Inter } from "@next/font/google";
 import Menu from "@/components/Menu";
 import Search from "@/components/Search";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { useRouter } from "next/router";
 import PageTransition from "@/components/PageTransition";
 import styles from "@/styles/circles.module.scss";
 import { circleBlue, circleGreen } from "@/animations/projects";
+import { ModalDimProvider } from "@/contexts/ModalDimContext";
+import ModalDim from "@/components/ModalDim";
+import NewTaskOverlay from "@/components/NewTaskOverlay";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
+
   return (
     <main
       className={inter.className}
@@ -42,7 +46,11 @@ export default function App({ Component, pageProps }: AppProps) {
               />
             </>
           )}
-          <Component {...pageProps} />
+          <ModalDimProvider>
+            <ModalDim />
+            <NewTaskOverlay />
+            <Component {...pageProps} />
+          </ModalDimProvider>
         </motion.div>
       </PageTransition>
     </main>

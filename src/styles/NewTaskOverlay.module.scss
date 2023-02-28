@@ -6,19 +6,17 @@
     background-color: #F2F3F5;
     width: 59rem;
     width: min(59rem, 50vw);
-    z-index: 5;
     padding: min(1.5rem, 1.2vw) min(1.3rem, 1vw);
-    //add blur
     border-radius: 10px;
-    box-shadow: 0 0 100px 0 rgba(0, 0, 0, 0.4);
-
-
+    box-shadow: 0 0 50px 0 rgba(0, 0, 0, 0.3);
+    transition: opacity .3s ease-out;
 
     .top {
         display: flex;
         justify-content: space-between;
         align-items: center;
         margin-bottom: min(1rem, .8vw);
+        transition: all 1s ease-out;
 
         div {
             display: flex;

@@ -7,7 +7,6 @@ import { CgArrowsExpandRight } from "react-icons/cg";
 import Task from "@/components/DashboardTask";
 import Project from "@/components/DashboardProject";
 import LineChart from "@/components/LineChart";
-import NewTaskOverlay from "@/components/NewTaskOverlay";
 import {
   overviewData,
   tasksData,
@@ -31,10 +30,15 @@ import {
   tasksHeadline,
   projectsHeadline,
 } from "@/animations/index";
+import { useModalDimContext } from "@/contexts/ModalDimContext";
 
 function HomePage() {
+  const { isModalDimmed, setIsModalDimmed } = useModalDimContext();
   const [formattedDate, setFormattedDate] = useState("");
 
+  function handleToggle() {
+    setIsModalDimmed(!isModalDimmed);
+  }
   const formatDate = () => {
     const currentDate = new Date();
     const month = currentDate.toLocaleString("default", { month: "long" });
@@ -83,7 +87,7 @@ function HomePage() {
             <MdOutlineDateRange />
             <p className={styles.time}>{formattedDate}</p>
           </div>
-          <button className={styles.button}>
+          <button className={styles.button} onClick={handleToggle}>
             <AiOutlinePlus />
             <p>New Task</p>
           </button>

@@ -5,7 +5,10 @@ import { AiOutlinePlus } from "react-icons/ai";
 import { motion } from "framer-motion";
 import { crumbs, headline, buttons } from "@/animations/headline";
 import { useRouter } from "next/router";
+import { useModalDimContext } from "@/contexts/ModalDimContext";
+
 function Headline({ title, location }: { title: string; location: string[] }) {
+  const { isModalDimmed, setIsModalDimmed } = useModalDimContext();
   const [formattedDate, setFormattedDate] = useState("");
   const [titleText, setText] = useState(title);
   const router = useRouter();
@@ -90,7 +93,12 @@ function Headline({ title, location }: { title: string; location: string[] }) {
           <MdOutlineDateRange />
           <p className={styles.time}>{formattedDate}</p>
         </div>
-        <button className={styles.button}>
+        <button
+          className={styles.button}
+          onClick={() => {
+            setIsModalDimmed(!isModalDimmed);
+          }}
+        >
           <AiOutlinePlus />
           <p>New Task</p>
         </button>
