@@ -1,47 +1,28 @@
-// import { useEffect, useState } from "react";
-// import styles from "@/styles/circles.module.scss";
-
-// export default function HomePage() {
-//   const [dim, setDim] = useState(false);
-
-//   function handleToggle() {
-//     setDim((prev) => !prev);
-//   }
-
-//   useEffect(() => {
-//     if (dim) {
-//       document.body.classList.add(styles.noScroll);
-//     } else {
-//       document.body.classList.remove(styles.noScroll);
-//     }
-//   }, [dim]);
-
-//   return (
-//     <section>
-//       <button onClick={handleToggle}>toggle</button>
-//       <Dim dim={dim} setDim={setDim} />
-//     </section>
-//   );
-// }
-
-// function Dim({
-//   dim,
-//   setDim,
-// }: {
-//   dim: boolean;
-//   setDim: React.Dispatch<React.SetStateAction<boolean>>;
-// }) {
-//   return (
-//     <>
-//       <div
-//         className={`${styles.dim} ${dim ? styles.dimActive : ""}`}
-//         onClick={() => {
-//           setDim(false);
-//         }}
-//       />
-//     </>
-//   );
-// }
+import { db } from "../../firebase-config";
+import { doc, getDoc } from "firebase/firestore";
+import { useState, useEffect } from "react";
 export default function Test() {
-  return <></>;
+  const [data, setData] = useState<any>(null);
+
+  const getData = async () => {
+    const projectRef = doc(db, "companies", "ZZCz2Wl7Vt6E7SFftrmh");
+    const docSnap = await getDoc(projectRef);
+    if (docSnap.exists()) {
+      setData(docSnap.data());
+    } else {
+      console.log("No such document!");
+    }
+    console.log(data);
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  return (
+    <>
+      <h1>Test</h1>
+      <p>{data?.name}</p>
+    </>
+  );
 }
