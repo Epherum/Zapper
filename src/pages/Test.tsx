@@ -12,7 +12,6 @@ export default function Test() {
     } else {
       console.log("No such document!");
     }
-    console.log(data);
   };
 
   useEffect(() => {
