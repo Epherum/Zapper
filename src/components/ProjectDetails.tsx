@@ -4,6 +4,7 @@ import Task from "@/components/ProjectsTask";
 import { projectsData, tasksData } from "@/data/mockData";
 import Link from "@/components/Link";
 import Image from "next/image";
+import { useRouter } from "next/router";
 
 function ProjectDetails({
   title,
@@ -20,9 +21,13 @@ function ProjectDetails({
   startDate: string;
   targetDate: string;
 }) {
+  const router = useRouter();
   return (
     <>
-      <Link href="/ProjectTasks" className={styles.projectDetailsHeadline}>
+      <Link
+        href={`/projects/${title}`}
+        className={styles.projectDetailsHeadline}
+      >
         <h2>{title}</h2>
         <CgArrowsExpandRight />
       </Link>
@@ -69,7 +74,7 @@ function ProjectDetails({
         <h3>Recent tasks</h3>
         <div className={styles.projectDetailsTasksList}>
           {tasksData.slice(0, 3).map((task: any, index: number) => (
-            <Link href="/ProjectTasks" key={index}>
+            <Link href="/projects/[id]" key={index}>
               <Task id={task.idd} title={task.title} priority={task.priority} />
             </Link>
           ))}

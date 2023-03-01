@@ -5,17 +5,34 @@ import Board from "@/components/ProjectTasksBoard";
 import Headline from "@/components/Headline";
 import { motion, AnimatePresence } from "framer-motion";
 import { filters, filterItem, divider } from "@/animations/projectTasks";
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  getDoc,
+  doc,
+} from "firebase/firestore";
+import { db } from "../../../../firebase-config";
+import { useRouter } from "next/router";
 
-function ProjectTasks() {
+function ProjectTasks({ issues }: { issues: [] }) {
   const [filter, setFilter] = useState("list");
   const [listVisible, setListVisible] = useState(true);
   const [boardVisible, setBoardVisible] = useState(false);
-
+  const router = useRouter();
+  const title =
+    //@ts-ignore
+    router.query["ProjectID"].charAt(0).toUpperCase() +
+    //@ts-ignore
+    router.query["ProjectID"].slice(1);
+  console.log(issues);
   return (
     <section>
       <Headline
-        title="Missguided"
-        location={["home", "projects", "Missguided"]}
+        title={title}
+        //@ts-ignore
+        location={["home", "projects", router.query["ProjectID"]]}
       />
 
       <motion.div
@@ -85,3 +102,28 @@ function ProjectTasks() {
 }
 
 export default ProjectTasks;
+
+export async function getServerSideProps(context: any) {
+  const { ProjectID } = context.params;
+  const issuesQuery = query(
+    collection(
+      db,
+      "companies",
+      "DunderMifflin",
+      "projects",
+      ProjectID,
+      "issues"
+    )
+  );
+  const issuesSnapshot = await getDocs(issuesQuery);
+  const issues = [];
+
+  for (const issueDoc of issuesSnapshot.docs) {
+    const issue = issueDoc.data();
+    issues.push(issue);
+  }
+
+  return {
+    props: { issues },
+  };
+}

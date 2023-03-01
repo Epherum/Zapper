@@ -6,7 +6,7 @@ import Image from "next/image";
 function TaskDetails({ selectedTask }: { selectedTask: string }) {
   return (
     <div className={styles.taskDetails}>
-      <Link href="/TaskDetails/">
+      <Link href="/projects/missguided/LG-12">
         <div className={styles.taskDetailsHeadline}>
           <div>
             <h2>{selectedTask}</h2>

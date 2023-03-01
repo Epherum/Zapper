@@ -60,7 +60,7 @@ export default function Task({
           </div>
         </div>
         {expanded ? (
-          <Link href="/TaskDetails">
+          <Link href="/projects/missguided/LG-12">
             <CgArrowsExpandRight />
           </Link>
         ) : (

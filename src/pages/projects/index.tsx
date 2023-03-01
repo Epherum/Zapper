@@ -14,7 +14,7 @@ import {
   getDoc,
   doc,
 } from "firebase/firestore";
-import { db } from "../../firebase-config";
+import { db } from "../../../firebase-config";
 import {
   filters,
   filterItem,
@@ -28,8 +28,6 @@ function Projects({ projectsData }: { projectsData: any }) {
   const [filter, setFilter] = useState("active");
   const [selectedProject, setSelectedProject] = useState();
   const [switchP, setSwitchP] = useState(false);
-
-  console.log(projects);
 
   return (
     <section>
@@ -130,7 +128,7 @@ function Projects({ projectsData }: { projectsData: any }) {
                 // @ts-ignore
                 title={selectedProject.name}
                 // @ts-ignore
-                startDate={selectedProject.createdAt}
+                startDate={selectedProject.startDate}
                 // @ts-ignore
                 targetDate={selectedProject.targetDate}
                 // @ts-ignore
@@ -155,7 +153,7 @@ function Projects({ projectsData }: { projectsData: any }) {
                 // @ts-ignore
                 title={selectedProject.name}
                 // @ts-ignore
-                startDate={selectedProject.createdAt}
+                startDate={selectedProject.startDate}
                 // @ts-ignore
                 targetDate={selectedProject.targetDate}
                 // @ts-ignore
@@ -176,7 +174,7 @@ export default Projects;
 
 export async function getServerSideProps(context: any) {
   const projectsQuery = query(
-    collection(db, "companies", "ZZCz2Wl7Vt6E7SFftrmh", "projects")
+    collection(db, "companies", "DunderMifflin", "projects")
   );
   const projectsSnapshot = await getDocs(projectsQuery);
   const projectsData = [];
@@ -188,7 +186,7 @@ export async function getServerSideProps(context: any) {
       collection(
         db,
         "companies",
-        "ZZCz2Wl7Vt6E7SFftrmh",
+        "DunderMifflin",
         "projects",
         projectDoc.id,
         "issues"

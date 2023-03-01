@@ -26,12 +26,12 @@ export default function Menu() {
         </motion.li>
 
         <motion.li variants={menuItem} className={styles.icon}>
-          <Link href="/ProjectTasks">
+          <Link href="/projects/missguided">
             <BiTask />
           </Link>
         </motion.li>
         <motion.li variants={menuItem} className={styles.icon}>
-          <Link href="/Projects">
+          <Link href="/projects">
             <BsListTask />
           </Link>
         </motion.li>

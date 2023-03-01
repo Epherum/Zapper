@@ -139,7 +139,7 @@ function App() {
                                       }}
                                     >
                                       <div className={styles.itemTopHalf}>
-                                        <Link href="/TaskDetails">
+                                        <Link href="/projects/missguided/LG-12">
                                           {item.title}
                                         </Link>
                                         <p>{item.idd}</p>

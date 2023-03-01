@@ -18,7 +18,7 @@ export default function DashboardProject({
 }: DashboardProjectProps) {
   const router = useRouter();
   return (
-    <Link href="/Projects">
+    <Link href="/projects">
       <div className={styles.projectsItem}>
         <div className={styles.leftProjectSide}>
           {router.pathname === "/" ? (
