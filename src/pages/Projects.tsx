@@ -1,11 +1,20 @@
 import styles from "@/styles/projects.module.scss";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Project from "@/components/ProjectsProject";
 import ProjectDetails from "@/components/ProjectDetails";
-import { projectsData } from "@/data/mockData";
+import { projectsData as d } from "@/data/mockData";
 import Headline from "@/components/Headline";
 import { AiOutlinePlus } from "react-icons/ai";
 import { motion, AnimatePresence } from "framer-motion";
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  getDoc,
+  doc,
+} from "firebase/firestore";
+import { db } from "../../firebase-config";
 import {
   filters,
   filterItem,
@@ -15,14 +24,16 @@ import {
   divider,
 } from "@/animations/projects";
 
-function Projects() {
+function Projects({ projectsData }: { projectsData: any }) {
   const [filter, setFilter] = useState("active");
-  const [selectedProject, setSelectedProject] = useState("");
+  const [selectedProject, setSelectedProject] = useState();
   const [switchP, setSwitchP] = useState(false);
+
+  console.log(projects);
+
   return (
     <section>
       <Headline title="Projects" location={["home", "Projects"]} />
-
       <motion.div
         variants={filters}
         initial="hidden"
@@ -42,6 +53,7 @@ function Projects() {
           </motion.button>
         ))}
       </motion.div>
+
       <motion.div
         variants={divider}
         initial="hidden"
@@ -65,47 +77,45 @@ function Projects() {
             animate="visible"
             className={styles.projectsList}
           >
-            {projectsData.map((project, index) => (
+            {projectsData?.map((project: any) => (
               <motion.div
+                key={project.name}
                 variants={projectItem}
                 whileHover={{
                   scale: 1.02,
                   transition: { duration: 0.2, ease: "easeOut" },
                 }}
                 whileTap={{ scale: 0.98 }}
-                key={index}
-                className={
-                  selectedProject === project.title ? styles.active : ""
-                }
+                className={selectedProject === project ? styles.active : ""}
                 onClick={() => {
                   //TODO fix the bug where if you click on
                   //TODO the same project twice, it animates for no reason
-                  setSelectedProject(project.title);
+                  setSelectedProject(project);
                   setSwitchP((prev) => !prev);
                 }}
               >
                 <Project
-                  title={project.title}
-                  tasks={project.tasks}
-                  overdue={project.overdue}
-                  dateRange={project.date}
+                  title={project.name}
+                  tasks={project.issues.length}
+                  overdue={3}
+                  createdAt={project.createdAt}
+                  targetDate={project.targetDate}
                 />
               </motion.div>
             ))}
+
             <div className={styles.addProject}>
               <p>Create new project</p>
               <AiOutlinePlus />
             </div>
           </motion.div>
         </div>
-
         <motion.div
           variants={divider}
           initial="hidden"
           animate="visible"
           className={styles.gridLineDivider}
         />
-
         <AnimatePresence mode="wait">
           {selectedProject && switchP && (
             <motion.div
@@ -116,7 +126,20 @@ function Projects() {
               exit={{ opacity: 0, y: 20 }}
               className={styles.projectDetails}
             >
-              <ProjectDetails selectedProject={selectedProject} />
+              <ProjectDetails
+                // @ts-ignore
+                title={selectedProject.name}
+                // @ts-ignore
+                startDate={selectedProject.createdAt}
+                // @ts-ignore
+                targetDate={selectedProject.targetDate}
+                // @ts-ignore
+                description={selectedProject.description}
+                // @ts-ignore
+                manager={selectedProject.manager}
+                // @ts-ignore
+                archived={selectedProject.archived}
+              />
             </motion.div>
           )}
           {selectedProject && !switchP && (
@@ -128,7 +151,20 @@ function Projects() {
               exit={{ opacity: 0, y: 20 }}
               className={styles.projectDetails}
             >
-              <ProjectDetails selectedProject={selectedProject} />
+              <ProjectDetails
+                // @ts-ignore
+                title={selectedProject.name}
+                // @ts-ignore
+                startDate={selectedProject.createdAt}
+                // @ts-ignore
+                targetDate={selectedProject.targetDate}
+                // @ts-ignore
+                description={selectedProject.description}
+                // @ts-ignore
+                manager={selectedProject.manager}
+                // @ts-ignore
+                archived={selectedProject.archived}
+              />
             </motion.div>
           )}
         </AnimatePresence>
@@ -137,3 +173,40 @@ function Projects() {
   );
 }
 export default Projects;
+
+export async function getServerSideProps(context: any) {
+  const projectsQuery = query(
+    collection(db, "companies", "ZZCz2Wl7Vt6E7SFftrmh", "projects")
+  );
+  const projectsSnapshot = await getDocs(projectsQuery);
+  const projectsData = [];
+
+  for (const projectDoc of projectsSnapshot.docs) {
+    const project = projectDoc.data();
+
+    const issuesQuery = query(
+      collection(
+        db,
+        "companies",
+        "ZZCz2Wl7Vt6E7SFftrmh",
+        "projects",
+        projectDoc.id,
+        "issues"
+      )
+    );
+    const issuesSnapshot = await getDocs(issuesQuery);
+    const issues = [];
+
+    for (const issueDoc of issuesSnapshot.docs) {
+      const issue = issueDoc.data();
+      issues.push(issue);
+    }
+
+    project.issues = issues;
+    projectsData.push(project);
+  }
+
+  return {
+    props: { projectsData },
+  };
+}

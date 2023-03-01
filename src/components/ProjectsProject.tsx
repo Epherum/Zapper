@@ -1,19 +1,19 @@
 import styles from "@/styles/projects.module.scss";
 import Image from "next/image";
 
-interface ProjectsProjectProps {
-  title: string;
-  tasks: number;
-  overdue: number;
-  dateRange: string;
-}
-
 function ProjectsProject({
   title,
   tasks,
   overdue,
-  dateRange,
-}: ProjectsProjectProps) {
+  createdAt,
+  targetDate,
+}: {
+  title: string;
+  tasks: number;
+  overdue: number;
+  createdAt: string;
+  targetDate: string;
+}) {
   return (
     <div className={styles.project}>
       <div className={styles.projectLeftSide}>
@@ -42,7 +42,9 @@ function ProjectsProject({
             />
           ))}
         </div>
-        <p>{dateRange}</p>
+        <p>
+          {createdAt} - {targetDate}
+        </p>
       </div>
     </div>
   );

@@ -5,35 +5,44 @@ import { projectsData, tasksData } from "@/data/mockData";
 import Link from "@/components/Link";
 import Image from "next/image";
 
-function ProjectDetails({ selectedProject }: { selectedProject: string }) {
+function ProjectDetails({
+  title,
+  description,
+  archived,
+  manager,
+  startDate,
+  targetDate,
+}: {
+  title: string;
+  description: string;
+  archived: boolean;
+  manager: string;
+  startDate: string;
+  targetDate: string;
+}) {
   return (
     <>
       <Link href="/ProjectTasks" className={styles.projectDetailsHeadline}>
-        <h2>{selectedProject}</h2>
+        <h2>{title}</h2>
         <CgArrowsExpandRight />
       </Link>
-      <p className={styles.projectDetailsDescription}>
-        {
-          projectsData.filter((project) => project.title === selectedProject)[0]
-            .description
-        }
-      </p>
+      <p className={styles.projectDetailsDescription}>{description}</p>
       <div className={styles.projectDetailsInfo}>
         <div className={styles.projectDetailsInfoItem}>
           <p>Status</p>
-          <p>Active</p>
+          <p>{archived === true ? "archived" : "active"}</p>
         </div>
         <div className={styles.projectDetailsInfoItem}>
           <p>Project manager</p>
-          <p>Michael Scott</p>
+          <p>{manager}</p>
         </div>
         <div className={styles.projectDetailsInfoItem}>
           <p>Start date</p>
-          <p>Jul 13, 2023</p>
+          <p>{startDate}</p>
         </div>
         <div className={styles.projectDetailsInfoItem}>
           <p>Target date</p>
-          <p>Oct 20, 2023</p>
+          <p>{targetDate}</p>
         </div>
         <div className={styles.projectDetailsInfoItem}>
           <p>Members</p>
