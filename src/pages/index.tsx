@@ -32,7 +32,7 @@ import {
 } from "@/animations/index";
 import { useModalDimContext } from "@/contexts/ModalDimContext";
 
-function HomePage() {
+export default function HomePage() {
   const { isModalDimmed, setIsModalDimmed } = useModalDimContext();
   const [formattedDate, setFormattedDate] = useState("");
 
@@ -230,5 +230,3 @@ function HomePage() {
     </section>
   );
 }
-
-export default HomePage;

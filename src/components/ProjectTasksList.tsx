@@ -1,20 +1,11 @@
 import styles from "@/styles/projectTasks.module.scss";
-import { CgArrowsExpandRight } from "react-icons/cg";
 import Tasks from "@/components/ProjectTasksTasks";
 import { tasksData } from "@/data/mockData";
-import { useState, useEffect } from "react";
-import Link from "@/components/Link";
+import { useState } from "react";
 import TaskDetails from "@/components/TaskDetails";
 import { AnimatePresence, motion } from "framer-motion";
-import {
-  filters,
-  filterItem,
-  tasksHeadline,
-  tasks,
-  taskItem,
-  divider,
-} from "@/animations/projectTasks";
-function ProjectTasksList() {
+import { tasksHeadline, tasks, taskItem } from "@/animations/projectTasks";
+function ProjectTasksList({ issues }: { issues: [] }) {
   const [selectedTask, setselectedTask] = useState("");
   const [switchP, setSwitchP] = useState(false);
 

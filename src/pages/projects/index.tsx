@@ -2,18 +2,10 @@ import styles from "@/styles/projects.module.scss";
 import { useState, useEffect } from "react";
 import Project from "@/components/ProjectsProject";
 import ProjectDetails from "@/components/ProjectDetails";
-import { projectsData as d } from "@/data/mockData";
 import Headline from "@/components/Headline";
 import { AiOutlinePlus } from "react-icons/ai";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  collection,
-  query,
-  where,
-  getDocs,
-  getDoc,
-  doc,
-} from "firebase/firestore";
+import { collection, query, getDocs } from "firebase/firestore";
 import { db } from "../../../firebase-config";
 import {
   filters,
@@ -24,7 +16,7 @@ import {
   divider,
 } from "@/animations/projects";
 
-function Projects({ projectsData }: { projectsData: any }) {
+export default function Projects({ projectsData }: { projectsData: any }) {
   const [filter, setFilter] = useState("active");
   const [selectedProject, setSelectedProject] = useState();
   const [switchP, setSwitchP] = useState(false);
@@ -170,7 +162,6 @@ function Projects({ projectsData }: { projectsData: any }) {
     </section>
   );
 }
-export default Projects;
 
 export async function getServerSideProps(context: any) {
   const projectsQuery = query(
@@ -203,6 +194,11 @@ export async function getServerSideProps(context: any) {
     project.issues = issues;
     projectsData.push(project);
   }
+
+  context.res.setHeader(
+    "Cache-Control",
+    "public, s-maxage=600, stale-while-revalidate=59"
+  );
 
   return {
     props: { projectsData },

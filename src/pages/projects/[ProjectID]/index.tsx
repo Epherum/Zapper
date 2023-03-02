@@ -15,8 +15,9 @@ import {
 } from "firebase/firestore";
 import { db } from "../../../../firebase-config";
 import { useRouter } from "next/router";
+import { GetServerSideProps } from "next";
 
-function ProjectTasks({ issues }: { issues: [] }) {
+export default function ProjectTasks({ issues }: { issues: [] }) {
   const [filter, setFilter] = useState("list");
   const [listVisible, setListVisible] = useState(true);
   const [boardVisible, setBoardVisible] = useState(false);
@@ -93,15 +94,13 @@ function ProjectTasks({ issues }: { issues: [] }) {
             transition={{ duration: 0.3, ease: "easeOut" }}
             exit={{ opacity: 0, y: 20 }}
           >
-            <List />
+            <List issues={issues} />
           </motion.div>
         )}
       </AnimatePresence>
     </section>
   );
 }
-
-export default ProjectTasks;
 
 export async function getServerSideProps(context: any) {
   const { ProjectID } = context.params;
@@ -122,6 +121,11 @@ export async function getServerSideProps(context: any) {
     const issue = issueDoc.data();
     issues.push(issue);
   }
+
+  context.res.setHeader(
+    "Cache-Control",
+    "public, s-maxage=600, stale-while-revalidate=59"
+  );
 
   return {
     props: { issues },
