@@ -28,7 +28,7 @@ export default function TaskOverlay() {
       "companies",
       "DunderMifflin",
       "projects",
-      "zapper",
+      taskDetails.project,
       "tasks"
     );
     const docRef = await addDoc(tasksCollection, taskDetails);
@@ -60,7 +60,6 @@ export default function TaskOverlay() {
       ...prevState,
       [e.target.name]: e.target.value,
     }));
-    console.log(taskDetails);
   };
 
   return (
@@ -73,7 +72,15 @@ export default function TaskOverlay() {
     >
       <div className={styles.top}>
         <div>
-          <button className={styles.project}>TES</button>
+          <select
+            className={styles.project}
+            name="project"
+            id="project"
+            onChange={handleChange}
+          >
+            <option value="zapper">zapper</option>
+            <option value="missguided">missguided</option>
+          </select>
           <MdExpandMore />
           <p className={styles.newTask}>New Task</p>
         </div>

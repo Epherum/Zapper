@@ -32,25 +32,25 @@ export default function Projects() {
     for (const projectDoc of projectsSnapshot.docs) {
       const project = projectDoc.data();
 
-      const issuesQuery = query(
+      const tasksQuery = query(
         collection(
           db,
           "companies",
           "DunderMifflin",
           "projects",
           projectDoc.id,
-          "issues"
+          "tasks"
         )
       );
-      const issuesSnapshot = await getDocs(issuesQuery);
-      const issues = [];
+      const tasksSnapshot = await getDocs(tasksQuery);
+      const tasks = [];
 
-      for (const issueDoc of issuesSnapshot.docs) {
+      for (const issueDoc of tasksSnapshot.docs) {
         const issue = issueDoc.data();
-        issues.push(issue);
+        tasks.push(issue);
       }
 
-      project.issues = issues;
+      project.tasks = tasks;
       projectsData.push(project);
     }
     return projectsData;
@@ -124,7 +124,7 @@ export default function Projects() {
                 >
                   <Project
                     title={project.name}
-                    tasks={project.issues.length}
+                    tasks={project.tasks.length}
                     overdue={3}
                     createdAt={project.createdAt}
                     targetDate={project.targetDate}
