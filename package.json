@@ -13,6 +13,7 @@
   "dependencies": {
     "@next/font": "^13.1.6",
     "@tanstack/react-query": "^4.24.10",
+    "@tanstack/react-query-devtools": "^4.24.14",
     "@types/chart.js": "^2.9.37",
     "@types/node": "18.11.18",
     "@types/react": "18.0.27",

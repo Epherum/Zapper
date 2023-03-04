@@ -26,16 +26,45 @@ import {
   divider,
 } from "@/animations/taskDetails";
 import { motion } from "framer-motion";
+import { collection, query, where, getDoc, doc } from "firebase/firestore";
+import { db } from "@/firebase/firebase-config";
+import { useRouter } from "next/router";
+import { useQuery } from "@tanstack/react-query";
 
-function TaskDetails() {
-  const [filter, setFilter] = useState("list");
+export default function TaskDetails() {
+  const [filter, setFilter] = useState("medium");
+  const router = useRouter();
+  const TaskID = router.query.TaskID as string | undefined;
+  const ProjectID = router.query.ProjectID as string | undefined;
+
+  async function getIssues() {
+    const issueQuery =
+      //@ts-ignore
+      doc(
+        db,
+        "companies",
+        "DunderMifflin",
+        "projects",
+        ProjectID,
+        "tasks",
+        TaskID
+      );
+
+    const issueSnapshot = await getDoc(issueQuery);
+    const issue = issueSnapshot.data();
+    return issue;
+  }
+
+  const { isLoading, error, data } = useQuery(["issue", TaskID], getIssues);
 
   return (
     <section>
-      <Headline
-        title="Laptop screen blinks"
-        location={["home", "projects", "missguided", "ID LG-23"]}
-      />
+      {data && TaskID && ProjectID && (
+        <Headline
+          title={data.title}
+          location={["home", "projects", ProjectID, TaskID]}
+        />
+      )}
       <motion.div
         variants={filters}
         initial="hidden"
@@ -44,12 +73,7 @@ function TaskDetails() {
       >
         <motion.div variants={filterItem} className={styles.status}>
           <p>Status:</p>
-          <button
-            className={filter === "all" ? styles.active : ""}
-            onClick={() => {
-              setFilter("all");
-            }}
-          >
+          <button className={filter === "all" ? styles.active : ""}>
             in progress <MdExpandLess />
           </button>
         </motion.div>
@@ -306,5 +330,3 @@ function TaskDetails() {
     </section>
   );
 }
-
-export default TaskDetails;

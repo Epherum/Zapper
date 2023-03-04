@@ -12,74 +12,105 @@ import { BsCircleHalf } from "react-icons/bs";
 import { TbCircleDotted } from "react-icons/tb";
 import { AiOutlineCheckCircle } from "react-icons/ai";
 import Link from "@/components/Link";
-import { tasksData } from "@/data/mockData";
 import Image from "next/image";
+import { doc, setDoc, collection } from "firebase/firestore";
+import { db } from "@/firebase/firebase-config";
+import { useRouter } from "next/router";
 
-const boardColumns = {
-  [uuid()]: {
-    name: "To do",
-    items: tasksData.filter((item) => item.status === "To do"),
-  },
-  [uuid()]: {
-    name: "In progress",
-    items: tasksData.filter((item) => item.status === "In progress"),
-  },
-  [uuid()]: {
-    name: "Backlog",
-    items: tasksData.filter((item) => item.status === "Backlog"),
-  },
-  [uuid()]: {
-    name: "Done",
-    items: tasksData.filter((item) => item.status === "Done"),
-  },
-};
-
-const onDragEnd = (result: any, columns: any, setColumns: any) => {
-  if (!result.destination) return;
-  const { source, destination } = result;
-
-  if (source.droppableId !== destination.droppableId) {
-    const sourceColumn = columns[source.droppableId];
-    const destColumn = columns[destination.droppableId];
-    const sourceItems = [...sourceColumn.items];
-    const destItems = [...destColumn.items];
-    const [removed] = sourceItems.splice(source.index, 1);
-    destItems.splice(destination.index, 0, removed);
-    setColumns({
-      ...columns,
-      [source.droppableId]: {
-        ...sourceColumn,
-        items: sourceItems,
-      },
-      [destination.droppableId]: {
-        ...destColumn,
-        items: destItems,
-      },
-    });
-  } else {
-    const column = columns[source.droppableId];
-    const copiedItems = [...column.items];
-    const [removed] = copiedItems.splice(source.index, 1);
-    copiedItems.splice(destination.index, 0, removed);
-    setColumns({
-      ...columns,
-      [source.droppableId]: {
-        ...column,
-        items: copiedItems,
-      },
-    });
-  }
-};
-
-function App() {
+export default function ProjectTasksBoard({ tasksData, project }: any) {
   const [isBrowser, setIsBrowser] = useState(false);
+  const router = useRouter();
+  const { ProjectID } = router.query;
 
   useEffect(() => {
     if (typeof window !== "undefined") {
       setIsBrowser(true);
     }
   }, []);
+
+  const boardColumns = {
+    [uuid()]: {
+      name: "To do",
+      items: tasksData.filter((item: any) => item.status === "To do"),
+    },
+    [uuid()]: {
+      name: "In progress",
+      items: tasksData.filter((item: any) => item.status === "In progress"),
+    },
+    [uuid()]: {
+      name: "Backlog",
+      items: tasksData.filter((item: any) => item.status === "Backlog"),
+    },
+    [uuid()]: {
+      name: "Done",
+      items: tasksData.filter((item: any) => item.status === "Done"),
+    },
+  };
   const [columns, setColumns] = useState(boardColumns);
+  const onDragEnd = (result: any, columns: any, setColumns: any) => {
+    if (!result.destination) return;
+    const { source, destination } = result;
+    // if the source and destination are not the same, we move the item to a new list
+    if (source.droppableId !== destination.droppableId) {
+      // we get the source column
+      const sourceColumn = columns[source.droppableId];
+      // we get the destination column
+      const destColumn = columns[destination.droppableId];
+      // we get the items from the source column
+      const sourceItems = [...sourceColumn.items];
+      // we get the items from the destination column
+      const destItems = [...destColumn.items];
+      // we remove the item from the source column
+      const [removed] = sourceItems.splice(source.index, 1);
+      // we insert the item to the destination column
+      destItems.splice(destination.index, 0, removed);
+      // we update the state
+      setColumns({
+        ...columns,
+        [source.droppableId]: {
+          ...sourceColumn,
+          items: sourceItems,
+        },
+        [destination.droppableId]: {
+          ...destColumn,
+          items: destItems,
+        },
+      });
+      // we update the status of the task in the database
+      const updateTask = async () => {
+        const docRef = doc(
+          collection(
+            db,
+            "companies",
+            "DunderMifflin",
+            "projects",
+            project,
+            "tasks"
+          ),
+          removed.id
+        );
+        await setDoc(docRef, {
+          ...removed,
+          status: destColumn.name,
+        });
+      };
+      updateTask();
+    } else {
+      // if we are moving inside the same list, we just update the items array
+      const column = columns[source.droppableId];
+      const copiedItems = [...column.items];
+      const [removed] = copiedItems.splice(source.index, 1);
+      copiedItems.splice(destination.index, 0, removed);
+      setColumns({
+        ...columns,
+        [source.droppableId]: {
+          ...column,
+          items: copiedItems,
+        },
+      });
+    }
+  };
+
   return (
     <main>
       <DragDropContext
@@ -120,7 +151,7 @@ function App() {
                           ref={provided.innerRef}
                           className={styles.columnContent}
                         >
-                          {column.items.map((item, index) => {
+                          {column.items.map((item: any, index: number) => {
                             return (
                               <Draggable
                                 key={item.id}
@@ -199,5 +230,3 @@ function App() {
     </main>
   );
 }
-
-export default App;

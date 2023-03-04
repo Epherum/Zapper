@@ -13,121 +13,125 @@ import {
   getDoc,
   doc,
 } from "firebase/firestore";
-import { db } from "../../../../firebase-config";
+import { db } from "@/firebase/firebase-config";
 import { useRouter } from "next/router";
-import { GetServerSideProps } from "next";
+import { useQuery } from "@tanstack/react-query";
 
-export default function ProjectTasks({ issues }: { issues: [] }) {
+export default function ProjectTasks() {
   const [filter, setFilter] = useState("list");
   const [listVisible, setListVisible] = useState(true);
   const [boardVisible, setBoardVisible] = useState(false);
+
   const router = useRouter();
-  const title =
-    //@ts-ignore
-    router.query["ProjectID"].charAt(0).toUpperCase() +
-    //@ts-ignore
-    router.query["ProjectID"].slice(1);
-  console.log(issues);
-  return (
-    <section>
-      <Headline
-        title={title}
-        //@ts-ignore
-        location={["home", "projects", router.query["ProjectID"]]}
-      />
+  const ProjectID = router.query.ProjectID as string | undefined;
+  const headline = ProjectID
+    ? ProjectID.charAt(0).toUpperCase() + ProjectID.slice(1)
+    : "";
 
-      <motion.div
-        variants={filters}
-        initial="hidden"
-        animate="visible"
-        className={styles.filters}
-      >
-        <motion.button
-          variants={filterItem}
-          className={filter === "board" ? styles.active : ""}
-          onClick={() => {
-            setFilter("board");
-            setListVisible(false);
-            setBoardVisible(true);
-          }}
-        >
-          board
-        </motion.button>
-        <motion.button
-          variants={filterItem}
-          className={filter === "list" ? styles.active : ""}
-          onClick={() => {
-            setFilter("list");
-            setListVisible(true);
-            setBoardVisible(false);
-          }}
-        >
-          list
-        </motion.button>
-      </motion.div>
+  async function getIssues() {
+    const issuesQuery = query(
+      //@ts-ignore
+      collection(
+        db,
+        "companies",
+        "DunderMifflin",
+        "projects",
+        ProjectID,
+        "tasks"
+      )
+    );
+    const issuesSnapshot = await getDocs(issuesQuery);
+    const issues = [];
 
-      <motion.div
-        variants={divider}
-        initial="hidden"
-        animate="visible"
-        className={styles.lineDivider}
-      />
-
-      <AnimatePresence mode="wait">
-        {boardVisible && (
-          <motion.div
-            key="board"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3, ease: "easeOut" }}
-            exit={{ opacity: 0, y: 20 }}
-          >
-            <Board />
-          </motion.div>
-        )}
-
-        {listVisible && (
-          <motion.div
-            key="list"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3, ease: "easeOut" }}
-            exit={{ opacity: 0, y: 20 }}
-          >
-            <List issues={issues} />
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </section>
-  );
-}
-
-export async function getServerSideProps(context: any) {
-  const { ProjectID } = context.params;
-  const issuesQuery = query(
-    collection(
-      db,
-      "companies",
-      "DunderMifflin",
-      "projects",
-      ProjectID,
-      "issues"
-    )
-  );
-  const issuesSnapshot = await getDocs(issuesQuery);
-  const issues = [];
-
-  for (const issueDoc of issuesSnapshot.docs) {
-    const issue = issueDoc.data();
-    issues.push(issue);
+    for (const issueDoc of issuesSnapshot.docs) {
+      const issue = { id: issueDoc.id, ...issueDoc.data() };
+      issues.push(issue);
+    }
+    return issues;
   }
 
-  context.res.setHeader(
-    "Cache-Control",
-    "public, s-maxage=600, stale-while-revalidate=59"
+  const { isLoading, error, data } = useQuery(
+    ["issues", ProjectID],
+    getIssues,
+    {}
   );
 
-  return {
-    props: { issues },
-  };
+  return (
+    <section>
+      <>
+        {ProjectID && (
+          <Headline
+            title={headline}
+            //@ts-ignore
+            location={["home", "projects", ProjectID]}
+          />
+        )}
+
+        <motion.div
+          variants={filters}
+          initial="hidden"
+          animate="visible"
+          className={styles.filters}
+        >
+          <motion.button
+            variants={filterItem}
+            className={filter === "board" ? styles.active : ""}
+            onClick={() => {
+              setFilter("board");
+              setListVisible(false);
+              setBoardVisible(true);
+            }}
+          >
+            board
+          </motion.button>
+          <motion.button
+            variants={filterItem}
+            className={filter === "list" ? styles.active : ""}
+            onClick={() => {
+              setFilter("list");
+              setListVisible(true);
+              setBoardVisible(false);
+            }}
+          >
+            list
+          </motion.button>
+        </motion.div>
+
+        <motion.div
+          variants={divider}
+          initial="hidden"
+          animate="visible"
+          className={styles.lineDivider}
+        />
+
+        {data && (
+          <AnimatePresence mode="wait">
+            {boardVisible && (
+              <motion.div
+                key="board"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, ease: "easeOut" }}
+                exit={{ opacity: 0, y: 20 }}
+              >
+                <Board tasksData={data} project={ProjectID} />
+              </motion.div>
+            )}
+
+            {listVisible && (
+              <motion.div
+                key="list"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, ease: "easeOut" }}
+                exit={{ opacity: 0, y: 20 }}
+              >
+                <List tasksData={data} />
+              </motion.div>
+            )}
+          </AnimatePresence>
+        )}
+      </>
+    </section>
+  );
 }

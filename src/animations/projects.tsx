@@ -30,7 +30,7 @@ const projectsHeadline = {
     y: 0,
     opacity: 1,
     transition: {
-      delay: 0.4 + delay,
+      delay: 0.1 + delay,
       duration: 0.5,
       ease: "easeOut",
     },
@@ -44,7 +44,7 @@ const projects = {
     y: 0,
     opacity: 1,
     transition: {
-      delayChildren: 0.5 + delay,
+      delayChildren: 0.2 + delay,
       staggerChildren: 0.1,
       ease: "easeOut",
     },
