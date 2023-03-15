@@ -14,7 +14,7 @@ import { AiOutlineCheckCircle } from "react-icons/ai";
 import Link from "@/components/Link";
 import Image from "next/image";
 import { doc, setDoc, collection } from "firebase/firestore";
-import { db } from "@/firebase/firebase-config";
+import { db } from "@/firebase/firebaseConfig";
 import { useRouter } from "next/router";
 
 export default function ProjectTasksBoard({ tasksData, project }: any) {
@@ -170,7 +170,7 @@ export default function ProjectTasksBoard({ tasksData, project }: any) {
                                       }}
                                     >
                                       <div className={styles.itemTopHalf}>
-                                        <Link href="/projects/missguided/LG-12">
+                                        <Link href="/dashboard/projects/missguided/LG-12">
                                           {item.title}
                                         </Link>
                                         <p>{item.idd}</p>

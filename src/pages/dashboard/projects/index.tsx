@@ -6,7 +6,7 @@ import Headline from "@/components/Headline";
 import { AiOutlinePlus } from "react-icons/ai";
 import { motion, AnimatePresence } from "framer-motion";
 import { collection, query, getDocs } from "firebase/firestore";
-import { db } from "../../firebase/firebase-config";
+import { db } from "@/firebase/firebaseConfig";
 import {
   filters,
   filterItem,

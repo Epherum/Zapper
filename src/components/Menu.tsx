@@ -20,23 +20,23 @@ export default function Menu() {
       </motion.h1>
       <motion.ul variants={menuItems} initial="hidden" animate="visible">
         <motion.li variants={menuItem} className={styles.icon}>
-          <Link href="/">
+          <Link href="/dashboard">
             <GrHomeRounded />
           </Link>
         </motion.li>
 
         <motion.li variants={menuItem} className={styles.icon}>
-          <Link href="/projects/missguided">
+          <Link href="/dashboard/projects/missguided">
             <BiTask />
           </Link>
         </motion.li>
         <motion.li variants={menuItem} className={styles.icon}>
-          <Link href="/projects">
+          <Link href="/dashboard/projects">
             <BsListTask />
           </Link>
         </motion.li>
         <motion.li variants={menuItem} className={styles.icon}>
-          <Link href="/Profile">
+          <Link href="/dashboard/profile">
             <VscAccount />
           </Link>
         </motion.li>

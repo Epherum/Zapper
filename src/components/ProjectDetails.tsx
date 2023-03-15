@@ -25,7 +25,7 @@ function ProjectDetails({
   return (
     <>
       <Link
-        href={`/projects/${title}`}
+        href={`/dashboard/projects/${title}`}
         className={styles.projectDetailsHeadline}
       >
         <h2>{title}</h2>
@@ -74,7 +74,7 @@ function ProjectDetails({
         <h3>Recent tasks</h3>
         <div className={styles.projectDetailsTasksList}>
           {tasksData.slice(0, 3).map((task: any, index: number) => (
-            <Link href="/projects/[id]" key={index}>
+            <Link href="/dashboard/projects/[id]" key={index}>
               <Task id={task.idd} title={task.title} priority={task.priority} />
             </Link>
           ))}
