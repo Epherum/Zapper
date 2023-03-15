@@ -1,232 +1,86 @@
-import styles from "@/styles/dashboard.module.scss";
-import { useEffect, useState } from "react";
-import { MdOutlineDateRange } from "react-icons/md";
-import { AiOutlinePlus } from "react-icons/ai";
-import { MdOutlineFilterList } from "react-icons/md";
-import { CgArrowsExpandRight } from "react-icons/cg";
-import Task from "@/components/DashboardTask";
-import Project from "@/components/DashboardProject";
-import LineChart from "@/components/LineChart";
-import {
-  overviewData,
-  tasksData,
-  projectsData,
-  chartData,
-} from "@/data/mockData";
-import { motion } from "framer-motion";
-import {
-  title,
-  subtitle,
-  buttons,
-  overview,
-  overviewItem,
-  tasks,
-  taskItem,
-  projects,
-  projectItem,
-  chart,
-  chartHeadline,
-  progress,
-  tasksHeadline,
-  projectsHeadline,
-} from "@/animations/index";
-import { useModalDimContext } from "@/contexts/ModalDimContext";
-
-export default function HomePage() {
-  const { isModalDimmed, setIsModalDimmed } = useModalDimContext();
-  const [formattedDate, setFormattedDate] = useState("");
-
-  function handleToggle() {
-    setIsModalDimmed(!isModalDimmed);
-  }
-  const formatDate = () => {
-    const currentDate = new Date();
-    const month = currentDate.toLocaleString("default", { month: "long" });
-    const day = currentDate.getDate();
-    const year = currentDate.getFullYear();
-    const hours = currentDate.getHours();
-    const minutes = currentDate.getMinutes();
-    const ampm = hours >= 12 ? "PM" : "AM";
-
-    const formattedHours = hours % 12 || 12;
-    const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
-
-    const newFormattedDate = `${month} ${day} ${year} ${formattedHours}:${formattedMinutes} ${ampm}`;
-
-    setFormattedDate(newFormattedDate);
-  };
-
-  useEffect(() => {
-    formatDate();
-
-    const intervalId = setInterval(() => {
-      formatDate();
-    }, 30000);
-
-    return () => clearInterval(intervalId);
-  }, []);
-
+import Link from "@/components/Link";
+import styles from "@/styles/login.module.scss";
+import Image from "next/image";
+import michael from "../../public/michael.jpg";
+import zapper from "../../public/zapper.svg";
+import { signIn, signOut, useSession } from "next-auth/react";
+export default function Login() {
+  const { data: session, status } = useSession();
+  console.log(session);
   return (
-    <section>
-      <div className={styles.headline}>
-        <div className={styles.title}>
-          <motion.h1 variants={title} initial="hidden" animate="visible">
-            Welcome back, <span>Royal</span>
-          </motion.h1>
-          <motion.p variants={subtitle} initial="hidden" animate="visible">
-            Track, manage and forecast projects and timeline
-          </motion.p>
-        </div>
-        <motion.div
-          variants={buttons}
-          initial="hidden"
-          animate="visible"
-          className={styles.timeAndButton}
-        >
-          <div className={styles.timeAndIcon}>
-            <MdOutlineDateRange />
-            <p className={styles.time}>{formattedDate}</p>
+    <section className={styles.login}>
+      {!session && (
+        <div className={styles.leftSection}>
+          <div className={styles.zapper}>
+            <img src="zapper.svg" alt="zapper" />
+            <p>zapper</p>
           </div>
-          <button className={styles.button} onClick={handleToggle}>
-            <AiOutlinePlus />
-            <p>New Task</p>
-          </button>
-        </motion.div>
-      </div>
-      <motion.div
-        variants={overview}
-        initial="hidden"
-        animate="visible"
-        className={styles.overview}
-      >
-        {overviewData.map((item, index) => (
-          <motion.div
-            variants={overviewItem}
-            key={index}
-            className={styles.overviewItem}
-          >
-            <h2 className={styles.overviewItemTitle}>{item.title}</h2>
-            <div className={styles.overviewItemContent}>
-              <p>
-                {item.tasks} <span>tasks</span>
-              </p>
-              <p
-                style={{
-                  color: item.color,
-                  backgroundColor: item.backgroundColor,
-                  display: item.display,
-                }}
-              >
-                <MdOutlineFilterList /> 1 Filter
-              </p>
-            </div>
-          </motion.div>
-        ))}
-      </motion.div>
-      <div className={styles.grid}>
-        <div className={styles.mytasks}>
-          <motion.div
-            variants={tasksHeadline}
-            initial="hidden"
-            animate="visible"
-            className={styles.tasksHeadline}
-          >
-            <p>My tasks</p>
-            <CgArrowsExpandRight />
-          </motion.div>
-          <motion.div
-            variants={tasks}
-            initial="hidden"
-            animate="visible"
-            className={styles.tasks}
-          >
-            {tasksData.map((task, index) => (
-              <motion.div variants={taskItem} key={index}>
-                <Task
-                  title={task.title}
-                  date={task.date}
-                  description={task.description}
-                  idd={task.idd}
-                  priority={task.priority}
-                  expandedFirst={index === 0 ? true : false}
-                />
-              </motion.div>
-            ))}
-            <div className={`${styles.task} ${styles.addTask}`}>
-              <p>Add new task</p>
-              <AiOutlinePlus />
-            </div>
-          </motion.div>
-        </div>
-        <div className={styles.statistics}>
-          <motion.div
-            variants={chartHeadline}
-            initial="hidden"
-            animate="visible"
-            className={styles.statisticsHeadline}
-          >
-            <p>Statistics</p>
-            <p>tasks created vs tasks completed vs tasks overdue</p>
-          </motion.div>
-
-          <motion.div
-            variants={chart}
-            initial="hidden"
-            animate="visible"
-            className={styles.statisticsChart}
-          >
-            <LineChart chartData={chartData()} />
-          </motion.div>
-        </div>
-        <motion.div
-          variants={progress}
-          initial="hidden"
-          animate="visible"
-          className={styles.progress}
-        >
-          <div className={styles.progressDate}>
-            <p>June 30 - July 30</p>
-          </div>
-          <div className={styles.progressCircle}>
-            <p>
-              80<span>%</span>
+          <div className={styles.signup}>
+            <h1 className={styles.headline}>Create an account</h1>
+            <p className={styles.subHeadline}>
+              Let’s get started with your 30 day free trial
             </p>
-            <p>completed</p>
+            <form>
+              <div className={styles.input}>
+                <input type="text" placeholder="Name" />
+                <input type="email" placeholder="Email" />
+                <input type="password" placeholder="Password" />
+              </div>
+              <button className={styles.create}>
+                <Link href="/dashboard">Create account</Link>
+              </button>
+              {/* @ts-ignore */}
+              <button className={styles.google} onClick={signIn}>
+                Sign in with Google
+              </button>
+            </form>
+
+            <div className={styles.demo}>
+              <div className={styles.demoText}>
+                <p className={styles.lol}>_____________</p>
+                <p>Or Demo Login as</p>
+                <p className={styles.lol}>_____________</p>
+              </div>
+              <div className={styles.roles}>
+                <button>
+                  <Link href="/dashboard">Admin</Link>
+                </button>
+                <button>
+                  <Link href="/dashboard">Project Manager</Link>
+                </button>
+                <button>
+                  <Link href="/dashboard">Developer</Link>
+                </button>
+                <button>
+                  <Link href="/dashboard">Submitter</Link>
+                </button>
+              </div>
+            </div>
+            <p className={styles.already}>
+              Already have an account ? <button>Log in</button>
+            </p>
           </div>
-          <div className={styles.progressSummary}>
-            <p>You&apos;re doing good!</p>
-            <p>You almost reached your goal</p>
-          </div>
-        </motion.div>
-        <div className={styles.projects}>
-          <motion.div
-            variants={projectsHeadline}
-            initial="hidden"
-            animate="visible"
-            className={styles.projectsHeadline}
-          >
-            <p>My projects</p>
-            <CgArrowsExpandRight />
-          </motion.div>
-          <motion.div
-            variants={projects}
-            initial="hidden"
-            animate="visible"
-            className={styles.projectsList}
-          >
-            {projectsData.map((item, index) => (
-              <motion.div variants={projectItem} key={index}>
-                <Project
-                  title={item.title}
-                  tasks={item.tasks}
-                  overdue={item.overdue}
-                  date={item.date}
-                />
-              </motion.div>
-            ))}
-          </motion.div>
+          {/* <div className={styles.rightSection}>
+          <Image src={zapper} alt="zapper" />
+          <Image src={michael} alt="review" />
+          <p>
+            Who doesn't love tracked? It's like having a personal stalke your
+            issues. And let me tell II never be lonely again, you, with this app,
+            your i s
+          </p>
+          <p>Michael Scott</p>
+          <p>CEO, Dunder Mifflin</p>
+          <p>-&gt;</p>
+          <p>&lt;-</p>
+        </div> */}
         </div>
-      </div>
+      )}
+      {session && (
+        <>
+          <h1>signed in as {session?.user?.email}</h1>
+          <button onClick={() => signOut()}>sign out</button>
+        </>
+      )}
     </section>
   );
 }

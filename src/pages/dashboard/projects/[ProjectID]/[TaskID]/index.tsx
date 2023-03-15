@@ -27,7 +27,7 @@ import {
 } from "@/animations/taskDetails";
 import { motion } from "framer-motion";
 import { collection, query, where, getDoc, doc } from "firebase/firestore";
-import { db } from "@/firebase/firebase-config";
+import { db } from "@/firebase/firebaseConfig";
 import { useRouter } from "next/router";
 import { useQuery } from "@tanstack/react-query";
 

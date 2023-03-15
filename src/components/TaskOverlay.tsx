@@ -4,7 +4,7 @@ import { GrClose } from "react-icons/gr";
 import { MdExpandMore } from "react-icons/md";
 import { useModalDimContext } from "@/contexts/ModalDimContext";
 import { useQuery, useMutation } from "@tanstack/react-query";
-import { db } from "@/firebase/firebase-config";
+import { db } from "@/firebase/firebaseConfig";
 import { collection, query, addDoc } from "firebase/firestore";
 import { useRouter } from "next/router";
 export default function TaskOverlay() {
@@ -108,7 +108,7 @@ export default function TaskOverlay() {
       />
       <div className={styles.bottom}>
         <select name="status" id="status" onChange={handleChange}>
-          <option selected>
+          <option>
             {taskDetails.status === "" ? "to do" : taskDetails.status}
           </option>
           <option value="in progress">in progress</option>
@@ -116,14 +116,14 @@ export default function TaskOverlay() {
           <option value="backglog">backlog</option>
         </select>
         <select name="priority" id="priority" onChange={handleChange}>
-          <option selected>
+          <option>
             {taskDetails.priority === "" ? "low" : taskDetails.priority}
           </option>
           <option value="medium">medium</option>
           <option value="high">high</option>
         </select>
         <select name="assignee" id="assignee" onChange={handleChange}>
-          <option selected disabled>
+          <option disabled>
             {taskDetails.assignee === "" ? "assignee" : taskDetails.assignee}
           </option>
           <option value="John Doe">John Doe</option>

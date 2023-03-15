@@ -27,7 +27,6 @@ class MyDocument extends Document<Props> {
     return (
       <Html lang="en">
         <Head>
-          <title>Zapper</title>
           <meta name="description" content="A simple project management app" />
           <meta charSet="utf-8" />
         </Head>

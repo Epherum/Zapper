@@ -3,7 +3,7 @@ import styles from "@/styles/userProfile.module.scss";
 import styles2 from "@/styles/projectTasks.module.scss";
 import styles3 from "@/styles/dashboard.module.scss";
 import Project from "@/components/DashboardProject";
-import profilepic from "../../public/profile.png";
+import profilepic from "../../../public/profile.png";
 import Tasks from "@/components/ProjectTasksTasks";
 import Image from "next/image";
 import { overviewData, tasksData, projectsData } from "@/data/mockData";

@@ -7,7 +7,7 @@ function TaskDetails(taskData: any) {
   const { title, status, priority, assignee, project, id } = taskData.taskData; //bruh
   return (
     <div className={styles.taskDetails}>
-      <Link href={`/projects/${project}/${id}`}>
+      <Link href={`/dashboard/projects/${project}/${id}`}>
         <div className={styles.taskDetailsHeadline}>
           <div>
             <h2>{title}</h2>

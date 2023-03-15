@@ -1,0 +1,147 @@
+.login {
+    min-height: 100vh;
+    display: grid;
+    // grid-template-columns: 29.6% 12% auto;
+    place-items: center;
+    align-items: center;
+
+    .leftSection {
+        background-color: #f5f5f5;
+        padding: min(1rem, .8vw) min(2rem, 1.7vw);
+        border: #bdbdbd 1px solid;
+        border-radius: 0.5rem;
+        // margin-top: min(5.3rem, 4.4vw);
+        // margin-left: min(5.5rem, 4.6vw);
+
+        .zapper {
+            display: flex;
+            align-items: center;
+            gap: min(1.5rem, 1.2vw);
+            font-size: min(2.5rem, 2.1vw);
+            // margin-bottom: min(3rem, 2.5vw);
+            margin-bottom: min(2rem, 1.7vw);
+        }
+
+        .signup {
+            .headline {
+                font-size: min(2.7rem, 2.3vw);
+                margin-bottom: min(1.6rem, 1.3vw);
+            }
+
+            .subHeadline {
+                font-size: min(1.4rem, 1.2vw);
+                margin-bottom: min(2.2rem, 1.8vw);
+            }
+
+            form {
+                .input {
+                    margin-bottom: min(2.7rem, 2.3vw);
+
+                    input {
+                        display: block;
+                        height: min(4rem, 3.4vw);
+                        border: none;
+                        border-bottom: 2px solid #b4b4b4;
+                        margin-bottom: min(1.6rem, 1.3vw);
+                        font-size: min(1.3rem, 1.1vw);
+                        width: min(28rem, 24vw);
+                        transition: border-bottom 0.3s ease-in-out;
+
+                        &:focus {
+                            outline: none;
+                            border-bottom: 2px solid #000;
+                        }
+                    }
+                }
+
+                .create {
+                    background-color: #000;
+                    color: #fff;
+                    border: none;
+                    padding: min(1.3rem, 1.1vw) min(3.5rem, 3vw);
+                    font-size: min(1.35rem, 1.1vw);
+                    border-radius: 0.5rem;
+                    cursor: pointer;
+                    width: 100%;
+                    margin-bottom: min(.7rem, .6vw);
+                }
+
+                .google {
+                    background-color: transparent;
+                    border: 1px solid #bbbbbb;
+                    padding: min(1.3rem, 1.1vw) min(3.5rem, 3vw);
+                    font-size: min(1.35rem, 1.1vw);
+                    border-radius: 0.5rem;
+                    cursor: pointer;
+                    width: 100%;
+                    margin-bottom: min(1.5rem, 1.3vw);
+                }
+            }
+
+            .demo {
+                .demoText {
+                    width: 100%;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    gap: min(2rem, 1.7vw);
+                    position: relative;
+                    font-size: min(1rem, .8vw);
+                    margin-bottom: min(1.5rem, 1.3vw);
+                }
+
+                .lol {
+                    margin-bottom: min(.7rem, .6vw);
+                }
+
+                .roles {
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    gap: min(1rem, .8vw);
+                    margin-bottom: min(2rem, 1.7vw);
+
+                    button {
+                        background-color: transparent;
+                        border: 1px solid #c9c9c9;
+                        padding: min(1.3rem, 1.1vw) min(.8rem, .7vw);
+                        font-size: min(1.35rem, 1.1vw);
+                        border-radius: 0.5rem;
+                        cursor: pointer;
+                        width: 100%;
+                        transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+
+                        &:hover {
+                            background-color: #000;
+                            color: #fff;
+                        }
+                    }
+                }
+
+            }
+
+            .already {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: min(1rem, .8vw);
+                font-size: min(1rem, .8vw);
+                margin-bottom: min(1.5rem, 1.3vw);
+
+                button {
+                    background-color: transparent;
+                    border: none;
+                    font-size: 1rem;
+                    font-size: min(1rem, .9vw);
+                    font-weight: 600;
+                    cursor: pointer;
+                    transition: color 0.3s ease-in-out;
+                    border-bottom: 1px solid #000000;
+
+                    &:hover {
+                        color: #000;
+                    }
+                }
+            }
+        }
+    }
+}
