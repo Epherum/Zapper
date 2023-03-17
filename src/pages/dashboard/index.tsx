@@ -14,6 +14,7 @@ import {
   chartData,
 } from "@/data/mockData";
 import { motion } from "framer-motion";
+import { useSession, signOut } from "next-auth/react";
 import {
   title,
   subtitle,
@@ -35,6 +36,9 @@ import { useModalDimContext } from "@/contexts/ModalDimContext";
 export default function Dashboard() {
   const { isModalDimmed, setIsModalDimmed } = useModalDimContext();
   const [formattedDate, setFormattedDate] = useState("");
+  const { data: session } = useSession({
+    required: true,
+  });
 
   function handleToggle() {
     setIsModalDimmed(!isModalDimmed);
@@ -66,8 +70,19 @@ export default function Dashboard() {
     return () => clearInterval(intervalId);
   }, []);
 
+  if (!session) return <></>;
+
   return (
     <section>
+      <button
+        onClick={(_) =>
+          signOut({
+            callbackUrl: "/",
+          })
+        }
+      >
+        Sign out
+      </button>
       <div className={styles.headline}>
         <div className={styles.title}>
           <motion.h1 variants={title} initial="hidden" animate="visible">
