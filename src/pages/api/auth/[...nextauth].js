@@ -15,10 +15,10 @@ export default NextAuth({
       name: "Credentials",
 
       async authorize(credentials) {
-        if (credentials.username === "abc") {
+        if (credentials.username === "123") {
           return {
             user: {
-              name: "abc",
+              name: "123",
             },
           };
         }
