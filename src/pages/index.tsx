@@ -1,12 +1,40 @@
 import Link from "@/components/Link";
 import styles from "@/styles/login.module.scss";
-import Image from "next/image";
-import michael from "../../public/michael.jpg";
-import zapper from "../../public/zapper.svg";
 import { signIn, signOut, useSession } from "next-auth/react";
+import { useState } from "react";
+import { useRouter } from "next/router";
 export default function Login() {
+  const router = useRouter();
   const { data: session, status } = useSession();
   console.log(session);
+  const [authState, setAuthState] = useState({
+    username: "",
+    password: "",
+  });
+  const handleAuthState = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setAuthState((authstate) => ({
+      ...authState,
+      [e.target.name]: e.target.value,
+    }));
+  };
+  const handleSignin = async (e: any) => {
+    e.preventDefault();
+    console.log(authState);
+    signIn("credentials", {
+      ...authState,
+      redirect: false,
+    })
+      .then((res) => {
+        console.log(res);
+        if (res?.status === 200) {
+          router.push("/dashboard");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
     <section className={styles.login}>
       {!session && (
@@ -20,20 +48,37 @@ export default function Login() {
             <p className={styles.subHeadline}>
               Let’s get started with your 30 day free trial
             </p>
-            <form>
+            <div className={styles.form}>
               <div className={styles.input}>
-                <input type="text" placeholder="Name" />
-                <input type="email" placeholder="Email" />
-                <input type="password" placeholder="Password" />
+                <input
+                  type="text"
+                  name="username"
+                  onChange={handleAuthState}
+                  value={authState.username}
+                  placeholder="Name"
+                />
+                {/* <input type="email" placeholder="Email" /> */}
+                <input
+                  type="password"
+                  placeholder="Password
+                
+                "
+                  name="password"
+                  onChange={handleAuthState}
+                  value={authState.password}
+                />
               </div>
-              <button className={styles.create}>
-                <Link href="/dashboard">Create account</Link>
+              <button className={styles.create} onClick={handleSignin}>
+                Create account
               </button>
               {/* @ts-ignore */}
-              <button className={styles.google} onClick={signIn}>
+              <button
+                className={styles.google}
+                onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
+              >
                 Sign in with Google
               </button>
-            </form>
+            </div>
 
             <div className={styles.demo}>
               <div className={styles.demoText}>
