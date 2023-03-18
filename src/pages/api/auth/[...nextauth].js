@@ -22,7 +22,7 @@ export default NextAuth({
 
         const user = await res.json();
 
-        if (res.ok && user) {
+        if (user) {
           const isValid = await compare(credentials.password, user.password);
           if (isValid) {
             return user;
