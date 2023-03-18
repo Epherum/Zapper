@@ -11,16 +11,23 @@ export default NextAuth({
     CredentialsProvider({
       name: "Credentials",
       async authorize(credentials, req) {
-        const res = await fetch(`${process.env.NEXTAUTH_URL}/api/user`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
+        // const res = await fetch(`${process.env.NEXTAUTH_URL}/api/user`, {
+        //   method: "POST",
+        //   headers: {
+        //     "Content-Type": "application/json",
+        //   },
 
-          body: JSON.stringify(credentials.email),
-        });
+        //   body: JSON.stringify(credentials.email),
+        // });
 
-        const user = await res.json();
+        // const user = await res.json();
+        const user = { id: "1", name: "J Smith", email: "jsmith@example.com" };
+
+        if (user) {
+          return user;
+        } else {
+          return null;
+        }
 
         if (res.ok && user) {
           const isValid = await compare(credentials.password, user.password);
