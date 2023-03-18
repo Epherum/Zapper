@@ -5,6 +5,7 @@ import { RxGear } from "react-icons/rx";
 import { BsBell } from "react-icons/bs";
 import { motion } from "framer-motion";
 import { search, icons } from "@/animations/search";
+import { signOut } from "next-auth/react";
 export default function Search() {
   return (
     <div className={styles.search}>
@@ -27,7 +28,14 @@ export default function Search() {
           <BsBell />
           <RxGear />
         </div>
-        <div className={styles.profile}>
+        <div
+          onClick={(_) =>
+            signOut({
+              callbackUrl: "/",
+            })
+          }
+          className={styles.profile}
+        >
           <VscAccount />
         </div>
       </motion.div>

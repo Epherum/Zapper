@@ -13,13 +13,11 @@ export default NextAuth({
   providers: [
     CredentialsProvider({
       name: "Credentials",
-
       async authorize(credentials) {
         if (credentials.username === "123") {
           return {
-            user: {
-              name: "123",
-            },
+            name: "abc",
+            email: "dsdsd",
           };
         }
         return null;
@@ -47,6 +45,7 @@ export default NextAuth({
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     }),
   ],
+  //adapters dont work with credentials provider :(
   // adapter: FirestoreAdapter({
   //   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
   //   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
