@@ -4,6 +4,7 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { FcGoogle } from "react-icons/fc";
+import Image from "next/image";
 export default function Login() {
   const router = useRouter();
   const { data: session, status } = useSession();
@@ -50,7 +51,7 @@ export default function Login() {
         <>
           <div className={styles.leftSection}>
             <div className={styles.zapper}>
-              <img src="zapper.svg" alt="zapper" />
+              <Image src="zapper.svg" alt="zapper" width={24} height={24} />
               <p>zapper</p>
             </div>
             {/* sign in */}
@@ -93,7 +94,7 @@ export default function Login() {
                 </div>
 
                 <p className={styles.already}>
-                  Don't have an account ?{" "}
+                  Don&apos;t have an account ?{" "}
                   <button onClick={() => setShowSignIn(false)}>Sign up</button>
                 </p>
               </div>
@@ -152,8 +153,9 @@ export default function Login() {
             <h1 className={styles.demoText}>Demo login as</h1>
             <div className={styles.roles}>
               {["Admin", "Project Manager", "Developer", "Submitter"].map(
-                (role) => (
+                (role, index) => (
                   <button
+                    key={index}
                     className={role === `${roleName}` ? styles.active : ""}
                     onClick={() => setRoleName(role)}
                   >
