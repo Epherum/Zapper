@@ -62,7 +62,7 @@ export default function Dashboard() {
   };
 
   async function getUserData() {
-    const res = await fetch(`${process.env.NEXTAUTH_URL}/api/user`, {
+    const res = await fetch(`/api/user`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -78,8 +78,10 @@ export default function Dashboard() {
   }
 
   useEffect(() => {
-    console.log("session", session);
-    getUserData();
+    if (session) {
+      console.log("session", session?.user?.email);
+      getUserData();
+    }
 
     formatDate();
 
@@ -88,7 +90,7 @@ export default function Dashboard() {
     }, 30000);
 
     return () => clearInterval(intervalId);
-  }, []);
+  }, [session]);
 
   if (!session) return <></>;
 
