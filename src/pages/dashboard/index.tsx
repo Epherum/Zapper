@@ -39,7 +39,6 @@ export default function Dashboard() {
   const { data: session } = useSession({
     required: true,
   });
-
   function handleToggle() {
     setIsModalDimmed(!isModalDimmed);
   }
@@ -74,15 +73,6 @@ export default function Dashboard() {
 
   return (
     <section>
-      <button
-        onClick={(_) =>
-          signOut({
-            callbackUrl: "/",
-          })
-        }
-      >
-        Sign out
-      </button>
       <div className={styles.headline}>
         <div className={styles.title}>
           <motion.h1 variants={title} initial="hidden" animate="visible">
