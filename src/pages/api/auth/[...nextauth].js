@@ -1,10 +1,8 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
-import { FirestoreAdapter } from "@next-auth/firebase-adapter";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { db } from "@/firebase/firebaseConfig";
-import { collection, getDoc, query, where } from "firebase/firestore";
-import admin from "firebase-admin";
+
+import { compare } from "bcryptjs";
 
 export default NextAuth({
   pages: {
@@ -13,30 +11,25 @@ export default NextAuth({
   providers: [
     CredentialsProvider({
       name: "Credentials",
-      async authorize(credentials) {
-        if (credentials.username === "123") {
-          return {
-            name: "abc",
-            email: "dsdsd",
-          };
-        }
-        return null;
-        // const q = query(
-        //   collection(db, "users"),
-        //   where("email", "==", credentials.email)
-        // );
-        // const querySnapshot = await getDoc(q);
-        // const user = querySnapshot.data();
+      async authorize(credentials, req) {
+        const res = await fetch("http://localhost:3000/api/user", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
 
-        // if (user) {
-        //   if (user.password === credentials.password) {
-        //     return user;
-        //   } else {
-        //     return null;
-        //   }
-        // } else {
-        //   return null;
-        // }
+          body: JSON.stringify(credentials.email),
+        });
+
+        const user = await res.json();
+
+        if (res.ok && user) {
+          const isValid = await compare(credentials.password, user.password);
+          if (isValid) {
+            return user;
+          }
+        }
+        return res.status(401).json({ message: "Invalid credentials" });
       },
     }),
 
@@ -45,26 +38,37 @@ export default NextAuth({
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     }),
   ],
-  //adapters dont work with credentials provider :(
-  // adapter: FirestoreAdapter({
-  //   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-  //   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
-  //   authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-  //   projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-  //   storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
-  //   messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-
-  //   credential: admin.credential.cert({
-  //     project_id: process.env.CREDENTIALS_PROJECT_ID,
-  //     private_key_id: process.env.CREDENTIALS_PRIVATE_KEY_ID,
-  //     private_key: process.env.CREDENTIALS_PRIVATE_KEY,
-  //     client_email: process.env.CREDENTIALS_CLIENT_EMAIL,
-  //     client_id: process.env.CREDENTIALS_CLIENT_ID,
-  //     auth_uri: process.env.CREDENTIALS_AUTH_URI,
-  //     token_uri: process.env.CREDENTIALS_TOKEN_URI,
-  //     auth_provider_x509_cert_url:
-  //       process.env.CREDENTIALS_AUTH_PROVIDER_X509_CERT_URL,
-  //     client_x509_cert_url: process.env.CREDENTIALS_CLIENT_X509_CERT_URL,
-  //   }),
-  // }),
 });
+//adapters dont work with credentials provider :(
+// adapter: FirestoreAdapter({
+//   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+//   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+//   authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+//   projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+//   storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+//   messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+
+//   credential: admin.credential.cert({
+//     project_id: process.env.CREDENTIALS_PROJECT_ID,
+//     private_key_id: process.env.CREDENTIALS_PRIVATE_KEY_ID,
+//     private_key: process.env.CREDENTIALS_PRIVATE_KEY,
+//     client_email: process.env.CREDENTIALS_CLIENT_EMAIL,
+//     client_id: process.env.CREDENTIALS_CLIENT_ID,
+//     auth_uri: process.env.CREDENTIALS_AUTH_URI,
+//     token_uri: process.env.CREDENTIALS_TOKEN_URI,
+//     auth_provider_x509_cert_url:
+//       process.env.CREDENTIALS_AUTH_PROVIDER_X509_CERT_URL,
+//     client_x509_cert_url: process.env.CREDENTIALS_CLIENT_X509_CERT_URL,
+//   }),
+// }),
+
+//   // if (user) {
+//   //   const isValid = await compare(credentials.password, user.password);
+//   //   if (isValid) {
+//   //     return user;
+//   //   }
+//   // }
+//   // return null;
+// },
+// import { FirestoreAdapter } from "@next-auth/firebase-adapter";
+// import admin from "firebase-admin";

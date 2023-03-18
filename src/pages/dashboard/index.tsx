@@ -7,6 +7,8 @@ import { CgArrowsExpandRight } from "react-icons/cg";
 import Task from "@/components/DashboardTask";
 import Project from "@/components/DashboardProject";
 import LineChart from "@/components/LineChart";
+import { db } from "@/firebase/firebaseConfig";
+import { getDoc, doc } from "firebase/firestore";
 import {
   overviewData,
   tasksData,
@@ -59,7 +61,26 @@ export default function Dashboard() {
     setFormattedDate(newFormattedDate);
   };
 
+  async function getUserData() {
+    const res = await fetch("http://localhost:3000/api/user", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+
+      body: JSON.stringify(session?.user?.email),
+    });
+
+    const user = await res.json();
+
+    //  return user;
+    console.log(user);
+  }
+
   useEffect(() => {
+    console.log("session", session);
+    getUserData();
+
     formatDate();
 
     const intervalId = setInterval(() => {
