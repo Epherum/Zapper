@@ -12,6 +12,15 @@ export default function Login() {
   const [roleName, setRoleName] = useState("Admin");
   const [showSignIn, setShowSignIn] = useState(false);
 
+  function signInAdmin() {
+    signIn("credentials", {
+      email: "michaelscott@gmail.com",
+      password: "1234",
+      redirect: false,
+      callbackUrl: "/dashboard",
+    });
+  }
+
   useEffect(() => {
     if (session) {
       router.push("/dashboard");
@@ -67,17 +76,7 @@ export default function Login() {
                 </p>
               </div>
             </div>
-            <button
-              onClick={() => {
-                signIn("credentials", {
-                  username: "123",
-                  password: "123",
-                  redirect: false,
-                  callbackUrl: "/dashboard",
-                });
-              }}
-              className={styles.continue}
-            >
+            <button onClick={() => signInAdmin()} className={styles.continue}>
               Continue as Admin
             </button>
           </div>
