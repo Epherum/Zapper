@@ -5,12 +5,15 @@ import { MdExpandMore } from "react-icons/md";
 import { useModalDimContext } from "@/contexts/ModalDimContext";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { db } from "@/firebase/firebaseConfig";
-import { collection, query, addDoc } from "firebase/firestore";
+import { collection, addDoc, updateDoc, where, doc } from "firebase/firestore";
 import { useRouter } from "next/router";
 import { useFormik, Field, FormikProvider } from "formik";
+import { useTaskDataContext } from "@/contexts/TaskDataContext";
+import moment from "moment";
 export default function TaskOverlay() {
   const router = useRouter();
   const { isModalDimmed, setIsModalDimmed } = useModalDimContext();
+  const { taskData, setTaskData } = useTaskDataContext();
   const [project, setProject] = useState("");
   const [docID, setDocID] = useState("");
 
@@ -27,8 +30,42 @@ export default function TaskOverlay() {
     },
     onSubmit: handleSubmit,
   });
+
+  useEffect(() => {
+    if (taskData) {
+      formik.setValues({
+        title: taskData.title,
+        description: taskData.description,
+        status: taskData.status,
+        priority: taskData.priority,
+        assignee: taskData.assignee,
+        targetDate: taskData.targetDate,
+        startDate: taskData.startDate,
+        project: taskData.project,
+      });
+    } else {
+      const timer = setTimeout(() => {
+        formik.setValues({
+          title: "",
+          description: "",
+          status: "To do",
+          priority: "low",
+          assignee: "",
+          targetDate: "",
+          startDate: "",
+          project: "",
+        });
+      }, 500);
+      return () => clearTimeout(timer);
+    }
+  }, [taskData]);
+
   function handleSubmit(e: any) {
-    taskMutation.mutate();
+    if (taskData) {
+      editTaskMutation.mutate();
+    } else {
+      addTaskMutation.mutate();
+    }
     setIsModalDimmed(false);
     formik.resetForm();
   }
@@ -42,11 +79,44 @@ export default function TaskOverlay() {
       formik.values.project,
       "tasks"
     );
-    const docRef = await addDoc(tasksCollection, formik.values);
-    setDocID(docRef.id);
+    const formattedDate = moment(formik.values.targetDate).format(
+      "MMM Do YYYY"
+    );
+    const docRef = await addDoc(tasksCollection, {
+      ...formik.values,
+      targetDate: formattedDate,
+    });
+    const docId = docRef.id;
+    await updateDoc(docRef, { id: docId });
+    setDocID(docId);
   };
 
-  const taskMutation = useMutation(addTask);
+  const editTask = async () => {
+    const tasksCollection = collection(
+      db,
+      "companies",
+      "DunderMifflin",
+      "projects",
+      formik.values.project,
+      "tasks"
+    );
+    const formattedTargetDate = moment(formik.values.targetDate).format(
+      "MMM Do YYYY"
+    );
+
+    const formattedStartDate = moment(new Date()).format("MMM Do YYYY");
+
+    await updateDoc(doc(tasksCollection, taskData.id), {
+      ...formik.values,
+      targetDate: formattedTargetDate,
+      startDate: formattedStartDate,
+    });
+    setDocID(taskData.id);
+  };
+
+  const editTaskMutation = useMutation(editTask);
+
+  const addTaskMutation = useMutation(addTask);
 
   useEffect(() => {
     if (docID !== "") {
@@ -76,8 +146,9 @@ export default function TaskOverlay() {
                 }}
                 className={styles.select}
                 required
+                defaultValue={""}
               >
-                <option value="" disabled selected style={{ display: "none" }}>
+                <option value="" disabled style={{ display: "none" }}>
                   Select a project
                 </option>
                 <option value="Zapper">Zapper</option>
@@ -137,23 +208,14 @@ export default function TaskOverlay() {
               onChange={formik.handleChange}
               className={styles.select}
               required
+              defaultValue={""}
             >
-              <option value="" disabled selected style={{ display: "none" }}>
+              <option value="" disabled style={{ display: "none" }}>
                 Assignee
               </option>
               <option value="John Doe">John Doe</option>
             </Field>
-            <Field name="startDate">
-              {({ field, form }: { field: any; form: any }) => (
-                <input
-                  type="date"
-                  {...field}
-                  {...formik.getFieldProps("startDate")}
-                  className={styles.select}
-                  alt="start date"
-                />
-              )}
-            </Field>
+
             <Field name="targetDate">
               {({ field, form }: { field: any; form: any }) => (
                 <input
@@ -163,12 +225,13 @@ export default function TaskOverlay() {
                   className={styles.select}
                   alt="target date"
                   required
+                  format="MM/dd/yyyy"
                 />
               )}
             </Field>
           </div>
           <div className={styles.submit}>
-            <button type="submit">Submit</button>
+            <button type="submit">{taskData ? "Edit" : "Sumbit"}</button>
           </div>
         </form>
       </FormikProvider>

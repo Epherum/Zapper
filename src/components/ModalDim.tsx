@@ -1,7 +1,9 @@
 import { useEffect } from "react";
 import { useModalDimContext } from "@/contexts/ModalDimContext";
+import { useTaskDataContext } from "@/contexts/TaskDataContext";
 function ModalDim() {
   const { isModalDimmed, setIsModalDimmed } = useModalDimContext();
+  const { taskData, setTaskData } = useTaskDataContext();
 
   // useEffect(() => {
   //   const html = document.documentElement;
@@ -18,6 +20,7 @@ function ModalDim() {
     <div
       onClick={() => {
         setIsModalDimmed(false);
+        setTaskData("");
       }}
       style={{
         position: "fixed",

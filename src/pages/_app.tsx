@@ -9,6 +9,7 @@ import PageTransition from "@/components/PageTransition";
 import styles from "@/styles/circles.module.scss";
 import { circleBlue, circleGreen } from "@/animations/projects";
 import { ModalDimProvider } from "@/contexts/ModalDimContext";
+import { TaskDataProvider } from "@/contexts/TaskDataContext";
 import ModalDim from "@/components/ModalDim";
 import TaskOverlay from "@/components/TaskOverlay";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -73,9 +74,11 @@ export default function App({ Component, pageProps }: AppProps) {
                 </>
               )}
               <ModalDimProvider>
-                <ModalDim />
-                <TaskOverlay />
-                <Component {...pageProps} />
+                <TaskDataProvider>
+                  <ModalDim />
+                  <TaskOverlay />
+                  <Component {...pageProps} />
+                </TaskDataProvider>
               </ModalDimProvider>
             </motion.div>
           </PageTransition>
