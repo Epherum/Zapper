@@ -22,7 +22,7 @@ import {
 function Profile() {
   return (
     <section>
-      <Headline title="Profile" location={["home", "Profile"]} />
+      {/* <Headline title="Profile" location={["home", "Profile"]} />
       <motion.div
         variants={divider}
         initial="hidden"
@@ -151,7 +151,7 @@ function Profile() {
             ))}
           </motion.div>
         </div>
-      </div>
+      </div> */}
     </section>
   );
 }
