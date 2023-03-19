@@ -1,14 +1,18 @@
 import styles from "@/styles/projectTasks.module.scss";
 import Tasks from "@/components/ProjectTasksTasks";
 // import { tasksData } from "@/data/mockData";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import TaskDetails from "@/components/TaskDetails";
 import { AnimatePresence, motion } from "framer-motion";
 import { tasksHeadline, tasks, taskItem } from "@/animations/projectTasks";
 
-export default function ProjectTasksList({ tasksData }: any) {
+export default function ProjectTasksList({ tasksData, removeFromData }: any) {
   const [selectedTask, setselectedTask] = useState("");
   const [switchP, setSwitchP] = useState(false);
+
+  function removeSelectedTask() {
+    setselectedTask("");
+  }
 
   return (
     <div className={styles.grid}>
@@ -18,6 +22,7 @@ export default function ProjectTasksList({ tasksData }: any) {
             0 && (
             <div className={styles.tasks} key={index}>
               <motion.h2
+                key={index}
                 variants={tasksHeadline}
                 initial="hidden"
                 animate="visible"
@@ -72,7 +77,11 @@ export default function ProjectTasksList({ tasksData }: any) {
             exit={{ opacity: 0, y: 20 }}
             className={styles.taskDetails}
           >
-            <TaskDetails taskData={selectedTask} />
+            <TaskDetails
+              taskData={selectedTask}
+              removeFromData={removeFromData}
+              removeSelectedTask={removeSelectedTask}
+            />
           </motion.div>
         )}
         {selectedTask && !switchP && (
@@ -84,7 +93,11 @@ export default function ProjectTasksList({ tasksData }: any) {
             exit={{ opacity: 0, y: 20 }}
             className={styles.taskDetails}
           >
-            <TaskDetails taskData={selectedTask} />
+            <TaskDetails
+              taskData={selectedTask}
+              removeFromData={removeFromData}
+              removeSelectedTask={removeSelectedTask}
+            />
           </motion.div>
         )}
       </AnimatePresence>

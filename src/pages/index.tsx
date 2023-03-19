@@ -2,7 +2,6 @@ import styles from "@/styles/login.module.scss";
 import { signIn, useSession } from "next-auth/react";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import { useFormik } from "formik";
 import SignIn from "@/components/SignIn";
 import SignUp from "@/components/SignUp";
 

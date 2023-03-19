@@ -15,18 +15,16 @@ import {
 } from "firebase/firestore";
 import { db } from "@/firebase/firebaseConfig";
 import { useRouter } from "next/router";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, Mutation, useMutation } from "@tanstack/react-query";
 
 export default function ProjectTasks() {
   const [filter, setFilter] = useState("list");
   const [listVisible, setListVisible] = useState(true);
   const [boardVisible, setBoardVisible] = useState(false);
+  const [newData, setNewData] = useState([]);
 
   const router = useRouter();
   const ProjectID = router.query.ProjectID as string | undefined;
-  const headline = ProjectID
-    ? ProjectID.charAt(0).toUpperCase() + ProjectID.slice(1)
-    : "";
 
   async function getIssues() {
     const issuesQuery = query(
@@ -50,19 +48,21 @@ export default function ProjectTasks() {
     return issues;
   }
 
-  const { isLoading, error, data } = useQuery(
-    ["issues", ProjectID],
-    getIssues,
-    {}
-  );
+  const { isLoading, error, data } = useQuery(["issues", "Zapper"], getIssues);
+
+  function removeFromData(id: string) {
+    console.log(id);
+    const nd = data?.filter((item: any) => item.id !== id);
+    //@ts-ignore
+    setNewData(nd);
+  }
 
   return (
     <section>
       <>
         {ProjectID && (
           <Headline
-            title={headline}
-            //@ts-ignore
+            title={ProjectID}
             location={["home", "projects", ProjectID]}
           />
         )}
@@ -114,7 +114,10 @@ export default function ProjectTasks() {
                 transition={{ duration: 0.3, ease: "easeOut" }}
                 exit={{ opacity: 0, y: 20 }}
               >
-                <Board tasksData={data} project={ProjectID} />
+                <Board
+                  tasksData={newData.length > 0 ? newData : data}
+                  project={ProjectID}
+                />
               </motion.div>
             )}
 
@@ -126,7 +129,10 @@ export default function ProjectTasks() {
                 transition={{ duration: 0.3, ease: "easeOut" }}
                 exit={{ opacity: 0, y: 20 }}
               >
-                <List tasksData={data} />
+                <List
+                  tasksData={newData.length > 0 ? newData : data}
+                  removeFromData={removeFromData}
+                />
               </motion.div>
             )}
           </AnimatePresence>

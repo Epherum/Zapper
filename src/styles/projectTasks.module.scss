@@ -150,7 +150,7 @@
     .taskDetails {
 
         grid-column: 3;
-        grid-row: 1/3;
+        grid-row: 1/4;
         margin-top: min(2.5rem, 2vw);
 
         .taskDetailsHeadline {
@@ -200,6 +200,7 @@
             display: flex;
             flex-direction: column;
             gap: min(2.1rem, 1.7vw);
+            margin-bottom: min(4rem, 3.5vw);
 
             .taskDetailsInfoItem {
                 display: grid;
@@ -237,6 +238,31 @@
                         height: min(2rem, 1.7vw);
                     }
                 }
+            }
+        }
+
+        .edit,
+        .delete {
+            all: unset;
+            font-size: min(1.2rem, 1vw);
+            cursor: pointer;
+            color: #5d5d5d;
+            border: 1px solid #d4d4d4;
+            border-radius: 5px;
+            padding: min(.9rem, .7vw) min(1.2rem, 1vw);
+            transition: background-color .3s ease-in-out, color .3s ease-in-out;
+            margin-right: 1rem;
+
+            &:hover {
+                background-color: #fde68a;
+                color: #000;
+            }
+
+        }
+
+        .delete {
+            &:hover {
+                background-color: #f87171;
             }
         }
     }
