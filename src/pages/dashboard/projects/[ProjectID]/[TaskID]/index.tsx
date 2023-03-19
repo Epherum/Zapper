@@ -253,7 +253,6 @@ export default function TaskDetails() {
               <h2>Task details</h2>
               <p>ID LG-2</p>
             </div>
-            <CgArrowsExpandRight />
           </motion.div>
 
           <motion.div

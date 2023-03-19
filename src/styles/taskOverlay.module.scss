@@ -11,11 +11,21 @@
     box-shadow: 0 0 60px 0 rgba(0, 0, 0, 0.35);
     transition: all .3s ease-out;
 
+    .select {
+        all: unset;
+        cursor: pointer;
+        font-size: min(1rem, .8vw);
+        color: #5d5d5d;
+        border: 1px solid #d4d4d4;
+        border-radius: 5px;
+        padding: min(.4rem, .3vw) min(.5rem, .4vw);
+    }
+
     .top {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: min(1rem, .8vw);
+        margin-bottom: min(1.5rem, 1.3vw);
         transition: all 1s ease-out;
 
         div {
@@ -24,15 +34,7 @@
             gap: 1rem;
             gap: min(1rem, .8vw);
 
-            .project {
-                all: unset;
-                cursor: pointer;
-                font-size: min(.9rem, .7vw);
-                color: #A8A8B3;
-                border: 1px solid #d4d4d4;
-                border-radius: 5px;
-                padding: min(.3rem, .2vw) min(.5rem, .4vw);
-            }
+
 
             svg {
                 margin-right: min(-.5rem, -.4vw);

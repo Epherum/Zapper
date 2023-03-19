@@ -1,14 +1,10 @@
 import styles from "@/styles/login.module.scss";
 import { signIn, signOut, useSession } from "next-auth/react";
-import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { FcGoogle } from "react-icons/fc";
 import Image from "next/image";
 import { useFormik } from "formik";
 import LoginValidate from "@/lib/validate";
-import { compare } from "bcryptjs";
-import { db } from "@/firebase/firebaseConfig";
-import { collection, getDoc, query, where, doc } from "firebase/firestore";
 
 export default function SignIn({
   setShowSignIn,

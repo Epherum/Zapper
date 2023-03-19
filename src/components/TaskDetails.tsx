@@ -2,9 +2,20 @@ import styles from "@/styles/projectTasks.module.scss";
 import { CgArrowsExpandRight } from "react-icons/cg";
 import Link from "@/components/Link";
 import Image from "next/image";
+import { doc, deleteDoc } from "firebase/firestore";
+import { db } from "@/firebase/firebaseConfig";
 
-function TaskDetails(taskData: any) {
-  const { title, status, priority, assignee, project, id } = taskData.taskData; //bruh
+function TaskDetails(props: any) {
+  const { title, status, priority, assignee, project, id } = props.taskData; //bruh
+
+  function deleteTask() {
+    deleteDoc(
+      doc(db, "companies", "DunderMifflin", "projects", project, "tasks", id)
+    );
+    props.removeFromData(id);
+    props.removeSelectedTask();
+  }
+
   return (
     <div className={styles.taskDetails}>
       <Link href={`/dashboard/projects/${project}/${id}`}>
@@ -52,6 +63,10 @@ function TaskDetails(taskData: any) {
           <p>{project}</p>
         </div>
       </div>
+      <button className={styles.edit}>Edit Task</button>
+      <button className={styles.delete} onClick={deleteTask}>
+        Delete Task
+      </button>
     </div>
   );
 }

@@ -290,10 +290,7 @@
             padding: min(.8rem, .6vw) 0;
             transition: background-color .3s ease-in-out;
 
-            &:hover {
-                cursor: pointer;
-                background-color: $light-purple;
-            }
+
 
             div {
                 display: flex;
