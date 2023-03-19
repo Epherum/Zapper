@@ -15,20 +15,23 @@ import {
 } from "firebase/firestore";
 import { db } from "@/firebase/firebaseConfig";
 import { useRouter } from "next/router";
-import { useQuery, Mutation, useMutation } from "@tanstack/react-query";
+import {
+  useQuery,
+  Mutation,
+  useMutation,
+  useQueryClient,
+} from "@tanstack/react-query";
 
 export default function ProjectTasks() {
   const [filter, setFilter] = useState("list");
   const [listVisible, setListVisible] = useState(true);
   const [boardVisible, setBoardVisible] = useState(false);
-  const [newData, setNewData] = useState([]);
-
+  const queryClient = useQueryClient();
   const router = useRouter();
-  const ProjectID = router.query.ProjectID as string | undefined;
+  const ProjectID = router.query.ProjectID as string;
 
-  async function getIssues() {
-    const issuesQuery = query(
-      //@ts-ignore
+  async function getTasks() {
+    const tasksQuery = query(
       collection(
         db,
         "companies",
@@ -38,23 +41,27 @@ export default function ProjectTasks() {
         "tasks"
       )
     );
-    const issuesSnapshot = await getDocs(issuesQuery);
-    const issues = [];
+    const tasksSnapshot = await getDocs(tasksQuery);
+    const tasks = [];
 
-    for (const issueDoc of issuesSnapshot.docs) {
-      const issue = { id: issueDoc.id, ...issueDoc.data() };
-      issues.push(issue);
+    for (const taskDoc of tasksSnapshot.docs) {
+      const task = { id: taskDoc.id, ...taskDoc.data() };
+      tasks.push(task);
     }
-    return issues;
+    return tasks;
   }
 
-  const { isLoading, error, data } = useQuery(["issues", "Zapper"], getIssues);
+  const { data } = useQuery(["tasks", ProjectID], getTasks, {
+    enabled: !!ProjectID,
+  });
 
   function removeFromData(id: string) {
-    console.log(id);
-    const nd = data?.filter((item: any) => item.id !== id);
-    //@ts-ignore
-    setNewData(nd);
+    queryClient.setQueryData(["tasks", ProjectID], (prevData: any) => {
+      const newData = prevData?.filter((item: any) => item.id !== id);
+      return newData;
+    });
+
+    queryClient.invalidateQueries(["tasks", ProjectID]);
   }
 
   return (
@@ -114,10 +121,7 @@ export default function ProjectTasks() {
                 transition={{ duration: 0.3, ease: "easeOut" }}
                 exit={{ opacity: 0, y: 20 }}
               >
-                <Board
-                  tasksData={newData.length > 0 ? newData : data}
-                  project={ProjectID}
-                />
+                <Board tasksData={data} project={ProjectID} />
               </motion.div>
             )}
 
@@ -129,10 +133,7 @@ export default function ProjectTasks() {
                 transition={{ duration: 0.3, ease: "easeOut" }}
                 exit={{ opacity: 0, y: 20 }}
               >
-                <List
-                  tasksData={newData.length > 0 ? newData : data}
-                  removeFromData={removeFromData}
-                />
+                <List tasksData={data} removeFromData={removeFromData} />
               </motion.div>
             )}
           </AnimatePresence>

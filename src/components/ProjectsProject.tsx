@@ -1,6 +1,6 @@
 import styles from "@/styles/projects.module.scss";
 import Image from "next/image";
-
+import moment from "moment";
 function ProjectsProject({
   title,
   tasks,
@@ -11,9 +11,12 @@ function ProjectsProject({
   title: string;
   tasks: number;
   overdue: number;
-  createdAt: string;
+  createdAt: any;
   targetDate: string;
 }) {
+  const formattedCreatedAt = moment.unix(createdAt.seconds).format("MMMM DD");
+  const formattedTargetDate = moment(targetDate).format("MMMM DD");
+
   return (
     <div className={styles.project}>
       <div className={styles.projectLeftSide}>
@@ -43,7 +46,7 @@ function ProjectsProject({
           ))}
         </div>
         <p>
-          {createdAt} - {targetDate}
+          {formattedCreatedAt} - {formattedTargetDate}
         </p>
       </div>
     </div>

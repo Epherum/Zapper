@@ -13,14 +13,28 @@
             color: $dark-gray;
         }
 
-        button {
-            display: flex;
-            align-items: center;
-            gap: min(.3rem, .3vw);
+        select {
+            all: unset;
+            cursor: pointer;
+            font-size: min(1.2rem, 1vw);
+            font-weight: 500;
+            padding: min(.5rem, .4vw) min(1rem, .8vw);
+            border-radius: 10px;
+            transition: all .3s ease-in-out;
 
-            svg {
-                rotate: 180deg;
+
+
+            &:hover {
+                background-color: #F0F0F0;
             }
+
+            &.active {
+                background-color: #000;
+                color: #fff;
+            }
+
+
+
         }
     }
 

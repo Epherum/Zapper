@@ -9,6 +9,7 @@ import { collection, addDoc, updateDoc, where, doc } from "firebase/firestore";
 import { useRouter } from "next/router";
 import { useFormik, Field, FormikProvider } from "formik";
 import { useTaskDataContext } from "@/contexts/TaskDataContext";
+import { useQueryClient } from "@tanstack/react-query";
 import moment from "moment";
 export default function TaskOverlay() {
   const router = useRouter();
@@ -16,6 +17,7 @@ export default function TaskOverlay() {
   const { taskData, setTaskData } = useTaskDataContext();
   const [project, setProject] = useState("");
   const [docID, setDocID] = useState("");
+  const queryClient = useQueryClient();
 
   const formik = useFormik({
     initialValues: {
@@ -25,7 +27,6 @@ export default function TaskOverlay() {
       priority: "low",
       assignee: "",
       targetDate: "",
-      startDate: "",
       project: "",
     },
     onSubmit: handleSubmit,
@@ -40,7 +41,6 @@ export default function TaskOverlay() {
         priority: taskData.priority,
         assignee: taskData.assignee,
         targetDate: taskData.targetDate,
-        startDate: taskData.startDate,
         project: taskData.project,
       });
     } else {
@@ -52,7 +52,6 @@ export default function TaskOverlay() {
           priority: "low",
           assignee: "",
           targetDate: "",
-          startDate: "",
           project: "",
         });
       }, 500);
@@ -79,16 +78,17 @@ export default function TaskOverlay() {
       formik.values.project,
       "tasks"
     );
-    const formattedDate = moment(formik.values.targetDate).format(
-      "MMM Do YYYY"
-    );
+    const createdAt = new Date();
+
     const docRef = await addDoc(tasksCollection, {
       ...formik.values,
-      targetDate: formattedDate,
+      createdAt,
     });
+
     const docId = docRef.id;
     await updateDoc(docRef, { id: docId });
     setDocID(docId);
+    queryClient.invalidateQueries(["tasks", formik.values.project]);
   };
 
   const editTask = async () => {
@@ -100,18 +100,14 @@ export default function TaskOverlay() {
       formik.values.project,
       "tasks"
     );
-    const formattedTargetDate = moment(formik.values.targetDate).format(
-      "MMM Do YYYY"
-    );
 
-    const formattedStartDate = moment(new Date()).format("MMM Do YYYY");
+    const lastUpdated = new Date();
 
     await updateDoc(doc(tasksCollection, taskData.id), {
       ...formik.values,
-      targetDate: formattedTargetDate,
-      startDate: formattedStartDate,
+      lastUpdated,
     });
-    setDocID(taskData.id);
+    queryClient.invalidateQueries(["tasks", formik.values.project]);
   };
 
   const editTaskMutation = useMutation(editTask);
