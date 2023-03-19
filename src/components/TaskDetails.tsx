@@ -6,11 +6,26 @@ import { doc, deleteDoc } from "firebase/firestore";
 import { db } from "@/firebase/firebaseConfig";
 import { useTaskDataContext } from "@/contexts/TaskDataContext";
 import { useModalDimContext } from "@/contexts/ModalDimContext";
-
+import moment from "moment";
 function TaskDetails(props: any) {
-  const { title, status, priority, assignee, project, id } = props.taskData;
-  const { taskData, setTaskData } = useTaskDataContext();
-  const { isModalDimmed, setIsModalDimmed } = useModalDimContext();
+  const {
+    title,
+    status,
+    priority,
+    assignee,
+    project,
+    id,
+    createdAt,
+    targetDate,
+  } = props.taskData;
+  const { setTaskData } = useTaskDataContext();
+  const { setIsModalDimmed } = useModalDimContext();
+
+  const formattedCreatedAt = moment
+    .unix(createdAt.seconds)
+    .format("MMMM DD, YYYY");
+  const formattedTargetDate = moment(targetDate).format("MMMM DD, YYYY");
+
   function deleteTask() {
     deleteDoc(
       doc(db, "companies", "DunderMifflin", "projects", project, "tasks", id)
@@ -60,11 +75,11 @@ function TaskDetails(props: any) {
         </div>
         <div className={styles.taskDetailsInfoItem}>
           <p>Start date</p>
-          <p>Jul 13, 2023</p>
+          <p>{formattedCreatedAt}</p>
         </div>
         <div className={styles.taskDetailsInfoItem}>
           <p>Tagret date</p>
-          <p>Oct 20, 2023</p>
+          <p>{targetDate ? formattedTargetDate : "Not set"}</p>
         </div>
         <div className={styles.taskDetailsInfoItem}>
           <p>Project</p>

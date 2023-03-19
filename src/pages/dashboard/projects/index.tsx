@@ -5,7 +5,7 @@ import ProjectDetails from "@/components/ProjectDetails";
 import Headline from "@/components/Headline";
 import { AiOutlinePlus } from "react-icons/ai";
 import { motion, AnimatePresence } from "framer-motion";
-import { collection, query, getDocs } from "firebase/firestore";
+import { collection, query, getDocs, limit } from "firebase/firestore";
 import { db } from "@/firebase/firebaseConfig";
 import {
   filters,
@@ -40,7 +40,8 @@ export default function Projects() {
           "projects",
           projectDoc.id,
           "tasks"
-        )
+        ),
+        limit(3)
       );
       const tasksSnapshot = await getDocs(tasksQuery);
       const tasks = [];
@@ -56,7 +57,7 @@ export default function Projects() {
     return projectsData;
   }
 
-  const { isLoading, error, data } = useQuery(["projects"], getProjects);
+  const { data } = useQuery(["projects"], getProjects);
 
   return (
     <section>
@@ -154,20 +155,7 @@ export default function Projects() {
                 exit={{ opacity: 0, y: 20 }}
                 className={styles.projectDetails}
               >
-                <ProjectDetails
-                  // @ts-ignore
-                  title={selectedProject.name}
-                  // @ts-ignore
-                  startDate={selectedProject.startDate}
-                  // @ts-ignore
-                  targetDate={selectedProject.targetDate}
-                  // @ts-ignore
-                  description={selectedProject.description}
-                  // @ts-ignore
-                  manager={selectedProject.manager}
-                  // @ts-ignore
-                  archived={selectedProject.archived}
-                />
+                <ProjectDetails selectedProject={selectedProject} />
               </motion.div>
             )}
             {selectedProject && !switchP && (
@@ -179,20 +167,7 @@ export default function Projects() {
                 exit={{ opacity: 0, y: 20 }}
                 className={styles.projectDetails}
               >
-                <ProjectDetails
-                  // @ts-ignore
-                  title={selectedProject.name}
-                  // @ts-ignore
-                  startDate={selectedProject.startDate}
-                  // @ts-ignore
-                  targetDate={selectedProject.targetDate}
-                  // @ts-ignore
-                  description={selectedProject.description}
-                  // @ts-ignore
-                  manager={selectedProject.manager}
-                  // @ts-ignore
-                  archived={selectedProject.archived}
-                />
+                <ProjectDetails selectedProject={selectedProject} />
               </motion.div>
             )}
           </AnimatePresence>

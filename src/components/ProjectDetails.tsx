@@ -1,34 +1,26 @@
 import styles from "@/styles/projects.module.scss";
 import { CgArrowsExpandRight } from "react-icons/cg";
 import Task from "@/components/ProjectsTask";
-import { projectsData, tasksData } from "@/data/mockData";
 import Link from "@/components/Link";
 import Image from "next/image";
-import { useRouter } from "next/router";
+import moment from "moment";
 
-function ProjectDetails({
-  title,
-  description,
-  archived,
-  manager,
-  startDate,
-  targetDate,
-}: {
-  title: string;
-  description: string;
-  archived: boolean;
-  manager: string;
-  startDate: string;
-  targetDate: string;
-}) {
-  const router = useRouter();
+function ProjectDetails({ selectedProject }: { selectedProject: any }) {
+  const { name, description, createdAt, targetDate, archived, manager, tasks } =
+    selectedProject;
+
+  const formattedCreatedAt = moment
+    .unix(createdAt.seconds)
+    .format("MMMM DD, YYYY");
+  const formattedTargetDate = moment(targetDate).format("MMMM DD, YYYY");
+
   return (
     <>
       <Link
-        href={`/dashboard/projects/${title}`}
+        href={`/dashboard/projects/${name}`}
         className={styles.projectDetailsHeadline}
       >
-        <h2>{title}</h2>
+        <h2>{name}</h2>
         <CgArrowsExpandRight />
       </Link>
       <p className={styles.projectDetailsDescription}>{description}</p>
@@ -43,11 +35,11 @@ function ProjectDetails({
         </div>
         <div className={styles.projectDetailsInfoItem}>
           <p>Start date</p>
-          <p>{startDate}</p>
+          <p>{formattedCreatedAt}</p>
         </div>
         <div className={styles.projectDetailsInfoItem}>
           <p>Target date</p>
-          <p>{targetDate}</p>
+          <p>{formattedTargetDate}</p>
         </div>
         <div className={styles.projectDetailsInfoItem}>
           <p>Members</p>
@@ -73,9 +65,13 @@ function ProjectDetails({
       <div className={styles.projectDetailsTasks}>
         <h3>Recent tasks</h3>
         <div className={styles.projectDetailsTasksList}>
-          {tasksData.slice(0, 3).map((task: any, index: number) => (
-            <Link href="/dashboard/projects/[id]" key={index}>
-              <Task id={task.idd} title={task.title} priority={task.priority} />
+          {tasks.map((task: any, index: number) => (
+            <Link href={`/dashboard/projects/${task.id}`} key={task.id}>
+              <Task
+                id={"ID LG-2"}
+                title={task.title}
+                priority={task.priority}
+              />
             </Link>
           ))}
         </div>

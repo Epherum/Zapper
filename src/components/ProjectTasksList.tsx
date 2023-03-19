@@ -20,7 +20,7 @@ export default function ProjectTasksList({ tasksData, removeFromData }: any) {
         <>
           {tasksData?.filter((task: any) => task.status === title).length !==
             0 && (
-            <div className={styles.tasks} key={index}>
+            <div className={styles.tasks} key={tasksData.id}>
               <motion.h2
                 variants={tasksHeadline}
                 initial="hidden"
@@ -53,7 +53,8 @@ export default function ProjectTasksList({ tasksData, removeFromData }: any) {
                         id={"ID LG-21"}
                         title={task.title}
                         priority={task.priority}
-                        date={"2021"}
+                        startDate={task.startDate}
+                        targetDate={task.targetDate}
                       />
                     </motion.div>
                   ))}

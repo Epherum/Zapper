@@ -1,20 +1,26 @@
 import styles from "@/styles/projectTasks.module.scss";
 import { MdExpandMore } from "react-icons/md";
 import Image from "next/image";
-
+import moment from "moment";
 interface ProjectTasksTasksProps {
   id: string;
   title: string;
   priority: string;
-  date: string;
+  startDate: string;
+  targetDate: string;
 }
 
 function ProjectTasksTasks({
   id,
   title,
   priority,
-  date,
+  startDate,
+  targetDate,
 }: ProjectTasksTasksProps) {
+  const date = `${moment(startDate).format("MMM DD")} - ${moment(
+    targetDate
+  ).format("MMM DD")}`;
+
   return (
     <div className={styles.taskItem}>
       <div className={styles.taskLeftSide}>
