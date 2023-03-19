@@ -324,6 +324,7 @@
             display: flex;
             flex-direction: column;
             gap: min(2.1rem, 1.7vw);
+            margin-bottom: min(2.8rem, 2.3vw);
 
             .taskDetailsInfoItem {
                 display: grid;
@@ -359,7 +360,35 @@
 
             }
         }
+
     }
+
+    .edit,
+    .delete {
+        all: unset;
+        display: inline-block;
+        font-size: min(1.2rem, 1vw);
+        cursor: pointer;
+        color: #5d5d5d;
+        border: 1px solid #d4d4d4;
+        border-radius: 5px;
+        padding: min(.9rem, .7vw) min(1.2rem, 1vw);
+        transition: background-color .3s ease-in-out, color .3s ease-in-out;
+        margin-right: 1rem;
+
+        &:hover {
+            background-color: #fde68a;
+            color: #000;
+        }
+
+    }
+
+    .delete {
+        &:hover {
+            background-color: #f87171;
+        }
+    }
+
 
     .createdAt {
         display: flex;

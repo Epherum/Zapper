@@ -1,7 +1,6 @@
 import styles from "@/styles/taskDetails.module.scss";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { AiOutlinePlus } from "react-icons/ai";
-import { CgArrowsExpandRight } from "react-icons/cg";
 import { FiSend } from "react-icons/fi";
 import { ImAttachment } from "react-icons/im";
 import Headline from "@/components/Headline";
@@ -24,15 +23,28 @@ import {
   taskDetails,
   taskDetailsItem,
   divider,
+  editButton,
+  deleteButton,
 } from "@/animations/taskDetails";
 import { motion } from "framer-motion";
-import { collection, query, where, getDoc, doc } from "firebase/firestore";
+import {
+  collection,
+  query,
+  where,
+  getDoc,
+  doc,
+  deleteDoc,
+} from "firebase/firestore";
 import { db } from "@/firebase/firebaseConfig";
 import { useRouter } from "next/router";
 import { useQuery } from "@tanstack/react-query";
+import { useTaskDataContext } from "@/contexts/TaskDataContext";
+import { useModalDimContext } from "@/contexts/ModalDimContext";
 
 export default function TaskDetails() {
   const [filter, setFilter] = useState("medium");
+  const { taskData, setTaskData } = useTaskDataContext();
+  const { isModalDimmed, setIsModalDimmed } = useModalDimContext();
   const router = useRouter();
   const TaskID = router.query.TaskID as string | undefined;
   const ProjectID = router.query.ProjectID as string | undefined;
@@ -53,6 +65,27 @@ export default function TaskDetails() {
     const issueSnapshot = await getDoc(issueQuery);
     const issue = issueSnapshot.data();
     return issue;
+  }
+  function deleteTask() {
+    if (data) {
+      deleteDoc(
+        doc(
+          db,
+          "companies",
+          "DunderMifflin",
+          "projects",
+          data.project,
+          "tasks",
+          data.id
+        )
+      );
+      router.push(`/dashboard/projects/${data.project}`);
+    }
+  }
+
+  function editTask() {
+    setTaskData(data);
+    setIsModalDimmed(true);
   }
 
   const { isLoading, error, data } = useQuery(["issue", TaskID], getIssues);
@@ -265,23 +298,16 @@ export default function TaskDetails() {
               variants={taskDetailsItem}
               className={styles.taskDetailsInfoItem}
             >
-              <p>name</p>
-              <p>Landing Page</p>
-            </motion.div>
-            <motion.div
-              variants={taskDetailsItem}
-              className={styles.taskDetailsInfoItem}
-            >
               <p>Status</p>
               <p>In progress</p>
             </motion.div>
-            <motion.div
+            {/* <motion.div
               variants={taskDetailsItem}
               className={styles.taskDetailsInfoItem}
             >
               <p>Priority</p>
               <p className={styles.priority}>medium</p>
-            </motion.div>
+            </motion.div> */}
             <motion.div
               variants={taskDetailsItem}
               className={styles.taskDetailsInfoItem}
@@ -320,6 +346,24 @@ export default function TaskDetails() {
               <p>Luminous Group</p>
             </motion.div>
           </motion.div>
+          <motion.button
+            variants={editButton}
+            initial="hidden"
+            animate="visible"
+            className={styles.edit}
+            onClick={editTask}
+          >
+            Edit Task
+          </motion.button>
+          <motion.button
+            variants={deleteButton}
+            initial="hidden"
+            animate="visible"
+            className={styles.delete}
+            onClick={deleteTask}
+          >
+            Delete Task
+          </motion.button>
         </div>
         <div className={styles.createdAt}>
           <p>Created July 22, 2023 4:43 PM by Julia B</p>

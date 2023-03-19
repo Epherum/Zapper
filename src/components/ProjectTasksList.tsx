@@ -22,7 +22,6 @@ export default function ProjectTasksList({ tasksData, removeFromData }: any) {
             0 && (
             <div className={styles.tasks} key={index}>
               <motion.h2
-                key={index}
                 variants={tasksHeadline}
                 initial="hidden"
                 animate="visible"
@@ -51,7 +50,6 @@ export default function ProjectTasksList({ tasksData, removeFromData }: any) {
                       }}
                     >
                       <Tasks
-                        key={task.id}
                         id={"ID LG-21"}
                         title={task.title}
                         priority={task.priority}
