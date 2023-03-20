@@ -5,12 +5,19 @@ import { MdExpandMore } from "react-icons/md";
 import { useModalDimContext } from "@/contexts/ModalDimContext";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { db } from "@/firebase/firebaseConfig";
-import { collection, addDoc, updateDoc, where, doc } from "firebase/firestore";
+import {
+  collection,
+  addDoc,
+  updateDoc,
+  where,
+  doc,
+  getDocs,
+  query,
+} from "firebase/firestore";
 import { useRouter } from "next/router";
 import { useFormik, Field, FormikProvider } from "formik";
 import { useTaskDataContext } from "@/contexts/TaskDataContext";
 import { useQueryClient } from "@tanstack/react-query";
-import moment from "moment";
 export default function TaskOverlay() {
   const router = useRouter();
   const { isModalDimmed, setIsModalDimmed } = useModalDimContext();
@@ -68,6 +75,27 @@ export default function TaskOverlay() {
     setIsModalDimmed(false);
     formik.resetForm();
   }
+
+  const getAllMembers = async () => {
+    const membersCollection = collection(
+      db,
+      "companies",
+      "DunderMifflin",
+      "members"
+    );
+    const q = query(
+      membersCollection,
+      where("projects", "array-contains", formik.values.project)
+    );
+    const querySnapshot = await getDocs(q);
+    const users = querySnapshot.docs.map((doc) => doc.data());
+    console.log(users);
+    return users;
+  };
+
+  const { data: membersData } = useQuery(["members"], getAllMembers, {
+    enabled: !!formik.values.project,
+  });
 
   const addTask = async () => {
     const tasksCollection = collection(
@@ -142,7 +170,6 @@ export default function TaskOverlay() {
                 }}
                 className={styles.select}
                 required
-                defaultValue={""}
               >
                 <option value="" disabled style={{ display: "none" }}>
                   Select a project
@@ -204,12 +231,16 @@ export default function TaskOverlay() {
               onChange={formik.handleChange}
               className={styles.select}
               required
-              defaultValue={""}
             >
               <option value="" disabled style={{ display: "none" }}>
                 Assignee
               </option>
-              <option value="John Doe">John Doe</option>
+              {membersData &&
+                membersData.map((member: any) => (
+                  <option value={member.email} key={member.email}>
+                    {member.email}
+                  </option>
+                ))}
             </Field>
 
             <Field name="targetDate">
@@ -227,7 +258,7 @@ export default function TaskOverlay() {
             </Field>
           </div>
           <div className={styles.submit}>
-            <button type="submit">{taskData ? "Edit" : "Sumbit"}</button>
+            <button type="submit">{taskData ? "Edit" : "Submit"}</button>
           </div>
         </form>
       </FormikProvider>

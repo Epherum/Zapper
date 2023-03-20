@@ -5,25 +5,26 @@ import { MdExpandLess } from "react-icons/md";
 import { MdExpandMore } from "react-icons/md";
 import Link from "@/components/Link";
 import Image from "next/image";
+import moment from "moment";
 
 interface TaskProps {
-  title: string;
-  idd: string;
-  description: string;
-  priority: string;
-  date: string;
+  task: {
+    title: string;
+    priority: string;
+    description: string;
+    createdAt: { seconds: number; nanoseconds: number };
+    targetDate: string;
+  };
   expandedFirst?: boolean;
 }
 
-export default function Task({
-  title,
-  idd,
-  description,
-  priority,
-  date,
-  expandedFirst = false,
-}: TaskProps) {
+export default function Task({ task, expandedFirst = false }: TaskProps) {
+  const { title, priority, description, createdAt, targetDate } = task;
   const [expanded, setExpanded] = useState(expandedFirst);
+
+  const date = `${moment.unix(createdAt.seconds).format("MMM DD")} - ${moment(
+    targetDate
+  ).format("MMM DD")}`;
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -38,7 +39,7 @@ export default function Task({
         <div>
           <div className={styles.taskID}>
             <p>
-              <span>{idd}</span>
+              <span>{"ID LG-12"}</span>
             </p>
           </div>
           <div className={styles.taskName}>
