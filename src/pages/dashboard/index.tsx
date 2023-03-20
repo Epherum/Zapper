@@ -8,7 +8,14 @@ import Task from "@/components/DashboardTask";
 import Project from "@/components/DashboardProject";
 import LineChart from "@/components/LineChart";
 import { db } from "@/firebase/firebaseConfig";
-import { getDoc, doc } from "firebase/firestore";
+import {
+  getDocs,
+  getDoc,
+  doc,
+  query,
+  where,
+  collectionGroup,
+} from "firebase/firestore";
 import {
   overviewData,
   tasksData,
@@ -32,9 +39,10 @@ import {
   progress,
   tasksHeadline,
   projectsHeadline,
-} from "@/animations/index";
+} from "@/animations/dashboard";
 import { useModalDimContext } from "@/contexts/ModalDimContext";
 import { useQuery } from "@tanstack/react-query";
+import Link from "@/components/Link";
 
 export default function Dashboard() {
   const { isModalDimmed, setIsModalDimmed } = useModalDimContext();
@@ -76,18 +84,59 @@ export default function Dashboard() {
 
     return user;
   }
+  async function getTasksAssignedToUser(userEmail: string) {
+    const tasks = [] as any;
+    const usertasks = await getDocs(
+      query(collectionGroup(db, "tasks"), where("assignee", "==", userEmail))
+    );
+    usertasks.forEach((issue) => {
+      const issueData = issue.data();
+      issueData.id = issue.id;
+      tasks.push(issueData);
+    });
+    console.log("tasks", tasks);
+    return tasks;
+  }
+  async function getProjectsAssignedToUser(userEmail: string) {
+    const projects = [] as any;
+    const userprojects = await getDocs(
+      query(
+        collectionGroup(db, "projects"),
+        where("members", "array-contains", userEmail)
+      )
+    );
+    userprojects.forEach((issue) => {
+      const issueData = issue.data();
+      issueData.id = issue.id;
+      projects.push(issueData);
+    });
+    console.log("projects", projects);
+    return projects;
+  }
 
-  const { data } = useQuery(["user"], getUserData, {
+  const { data: currentUser } = useQuery(["user"], getUserData, {
     enabled: !!session,
   });
 
-  useEffect(() => {
-    if (session) {
-      console.log("session", session?.user);
+  const { data: projects } = useQuery(
+    ["currentUserProjects"],
+    () => getProjectsAssignedToUser(currentUser.email),
+
+    {
+      enabled: !!currentUser,
     }
+  );
+  const { data: tasks } = useQuery(
+    ["currentUserTasks"],
+    () => getTasksAssignedToUser(currentUser.email),
 
-    console.log("data", data);
+    {
+      enabled: !!currentUser,
+    }
+  );
 
+  useEffect(() => {
+    console.log(currentUser);
     formatDate();
 
     const intervalId = setInterval(() => {
@@ -95,18 +144,18 @@ export default function Dashboard() {
     }, 30000);
 
     return () => clearInterval(intervalId);
-  }, [session, data]);
+  }, [currentUser]);
 
-  if (!session) return <></>;
+  if (!currentUser) return <></>;
 
   return (
     <section>
-      {data && (
+      {currentUser && tasks && projects && (
         <>
           <div className={styles.headline}>
             <div className={styles.title}>
               <motion.h1 variants={title} initial="hidden" animate="visible">
-                Welcome back, <span>{data.username}</span>
+                Welcome back, <span>{currentUser.username}</span>
               </motion.h1>
               <motion.p variants={subtitle} initial="hidden" animate="visible">
                 Track, manage and forecast projects and timeline
@@ -175,22 +224,21 @@ export default function Dashboard() {
                 animate="visible"
                 className={styles.tasks}
               >
-                {tasksData.map((task, index) => (
-                  <motion.div variants={taskItem} key={index}>
+                {tasks?.map((task: any, index: number) => (
+                  <motion.div variants={taskItem} key={task.id}>
                     <Task
-                      title={task.title}
-                      date={task.date}
-                      description={task.description}
-                      idd={task.idd}
-                      priority={task.priority}
+                      task={task}
                       expandedFirst={index === 0 ? true : false}
                     />
                   </motion.div>
                 ))}
-                <div className={`${styles.task} ${styles.addTask}`}>
+                <motion.div
+                  variants={taskItem}
+                  className={`${styles.task} ${styles.addTask}`}
+                >
                   <p>Add new task</p>
                   <AiOutlinePlus />
-                </div>
+                </motion.div>
               </motion.div>
             </div>
             <div className={styles.statistics}>
@@ -234,29 +282,26 @@ export default function Dashboard() {
               </div>
             </motion.div>
             <div className={styles.projects}>
-              <motion.div
-                variants={projectsHeadline}
-                initial="hidden"
-                animate="visible"
-                className={styles.projectsHeadline}
-              >
-                <p>My projects</p>
-                <CgArrowsExpandRight />
-              </motion.div>
+              <Link href={`/dashboard/projects`}>
+                <motion.div
+                  variants={projectsHeadline}
+                  initial="hidden"
+                  animate="visible"
+                  className={styles.projectsHeadline}
+                >
+                  <p>My projects</p>
+                  <CgArrowsExpandRight />
+                </motion.div>
+              </Link>
               <motion.div
                 variants={projects}
                 initial="hidden"
                 animate="visible"
                 className={styles.projectsList}
               >
-                {projectsData.map((item, index) => (
+                {projects.map((project: any, index: number) => (
                   <motion.div variants={projectItem} key={index}>
-                    <Project
-                      title={item.title}
-                      tasks={item.tasks}
-                      overdue={item.overdue}
-                      date={item.date}
-                    />
+                    <Project project={project} />
                   </motion.div>
                 ))}
               </motion.div>

@@ -2,28 +2,38 @@ import styles from "@/styles/dashboard.module.scss";
 import { useRouter } from "next/router";
 import Link from "@/components/Link";
 import Image from "next/image";
-
+import moment from "moment";
+import { motion } from "framer-motion";
 interface DashboardProjectProps {
-  title: string;
-  tasks: number;
-  overdue: number;
-  date: string;
+  project: {
+    name: string;
+    tasks: number;
+    overdue: number;
+    createdAt: { seconds: number; nanoseconds: number };
+    targetDate: string;
+  };
 }
 
-export default function DashboardProject({
-  title,
-  tasks,
-  overdue,
-  date,
-}: DashboardProjectProps) {
+export default function DashboardProject({ project }: DashboardProjectProps) {
+  const { name, createdAt, targetDate } = project;
+  const date = `${moment.unix(createdAt.seconds).format("MMM DD")} - ${moment(
+    targetDate
+  ).format("MMM DD")}`;
   const router = useRouter();
   return (
-    <Link href="/dashboard/projects">
-      <div className={styles.projectsItem}>
+    <Link href={`/dashboard/projects/${name}`}>
+      <motion.div
+        whileHover={{
+          scale: 1.02,
+          transition: { duration: 0.2, ease: "easeOut" },
+        }}
+        whileTap={{ scale: 0.98 }}
+        className={styles.projectsItem}
+      >
         <div className={styles.leftProjectSide}>
-          {router.pathname === "/" ? (
+          {router.pathname === "/dashboard" ? (
             <p className={styles.projectLetters}>
-              {title
+              {name
                 .split(" ")
                 .map((word) => word[0].toUpperCase())
                 .join("")}
@@ -33,9 +43,9 @@ export default function DashboardProject({
           )}
 
           <div className={styles.projectInfo}>
-            <p>{title}</p>
+            <p>{name}</p>
             <p>
-              {tasks} tasks <span>•</span> {overdue} overdue
+              {13} tasks <span>•</span> {3} overdue
             </p>
           </div>
         </div>
@@ -59,7 +69,7 @@ export default function DashboardProject({
           </div>
           <p>{date}</p>
         </div>
-      </div>
+      </motion.div>
     </Link>
   );
 }
