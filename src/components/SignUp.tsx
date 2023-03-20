@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import { FcGoogle } from "react-icons/fc";
 import Image from "next/image";
 import { useFormik } from "formik";
-import LoginValidate from "@/lib/validate";
+import LoginValidate from "@/lib/formValidate";
 import { hash } from "bcryptjs";
 import {
   getDoc,

@@ -7,23 +7,9 @@ import { CgArrowsExpandRight } from "react-icons/cg";
 import Task from "@/components/DashboardTask";
 import Project from "@/components/DashboardProject";
 import LineChart from "@/components/LineChart";
-import { db } from "@/firebase/firebaseConfig";
-import {
-  getDocs,
-  getDoc,
-  doc,
-  query,
-  where,
-  collectionGroup,
-} from "firebase/firestore";
-import {
-  overviewData,
-  tasksData,
-  projectsData,
-  chartData,
-} from "@/data/mockData";
+import { overviewData, chartData } from "@/data/mockData";
 import { motion } from "framer-motion";
-import { useSession, signOut } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import {
   title,
   subtitle,
@@ -43,6 +29,11 @@ import {
 import { useModalDimContext } from "@/contexts/ModalDimContext";
 import { useQuery } from "@tanstack/react-query";
 import Link from "@/components/Link";
+import {
+  getUserData,
+  getTasksAssignedToUser,
+  getProjectsAssignedToUser,
+} from "@/lib/api";
 
 export default function Dashboard() {
   const { isModalDimmed, setIsModalDimmed } = useModalDimContext();
@@ -70,55 +61,15 @@ export default function Dashboard() {
     setFormattedDate(newFormattedDate);
   };
 
-  async function getUserData() {
-    const res = await fetch(`/api/user`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+  const { data: currentUser } = useQuery(
+    ["user"],
+    () => getUserData(session?.user?.email as string),
+    {
+      enabled: !!session,
+    }
+  );
 
-      body: JSON.stringify(session?.user?.email),
-    });
-
-    const user = await res.json();
-
-    return user;
-  }
-  async function getTasksAssignedToUser(userEmail: string) {
-    const tasks = [] as any;
-    const usertasks = await getDocs(
-      query(collectionGroup(db, "tasks"), where("assignee", "==", userEmail))
-    );
-    usertasks.forEach((issue) => {
-      const issueData = issue.data();
-      issueData.id = issue.id;
-      tasks.push(issueData);
-    });
-    console.log("tasks", tasks);
-    return tasks;
-  }
-  async function getProjectsAssignedToUser(userEmail: string) {
-    const projects = [] as any;
-    const userprojects = await getDocs(
-      query(
-        collectionGroup(db, "projects"),
-        where("members", "array-contains", userEmail)
-      )
-    );
-    userprojects.forEach((issue) => {
-      const issueData = issue.data();
-      issueData.id = issue.id;
-      projects.push(issueData);
-    });
-    console.log("projects", projects);
-    return projects;
-  }
-
-  const { data: currentUser } = useQuery(["user"], getUserData, {
-    enabled: !!session,
-  });
-
-  const { data: projects } = useQuery(
+  const { data: userProjects } = useQuery(
     ["currentUserProjects"],
     () => getProjectsAssignedToUser(currentUser.email),
 
@@ -126,7 +77,7 @@ export default function Dashboard() {
       enabled: !!currentUser,
     }
   );
-  const { data: tasks } = useQuery(
+  const { data: userTasks } = useQuery(
     ["currentUserTasks"],
     () => getTasksAssignedToUser(currentUser.email),
 
@@ -150,7 +101,7 @@ export default function Dashboard() {
 
   return (
     <section>
-      {currentUser && tasks && projects && (
+      {currentUser && userTasks && userProjects && (
         <>
           <div className={styles.headline}>
             <div className={styles.title}>
@@ -224,7 +175,7 @@ export default function Dashboard() {
                 animate="visible"
                 className={styles.tasks}
               >
-                {tasks?.map((task: any, index: number) => (
+                {userTasks?.map((task: any, index: number) => (
                   <motion.div variants={taskItem} key={task.id}>
                     <Task
                       task={task}
@@ -299,7 +250,7 @@ export default function Dashboard() {
                 animate="visible"
                 className={styles.projectsList}
               >
-                {projects.map((project: any, index: number) => (
+                {userProjects?.map((project: any, index: number) => (
                   <motion.div variants={projectItem} key={index}>
                     <Project project={project} />
                   </motion.div>
