@@ -1,9 +1,7 @@
 import { db } from "@/firebase/firebaseConfig";
-import { collection, getDoc, query, where, doc } from "firebase/firestore";
-
+import { getDoc, doc } from "firebase/firestore";
 export default async function handler(req, res) {
-  const email = req.body;
-
+  const { email } = req.query;
   const docRef = doc(db, "users", email);
   const querySnapshot = await getDoc(docRef);
   const user = querySnapshot.data();
