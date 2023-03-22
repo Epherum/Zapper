@@ -9,7 +9,9 @@ import moment from "moment";
 
 interface TaskProps {
   task: {
+    id: string;
     title: string;
+    project: string;
     priority: string;
     description: string;
     createdAt: { seconds: number; nanoseconds: number };
@@ -19,7 +21,8 @@ interface TaskProps {
 }
 
 export default function Task({ task, expandedFirst = false }: TaskProps) {
-  const { title, priority, description, createdAt, targetDate } = task;
+  const { title, priority, description, createdAt, targetDate, project, id } =
+    task;
   const [expanded, setExpanded] = useState(expandedFirst);
 
   const date = `${moment.unix(createdAt.seconds).format("MMM DD")} - ${moment(
@@ -61,7 +64,7 @@ export default function Task({ task, expandedFirst = false }: TaskProps) {
           </div>
         </div>
         {expanded ? (
-          <Link href="/dashboard/projects/missguided/LG-12">
+          <Link href={`/dashboard/projects/${project}/${id}`}>
             <CgArrowsExpandRight />
           </Link>
         ) : (

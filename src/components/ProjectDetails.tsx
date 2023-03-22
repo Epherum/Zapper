@@ -66,12 +66,11 @@ function ProjectDetails({ selectedProject }: { selectedProject: any }) {
         <h3>Recent tasks</h3>
         <div className={styles.projectDetailsTasksList}>
           {tasks.map((task: any, index: number) => (
-            <Link href={`/dashboard/projects/${task.id}`} key={task.id}>
-              <Task
-                id={"ID LG-2"}
-                title={task.title}
-                priority={task.priority}
-              />
+            <Link
+              href={`/dashboard/projects/${task.project}/${task.id}`}
+              key={task.id}
+            >
+              <Task task={task} />
             </Link>
           ))}
         </div>

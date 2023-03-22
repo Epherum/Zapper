@@ -5,8 +5,6 @@ import ProjectDetails from "@/components/ProjectDetails";
 import Headline from "@/components/Headline";
 import { AiOutlinePlus } from "react-icons/ai";
 import { motion, AnimatePresence } from "framer-motion";
-import { collection, query, getDocs, limit } from "firebase/firestore";
-import { db } from "@/firebase/firebaseConfig";
 import {
   filters,
   filterItem,
@@ -16,46 +14,12 @@ import {
   divider,
 } from "@/animations/projects";
 import { useQuery } from "@tanstack/react-query";
+import { getProjects } from "@/lib/api";
 
 export default function Projects() {
   const [filter, setFilter] = useState("active");
   const [selectedProject, setSelectedProject] = useState();
   const [switchP, setSwitchP] = useState(false);
-
-  async function getProjects() {
-    const projectsQuery = query(
-      collection(db, "companies", "DunderMifflin", "projects")
-    );
-    const projectsSnapshot = await getDocs(projectsQuery);
-    const projectsData = [];
-
-    for (const projectDoc of projectsSnapshot.docs) {
-      const project = projectDoc.data();
-
-      const tasksQuery = query(
-        collection(
-          db,
-          "companies",
-          "DunderMifflin",
-          "projects",
-          projectDoc.id,
-          "tasks"
-        ),
-        limit(3)
-      );
-      const tasksSnapshot = await getDocs(tasksQuery);
-      const tasks = [];
-
-      for (const issueDoc of tasksSnapshot.docs) {
-        const issue = issueDoc.data();
-        tasks.push(issue);
-      }
-
-      project.tasks = tasks;
-      projectsData.push(project);
-    }
-    return projectsData;
-  }
 
   const { data } = useQuery(["projects"], getProjects);
 

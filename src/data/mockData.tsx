@@ -3,7 +3,7 @@ import { v4 as uuid } from "uuid";
 export const overviewData = [
   {
     title: "Completed Tasks",
-    tasks: "42",
+    tasks: 42,
     color: "#28BFFF",
     backgroundColor: "#E5F7FF",
     display: "flex",
@@ -208,7 +208,7 @@ export const chartData = () => {
     ],
     datasets: [
       {
-        label: "Users Lost",
+        label: "Tasks created",
         data: [0, 5, 10, 5, 30, 15, 10, 5, 0, 5],
         borderColor: "rgba(0,0,0, 0.9)",
         borderWidth: 1.5,
@@ -221,7 +221,7 @@ export const chartData = () => {
         tension: 0.5,
       },
       {
-        label: "Users Gained",
+        label: "Tasks completed",
         data: [0, 10, 5, 30, 20, 25, 10],
         borderColor: "black",
         borderWidth: 0,

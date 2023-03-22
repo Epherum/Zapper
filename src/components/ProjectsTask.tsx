@@ -2,15 +2,28 @@ import styles from "@/styles/projects.module.scss";
 import { MdExpandMore } from "react-icons/md";
 
 interface ProjectsTaskProps {
-  id: string;
-  title: string;
-  priority: string;
+  task: {
+    id: string;
+    title: string;
+    description: string;
+    createdAt: {
+      seconds: number;
+      nanoseconds: number;
+    };
+    targetDate: string;
+    assignee: string;
+    status: string;
+    priority: string;
+    project: string;
+  };
 }
-function ProjectsTask({ id, title, priority }: ProjectsTaskProps) {
+function ProjectsTask({ task }: ProjectsTaskProps) {
+  const { id, title, priority, project } = task;
+  console.log(task);
   return (
     <div className={styles.projectDetailsTasksListItem}>
       <div className={styles.projectDetailsTasksListItemLeft}>
-        <p>{id}</p>
+        <p>{"ID LG-12"}</p>
         <p>{title}</p>
       </div>
       <div className={styles.projectDetailsTasksListItemRight}>
