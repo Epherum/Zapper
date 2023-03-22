@@ -103,30 +103,31 @@ export default function Dashboard() {
 
   const { data: userProjects } = useQuery(
     ["currentUserProjects"],
-    () => getProjectsAssignedToUser(currentUser.email),
+    () => getProjectsAssignedToUser(session?.user?.email as string),
 
     {
-      enabled: !!currentUser,
+      enabled: !!session,
     }
   );
   const { data: userTasks } = useQuery(
     ["currentUserTasks"],
-    () => getTasksAssignedToUser(currentUser.email),
+    () => getTasksAssignedToUser(session?.user?.email as string),
 
     {
-      enabled: !!currentUser,
+      enabled: !!session,
     }
   );
 
   useEffect(() => {
     formatDate();
+    console.log(session);
 
     const intervalId = setInterval(() => {
       formatDate();
     }, 30000);
 
     return () => clearInterval(intervalId);
-  }, []);
+  }, [session]);
 
   useEffect(() => {
     if (userTasks) {
