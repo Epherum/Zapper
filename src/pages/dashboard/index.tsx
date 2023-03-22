@@ -7,7 +7,7 @@ import { CgArrowsExpandRight } from "react-icons/cg";
 import Task from "@/components/DashboardTask";
 import Project from "@/components/DashboardProject";
 import LineChart from "@/components/LineChart";
-import { overviewData, chartData } from "@/data/mockData";
+import { chartData } from "@/data/mockData";
 import { motion } from "framer-motion";
 import { useSession } from "next-auth/react";
 import {
@@ -38,6 +38,38 @@ import {
 export default function Dashboard() {
   const { isModalDimmed, setIsModalDimmed } = useModalDimContext();
   const [formattedDate, setFormattedDate] = useState("");
+  const [overviewData, setOverviewData] = useState([
+    {
+      title: "Completed Tasks",
+      tasks: 0,
+      color: "#28BFFF",
+      backgroundColor: "#E5F7FF",
+      display: "flex",
+    },
+    {
+      title: "Incompleted Tasks",
+      tasks: 0,
+      color: "#7164C6",
+      backgroundColor: "#EFEDF9",
+      display: "flex",
+    },
+    {
+      title: "Overdue Tasks",
+      tasks: 0,
+      color: "#2DA757",
+      backgroundColor: "#E7F5EC",
+      display: "flex",
+    },
+    {
+      title: "Total Tasks",
+      tasks: 0,
+      color: "#28BFFF",
+      backgroundColor: "#E5F7FF",
+      display: "none",
+    },
+  ]);
+  const [completedPercentage, setCompletedPercentage] = useState(0);
+
   const { data: session } = useSession({
     required: true,
   });
@@ -87,7 +119,6 @@ export default function Dashboard() {
   );
 
   useEffect(() => {
-    console.log(currentUser);
     formatDate();
 
     const intervalId = setInterval(() => {
@@ -95,7 +126,42 @@ export default function Dashboard() {
     }, 30000);
 
     return () => clearInterval(intervalId);
-  }, [currentUser]);
+  }, []);
+
+  useEffect(() => {
+    if (userTasks) {
+      setOverviewData((prev) => {
+        return [
+          {
+            ...prev[0],
+            tasks: userTasks.filter((task: any) => task.status === "Done")
+              .length,
+          },
+          {
+            ...prev[1],
+            tasks: userTasks.filter((task: any) => task.status !== "Done")
+              .length,
+          },
+          {
+            ...prev[2],
+            tasks: userTasks.filter((task: any) => task.status === "Backlog")
+              .length,
+          },
+          {
+            ...prev[3],
+            tasks: userTasks.length,
+          },
+        ];
+      });
+      setCompletedPercentage(
+        Math.round(
+          (userTasks.filter((task: any) => task.status === "Done").length /
+            userTasks.length) *
+            100
+        )
+      );
+    }
+  }, [userTasks]);
 
   if (!currentUser) return <></>;
 
@@ -183,13 +249,14 @@ export default function Dashboard() {
                     />
                   </motion.div>
                 ))}
-                <motion.div
+                <motion.button
                   variants={taskItem}
                   className={`${styles.task} ${styles.addTask}`}
+                  onClick={handleToggle}
                 >
-                  <p>Add new task</p>
+                  Add new task
                   <AiOutlinePlus />
-                </motion.div>
+                </motion.button>
               </motion.div>
             </div>
             <div className={styles.statistics}>
@@ -200,7 +267,7 @@ export default function Dashboard() {
                 className={styles.statisticsHeadline}
               >
                 <p>Statistics</p>
-                <p>tasks created vs tasks completed vs tasks overdue</p>
+                <p>view a summary of your work over this month</p>
               </motion.div>
 
               <motion.div
@@ -223,7 +290,8 @@ export default function Dashboard() {
               </div>
               <div className={styles.progressCircle}>
                 <p>
-                  80<span>%</span>
+                  {completedPercentage}
+                  <span>%</span>
                 </p>
                 <p>completed</p>
               </div>

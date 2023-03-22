@@ -26,7 +26,7 @@ export default function Menu() {
         </motion.li>
 
         <motion.li variants={menuItem} className={styles.icon}>
-          <Link href="/dashboard/projects/missguided">
+          <Link href="/dashboard/projects/Zapper">
             <BiTask />
           </Link>
         </motion.li>

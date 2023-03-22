@@ -5,15 +5,6 @@ import Board from "@/components/ProjectTasksBoard";
 import Headline from "@/components/Headline";
 import { motion, AnimatePresence } from "framer-motion";
 import { filters, filterItem, divider } from "@/animations/projectTasks";
-import {
-  collection,
-  query,
-  where,
-  getDocs,
-  getDoc,
-  doc,
-} from "firebase/firestore";
-import { db } from "@/firebase/firebaseConfig";
 import { useRouter } from "next/router";
 import {
   useQuery,
@@ -21,6 +12,7 @@ import {
   useMutation,
   useQueryClient,
 } from "@tanstack/react-query";
+import { getProjectTasks } from "@/lib/api";
 
 export default function ProjectTasks() {
   const [filter, setFilter] = useState("list");
@@ -30,30 +22,14 @@ export default function ProjectTasks() {
   const router = useRouter();
   const ProjectID = router.query.ProjectID as string;
 
-  async function getTasks() {
-    const tasksQuery = query(
-      collection(
-        db,
-        "companies",
-        "DunderMifflin",
-        "projects",
-        ProjectID,
-        "tasks"
-      )
-    );
-    const tasksSnapshot = await getDocs(tasksQuery);
-    const tasks = [];
+  const { data } = useQuery(
+    ["tasks", ProjectID],
+    () => getProjectTasks(ProjectID),
 
-    for (const taskDoc of tasksSnapshot.docs) {
-      const task = { id: taskDoc.id, ...taskDoc.data() };
-      tasks.push(task);
+    {
+      enabled: !!ProjectID,
     }
-    return tasks;
-  }
-
-  const { data } = useQuery(["tasks", ProjectID], getTasks, {
-    enabled: !!ProjectID,
-  });
+  );
 
   function removeFromData(id: string) {
     queryClient.setQueryData(["tasks", ProjectID], (prevData: any) => {

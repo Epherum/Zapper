@@ -18,6 +18,7 @@ import { useRouter } from "next/router";
 import { useFormik, Field, FormikProvider } from "formik";
 import { useTaskDataContext } from "@/contexts/TaskDataContext";
 import { useQueryClient } from "@tanstack/react-query";
+
 export default function TaskOverlay() {
   const router = useRouter();
   const { isModalDimmed, setIsModalDimmed } = useModalDimContext();
@@ -116,7 +117,7 @@ export default function TaskOverlay() {
     const docId = docRef.id;
     await updateDoc(docRef, { id: docId });
     setDocID(docId);
-    queryClient.invalidateQueries(["tasks", formik.values.project]);
+    queryClient.invalidateQueries(["currentUserTasks"]);
   };
 
   const editTask = async () => {
