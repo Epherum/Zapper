@@ -14,8 +14,10 @@ import {
 } from "firebase/firestore";
 import { db } from "@/firebase/firebaseConfig";
 import { useProjectDataContext } from "@/contexts/ProjectDataContext";
+import { useQueryClient } from "@tanstack/react-query";
 
 function ProjectDetails(props: any) {
+  const queryClient = useQueryClient();
   const { setProjectData, isProjectModalVisible, setisProjectModalVisible } =
     useProjectDataContext();
   const { name, description, createdAt, targetDate, archived, manager, tasks } =
@@ -41,6 +43,7 @@ function ProjectDetails(props: any) {
 
     props.removeFromData(name);
     props.removeSelectedProject("");
+    queryClient.invalidateQueries(["tasks", name]);
   }
 
   function editTask() {

@@ -82,7 +82,7 @@ export default function TaskOverlay() {
       db,
       "companies",
       "DunderMifflin",
-      "members"
+      "employees"
     );
     const q = query(
       membersCollection,
@@ -90,12 +90,13 @@ export default function TaskOverlay() {
     );
     const querySnapshot = await getDocs(q);
     const users = querySnapshot.docs.map((doc) => doc.data());
-    console.log(users);
+    console.log("users: ", users);
+    console.log(formik.values.project);
     return users;
   };
 
-  const { data: membersData } = useQuery(["members"], getAllMembers, {
-    enabled: !!formik.values.project,
+  const { data: membersData } = useQuery(["projectMembers"], getAllMembers, {
+    enabled: isTaskModalVisible && !!formik.values.project,
   });
 
   const addTask = async () => {
@@ -117,7 +118,6 @@ export default function TaskOverlay() {
     const docId = docRef.id;
     await updateDoc(docRef, { id: docId });
     setDocID(docId);
-    queryClient.invalidateQueries(["currentUserTasks"]);
   };
 
   const editTask = async () => {
@@ -136,12 +136,21 @@ export default function TaskOverlay() {
       ...formik.values,
       lastUpdated,
     });
-    queryClient.invalidateQueries(["tasks", formik.values.project]);
   };
 
-  const editTaskMutation = useMutation(editTask);
+  const editTaskMutation = useMutation(editTask, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(["currentUserTasks"]);
+      queryClient.invalidateQueries(["tasks", formik.values.project]);
+    },
+  });
 
-  const addTaskMutation = useMutation(addTask);
+  const addTaskMutation = useMutation(addTask, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(["currentUserTasks"]);
+      queryClient.invalidateQueries(["tasks", formik.values.project]);
+    },
+  });
 
   useEffect(() => {
     if (docID !== "") {
@@ -168,6 +177,7 @@ export default function TaskOverlay() {
                 onChange={(e: any) => {
                   formik.handleChange(e);
                   setProject(e.target.value);
+                  queryClient.invalidateQueries(["projectMembers"]);
                 }}
                 className={styles.select}
                 required

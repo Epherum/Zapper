@@ -87,7 +87,9 @@ export default function ProjectOverlay() {
     return users;
   };
 
-  const { data: membersData } = useQuery(["members"], getAllMembers);
+  const { data: membersData } = useQuery(["allEmployees"], getAllMembers, {
+    enabled: isProjectModalVisible,
+  });
 
   const addProject = async () => {
     const projectsCollection = doc(
