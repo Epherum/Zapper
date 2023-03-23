@@ -39,14 +39,14 @@ import { db } from "@/firebase/firebaseConfig";
 import { useRouter } from "next/router";
 import { useQuery } from "@tanstack/react-query";
 import { useTaskDataContext } from "@/contexts/TaskDataContext";
-import { useModalDimContext } from "@/contexts/ModalDimContext";
+
 import moment from "moment";
 
 export default function TaskDetails() {
   const [priority, setPriority] = useState("");
   const [status, setStatus] = useState("");
-  const { setTaskData } = useTaskDataContext();
-  const { setIsModalDimmed } = useModalDimContext();
+  const { setTaskData, setisTaskModalVisible, isTaskModalVisible } =
+    useTaskDataContext();
   const router = useRouter();
   const TaskID = router.query.TaskID as string;
   const ProjectID = router.query.ProjectID as string;
@@ -110,7 +110,7 @@ export default function TaskDetails() {
 
   function editTask() {
     setTaskData(data);
-    setIsModalDimmed(true);
+    setisTaskModalVisible(!isTaskModalVisible);
   }
 
   const { data } = useQuery(["task", TaskID], getTasks, {

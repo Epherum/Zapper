@@ -2,7 +2,7 @@ import styles from "@/styles/taskOverlay.module.scss";
 import { useState, useEffect } from "react";
 import { GrClose } from "react-icons/gr";
 import { MdExpandMore } from "react-icons/md";
-import { useModalDimContext } from "@/contexts/ModalDimContext";
+
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { db } from "@/firebase/firebaseConfig";
 import {
@@ -21,8 +21,8 @@ import { useQueryClient } from "@tanstack/react-query";
 
 export default function TaskOverlay() {
   const router = useRouter();
-  const { isModalDimmed, setIsModalDimmed } = useModalDimContext();
-  const { taskData, setTaskData } = useTaskDataContext();
+  const { taskData, setTaskData, isTaskModalVisible, setisTaskModalVisible } =
+    useTaskDataContext();
   const [project, setProject] = useState("");
   const [docID, setDocID] = useState("");
   const queryClient = useQueryClient();
@@ -73,7 +73,7 @@ export default function TaskOverlay() {
     } else {
       addTaskMutation.mutate();
     }
-    setIsModalDimmed(false);
+    setisTaskModalVisible(false);
     formik.resetForm();
   }
 
@@ -153,8 +153,8 @@ export default function TaskOverlay() {
     <div
       className={styles.overlay}
       style={{
-        zIndex: isModalDimmed ? "11" : "-1",
-        opacity: isModalDimmed ? "1" : "0",
+        zIndex: isTaskModalVisible ? "11" : "-1",
+        opacity: isTaskModalVisible ? "1" : "0",
       }}
     >
       <FormikProvider value={formik}>
@@ -183,7 +183,7 @@ export default function TaskOverlay() {
             </div>
             <button
               className={styles.close}
-              onClick={() => setIsModalDimmed(false)}
+              onClick={() => setisTaskModalVisible(false)}
             >
               <GrClose />
             </button>

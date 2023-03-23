@@ -1,26 +1,18 @@
-import { useEffect } from "react";
-import { useModalDimContext } from "@/contexts/ModalDimContext";
 import { useTaskDataContext } from "@/contexts/TaskDataContext";
+import { useProjectDataContext } from "@/contexts/ProjectDataContext";
 function ModalDim() {
-  const { isModalDimmed, setIsModalDimmed } = useModalDimContext();
-  const { taskData, setTaskData } = useTaskDataContext();
-
-  // useEffect(() => {
-  //   const html = document.documentElement;
-  //   if (isModalDimmed) {
-  //     html.style.overflow = "hidden";
-  //     html.style.height = "100%";
-  //   } else {
-  //     html.style.overflow = "auto";
-  //     html.style.height = "auto";
-  //   }
-  // }, [isModalDimmed]);
+  const { setTaskData, setisTaskModalVisible, isTaskModalVisible } =
+    useTaskDataContext();
+  const { setProjectData, setisProjectModalVisible, isProjectModalVisible } =
+    useProjectDataContext();
 
   return (
     <div
       onClick={() => {
-        setIsModalDimmed(false);
+        setisTaskModalVisible(false);
+        setisProjectModalVisible(false);
         setTaskData("");
+        setProjectData("");
       }}
       style={{
         position: "fixed",
@@ -30,8 +22,8 @@ function ModalDim() {
         height: "100%",
         backgroundColor: "white",
         transition: "all 0.3s ease-out",
-        zIndex: isModalDimmed ? "10" : "-1",
-        opacity: isModalDimmed ? "0.6" : "0",
+        zIndex: isProjectModalVisible || isTaskModalVisible ? "10" : "-1",
+        opacity: isProjectModalVisible || isTaskModalVisible ? "0.6" : "0",
       }}
     />
   );

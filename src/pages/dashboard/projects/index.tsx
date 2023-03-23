@@ -13,15 +13,31 @@ import {
   projectItem,
   divider,
 } from "@/animations/projects";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getProjects } from "@/lib/api";
+import { useProjectDataContext } from "@/contexts/ProjectDataContext";
 
 export default function Projects() {
+  const { setProjectData, setisProjectModalVisible } = useProjectDataContext();
   const [filter, setFilter] = useState("active");
-  const [selectedProject, setSelectedProject] = useState();
+  const [selectedProject, setSelectedProject] = useState("");
   const [switchP, setSwitchP] = useState(false);
+  const queryClient = useQueryClient();
 
   const { data } = useQuery(["projects"], getProjects);
+
+  function removeFromData(name: string) {
+    queryClient.setQueryData(["projects"], (prevData: any) => {
+      const newData = prevData?.filter((item: any) => item.name !== name);
+      return newData;
+    });
+
+    queryClient.invalidateQueries(["projects"]);
+  }
+
+  function removeSelectedProject() {
+    setSelectedProject("");
+  }
 
   return (
     <section>
@@ -97,10 +113,22 @@ export default function Projects() {
                 </motion.div>
               ))}
 
-              <div className={styles.addProject}>
+              <motion.div
+                variants={projectItem}
+                whileHover={{
+                  scale: 1.02,
+                  transition: { duration: 0.2, ease: "easeOut" },
+                }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => {
+                  setProjectData("");
+                  setisProjectModalVisible(true);
+                }}
+                className={styles.addProject}
+              >
                 <p>Create new project</p>
                 <AiOutlinePlus />
-              </div>
+              </motion.div>
             </motion.div>
           </div>
           <motion.div
@@ -119,7 +147,11 @@ export default function Projects() {
                 exit={{ opacity: 0, y: 20 }}
                 className={styles.projectDetails}
               >
-                <ProjectDetails selectedProject={selectedProject} />
+                <ProjectDetails
+                  selectedProject={selectedProject}
+                  removeFromData={removeFromData}
+                  removeSelectedProject={removeSelectedProject}
+                />
               </motion.div>
             )}
             {selectedProject && !switchP && (
@@ -131,7 +163,11 @@ export default function Projects() {
                 exit={{ opacity: 0, y: 20 }}
                 className={styles.projectDetails}
               >
-                <ProjectDetails selectedProject={selectedProject} />
+                <ProjectDetails
+                  selectedProject={selectedProject}
+                  removeFromData={removeFromData}
+                  removeSelectedProject={removeSelectedProject}
+                />
               </motion.div>
             )}
           </AnimatePresence>

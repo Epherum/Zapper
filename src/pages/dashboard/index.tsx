@@ -26,17 +26,19 @@ import {
   tasksHeadline,
   projectsHeadline,
 } from "@/animations/dashboard";
-import { useModalDimContext } from "@/contexts/ModalDimContext";
-import { useQuery } from "@tanstack/react-query";
+
+import { useQuery, useQueries } from "@tanstack/react-query";
 import Link from "@/components/Link";
 import {
   getUserData,
   getTasksAssignedToUser,
   getProjectsAssignedToUser,
 } from "@/lib/api";
+import { useProjectDataContext } from "@/contexts/ProjectDataContext";
+import { useTaskDataContext } from "@/contexts/TaskDataContext";
 
 export default function Dashboard() {
-  const { isModalDimmed, setIsModalDimmed } = useModalDimContext();
+  const { isTaskModalVisible, setisTaskModalVisible } = useTaskDataContext();
   const [formattedDate, setFormattedDate] = useState("");
   const [overviewData, setOverviewData] = useState([
     {
@@ -73,8 +75,8 @@ export default function Dashboard() {
   const { data: session } = useSession({
     required: true,
   });
-  function handleToggle() {
-    setIsModalDimmed(!isModalDimmed);
+  function showTaskModal() {
+    setisTaskModalVisible(!isTaskModalVisible);
   }
   const formatDate = () => {
     const currentDate = new Date();
@@ -92,31 +94,30 @@ export default function Dashboard() {
 
     setFormattedDate(newFormattedDate);
   };
+  const results = useQueries({
+    queries: [
+      {
+        queryKey: ["user"],
+        queryFn: () => getUserData(session?.user?.email as string),
+        enabled: !!session,
+      },
+      {
+        queryKey: ["currentUserProjects"],
+        queryFn: () =>
+          getProjectsAssignedToUser(session?.user?.email as string),
+        enabled: !!session,
+      },
+      {
+        queryKey: ["currentUserTasks"],
+        queryFn: () => getTasksAssignedToUser(session?.user?.email as string),
+        enabled: !!session,
+      },
+    ],
+  });
 
-  const { data: currentUser } = useQuery(
-    ["user"],
-    () => getUserData(session?.user?.email as string),
-    {
-      enabled: !!session,
-    }
-  );
-
-  const { data: userProjects } = useQuery(
-    ["currentUserProjects"],
-    () => getProjectsAssignedToUser(session?.user?.email as string),
-
-    {
-      enabled: !!session,
-    }
-  );
-  const { data: userTasks } = useQuery(
-    ["currentUserTasks"],
-    () => getTasksAssignedToUser(session?.user?.email as string),
-
-    {
-      enabled: !!session,
-    }
-  );
+  const [currentUser, userProjects, userTasks] = results.map((result) => {
+    return result.data;
+  });
 
   useEffect(() => {
     formatDate();
@@ -189,7 +190,7 @@ export default function Dashboard() {
                 <MdOutlineDateRange />
                 <p className={styles.time}>{formattedDate}</p>
               </div>
-              <button className={styles.button} onClick={handleToggle}>
+              <button className={styles.button} onClick={showTaskModal}>
                 <AiOutlinePlus />
                 <p>New Task</p>
               </button>
@@ -253,7 +254,7 @@ export default function Dashboard() {
                 <motion.button
                   variants={taskItem}
                   className={`${styles.task} ${styles.addTask}`}
-                  onClick={handleToggle}
+                  onClick={showTaskModal}
                 >
                   Add new task
                   <AiOutlinePlus />
