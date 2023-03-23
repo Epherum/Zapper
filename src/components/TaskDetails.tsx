@@ -5,7 +5,6 @@ import Image from "next/image";
 import { doc, deleteDoc } from "firebase/firestore";
 import { db } from "@/firebase/firebaseConfig";
 import { useTaskDataContext } from "@/contexts/TaskDataContext";
-import { useModalDimContext } from "@/contexts/ModalDimContext";
 import moment from "moment";
 function TaskDetails(props: any) {
   const {
@@ -18,8 +17,8 @@ function TaskDetails(props: any) {
     createdAt,
     targetDate,
   } = props.taskData;
-  const { setTaskData } = useTaskDataContext();
-  const { setIsModalDimmed } = useModalDimContext();
+  const { setTaskData, isTaskModalVisible, setisTaskModalVisible } =
+    useTaskDataContext();
 
   const formattedCreatedAt = moment
     .unix(createdAt.seconds)
@@ -36,7 +35,7 @@ function TaskDetails(props: any) {
 
   function editTask() {
     setTaskData(props.taskData);
-    setIsModalDimmed(true);
+    setisTaskModalVisible(true);
   }
 
   return (

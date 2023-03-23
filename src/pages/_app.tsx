@@ -8,10 +8,12 @@ import { useRouter } from "next/router";
 import PageTransition from "@/components/PageTransition";
 import styles from "@/styles/circles.module.scss";
 import { circleBlue, circleGreen } from "@/animations/projects";
-import { ModalDimProvider } from "@/contexts/ModalDimContext";
+
 import { TaskDataProvider } from "@/contexts/TaskDataContext";
+import { ProjectDataProvider } from "@/contexts/ProjectDataContext";
 import ModalDim from "@/components/ModalDim";
 import TaskOverlay from "@/components/TaskOverlay";
+import ProjectOverlay from "@/components/ProjectOverlay";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useState } from "react";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
@@ -73,13 +75,14 @@ export default function App({ Component, pageProps }: AppProps) {
                   />
                 </>
               )}
-              <ModalDimProvider>
-                <TaskDataProvider>
+              <TaskDataProvider>
+                <ProjectDataProvider>
                   <ModalDim />
                   <TaskOverlay />
+                  <ProjectOverlay />
                   <Component {...pageProps} />
-                </TaskDataProvider>
-              </ModalDimProvider>
+                </ProjectDataProvider>
+              </TaskDataProvider>
             </motion.div>
           </PageTransition>
         </main>

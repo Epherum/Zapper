@@ -156,9 +156,6 @@
             transition: background-color .3s ease-in-out;
             cursor: pointer;
 
-            &:hover {
-                background-color: $light-purple;
-            }
 
 
         }
@@ -314,7 +311,7 @@
 
         .projectDetailsProgress {
             margin-top: min(2.5rem, 2.1vw);
-            margin-bottom: min(5rem, 4vw);
+            margin-bottom: min(4rem, 3.3vw);
 
             .projectDetailsProgressHeadline {
                 font-size: min(1.5rem, 1.3vw);
@@ -343,5 +340,32 @@
 
             }
 
+        }
+
+        .edit,
+        .delete {
+            all: unset;
+            display: inline-block;
+            font-size: min(1.2rem, 1vw);
+            cursor: pointer;
+            color: #5d5d5d;
+            border: 1px solid #d4d4d4;
+            border-radius: 5px;
+            padding: min(.9rem, .7vw) min(1.2rem, 1vw);
+            transition: background-color .3s ease-in-out, color .3s ease-in-out;
+            margin-right: 1rem;
+            margin-bottom: min(2rem, 1.7vw);
+
+            &:hover {
+                background-color: #fde68a;
+                color: #000;
+            }
+
+        }
+
+        .delete {
+            &:hover {
+                background-color: #f87171;
+            }
         }
     }

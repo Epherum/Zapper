@@ -1,6 +1,5 @@
 import styles from "@/styles/projectTasks.module.scss";
 import Tasks from "@/components/ProjectTasksTasks";
-// import { tasksData } from "@/data/mockData";
 import { useState, useEffect } from "react";
 import TaskDetails from "@/components/TaskDetails";
 import { AnimatePresence, motion } from "framer-motion";
@@ -44,6 +43,11 @@ export default function ProjectTasksList({ tasksData, removeFromData }: any) {
                       variants={taskItem}
                       key={task.id}
                       className={selectedTask === task ? styles.active : ""}
+                      whileHover={{
+                        scale: 1.02,
+                        transition: { duration: 0.2, ease: "easeOut" },
+                      }}
+                      whileTap={{ scale: 0.98 }}
                       onClick={() => {
                         setselectedTask(task);
                         setSwitchP((prev) => !prev);

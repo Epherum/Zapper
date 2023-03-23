@@ -4,15 +4,49 @@ import Task from "@/components/ProjectsTask";
 import Link from "@/components/Link";
 import Image from "next/image";
 import moment from "moment";
+import {
+  doc,
+  deleteDoc,
+  collection,
+  query,
+  getDocs,
+  where,
+} from "firebase/firestore";
+import { db } from "@/firebase/firebaseConfig";
+import { useProjectDataContext } from "@/contexts/ProjectDataContext";
 
-function ProjectDetails({ selectedProject }: { selectedProject: any }) {
+function ProjectDetails(props: any) {
+  const { setProjectData, isProjectModalVisible, setisProjectModalVisible } =
+    useProjectDataContext();
   const { name, description, createdAt, targetDate, archived, manager, tasks } =
-    selectedProject;
+    props.selectedProject;
 
   const formattedCreatedAt = moment
     .unix(createdAt.seconds)
     .format("MMMM DD, YYYY");
   const formattedTargetDate = moment(targetDate).format("MMMM DD, YYYY");
+
+  async function deleteTask() {
+    const q = query(
+      collection(db, "companies", "DunderMifflin", "projects", "test", "tasks"),
+      where("project", "==", "test")
+    );
+
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach(async (doc) => {
+      await deleteDoc(doc.ref);
+    });
+
+    await deleteDoc(doc(db, "companies", "DunderMifflin", "projects", "test"));
+
+    props.removeFromData(name);
+    props.removeSelectedProject("");
+  }
+
+  function editTask() {
+    setProjectData(props.selectedProject);
+    setisProjectModalVisible(true);
+  }
 
   return (
     <>
@@ -63,17 +97,21 @@ function ProjectDetails({ selectedProject }: { selectedProject: any }) {
         </div>
       </div>
       <div className={styles.projectDetailsTasks}>
-        <h3>Recent tasks</h3>
-        <div className={styles.projectDetailsTasksList}>
-          {tasks.map((task: any, index: number) => (
-            <Link
-              href={`/dashboard/projects/${task.project}/${task.id}`}
-              key={task.id}
-            >
-              <Task task={task} />
-            </Link>
-          ))}
-        </div>
+        {tasks.length > 0 && (
+          <>
+            <h3>Recent tasks</h3>
+            <div className={styles.projectDetailsTasksList}>
+              {tasks.map((task: any, index: number) => (
+                <Link
+                  href={`/dashboard/projects/${task.project}/${task.id}`}
+                  key={task.id}
+                >
+                  <Task task={task} />
+                </Link>
+              ))}
+            </div>
+          </>
+        )}
       </div>
       <div className={styles.projectDetailsProgress}>
         <h2 className={styles.projectDetailsProgressHeadline}>Progress</h2>
@@ -82,6 +120,13 @@ function ProjectDetails({ selectedProject }: { selectedProject: any }) {
           <p>43%</p>
         </div>
       </div>
+      <button className={styles.edit} onClick={editTask}>
+        Edit project
+      </button>
+
+      <button className={styles.delete} onClick={deleteTask}>
+        Delete project
+      </button>
     </>
   );
 }
