@@ -36,8 +36,6 @@ export default function ProjectTasks() {
       const newData = prevData?.filter((item: any) => item.id !== id);
       return newData;
     });
-
-    queryClient.invalidateQueries(["tasks", ProjectID]);
   }
 
   return (
