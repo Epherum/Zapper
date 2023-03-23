@@ -28,8 +28,8 @@ function ProjectDetails(props: any) {
 
   async function deleteTask() {
     const q = query(
-      collection(db, "companies", "DunderMifflin", "projects", "test", "tasks"),
-      where("project", "==", "test")
+      collection(db, "companies", "DunderMifflin", "projects", name, "tasks"),
+      where("project", "==", name)
     );
 
     const querySnapshot = await getDocs(q);
@@ -37,7 +37,7 @@ function ProjectDetails(props: any) {
       await deleteDoc(doc.ref);
     });
 
-    await deleteDoc(doc(db, "companies", "DunderMifflin", "projects", "test"));
+    await deleteDoc(doc(db, "companies", "DunderMifflin", "projects", name));
 
     props.removeFromData(name);
     props.removeSelectedProject("");

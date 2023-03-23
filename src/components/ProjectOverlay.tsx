@@ -1,26 +1,21 @@
 import styles from "@/styles/taskOverlay.module.scss";
 import { useState, useEffect } from "react";
 import { GrClose } from "react-icons/gr";
-import { MdExpandMore } from "react-icons/md";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { db } from "@/firebase/firebaseConfig";
 import {
   collection,
-  addDoc,
   updateDoc,
-  where,
   doc,
   getDocs,
-  query,
   setDoc,
 } from "firebase/firestore";
 import { useRouter } from "next/router";
 import { useFormik, Field, FormikProvider } from "formik";
 import { useQueryClient } from "@tanstack/react-query";
 import { useProjectDataContext } from "@/contexts/ProjectDataContext";
-import { tasksData } from "@/data/mockData";
 
-export default function projectOverlay() {
+export default function ProjectOverlay() {
   const router = useRouter();
   const {
     projectData,
