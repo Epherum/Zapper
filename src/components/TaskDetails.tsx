@@ -44,7 +44,7 @@ function TaskDetails(props: any) {
         <div className={styles.taskDetailsHeadline}>
           <div>
             <h2>{title}</h2>
-            <p>ID LG-2</p>
+            <p>ID {id}</p>
           </div>
           <CgArrowsExpandRight />
         </div>

@@ -92,37 +92,37 @@ export default function TaskDetails() {
     return task;
   }
   function deleteTask() {
-    if (data) {
+    if (tasksData) {
       deleteDoc(
         doc(
           db,
           "companies",
           "DunderMifflin",
           "projects",
-          data.project,
+          tasksData.project,
           "tasks",
-          data.id
+          tasksData.id
         )
       );
-      router.push(`/dashboard/projects/${data.project}`);
+      router.push(`/dashboard/projects/${tasksData.project}`);
     }
   }
 
   function editTask() {
-    setTaskData(data);
+    setTaskData(tasksData);
     setisTaskModalVisible(!isTaskModalVisible);
   }
 
-  const { data } = useQuery(["task", TaskID], getTasks, {
+  const { data: tasksData } = useQuery(["task", TaskID], getTasks, {
     enabled: !!TaskID && !!ProjectID,
   });
 
   return (
     <section>
-      {data && TaskID && ProjectID && (
+      {tasksData && TaskID && ProjectID && (
         <>
           <Headline
-            title={data.title}
+            title={tasksData.title}
             location={["home", "projects", ProjectID, TaskID]}
           />
           <motion.div
@@ -185,7 +185,7 @@ export default function TaskDetails() {
                 animate="visible"
                 className={styles.taskDescription}
               >
-                {data.description}
+                {tasksData.description}
               </motion.p>
               <div className={styles.subtasks}>
                 <motion.h2
@@ -320,7 +320,7 @@ export default function TaskDetails() {
               >
                 <div>
                   <h2>Task details</h2>
-                  <p>ID LG-2</p>
+                  <p>ID {tasksData.id}</p>
                 </div>
               </motion.div>
 
@@ -335,14 +335,14 @@ export default function TaskDetails() {
                   className={styles.taskDetailsInfoItem}
                 >
                   <p>Status</p>
-                  <p>{data.status}</p>
+                  <p>{tasksData.status}</p>
                 </motion.div>
                 <motion.div
                   variants={taskDetailsItem}
                   className={styles.taskDetailsInfoItem}
                 >
                   <p>Priority</p>
-                  <p className={styles.priority}>{data.priority}</p>
+                  <p className={styles.priority}>{tasksData.priority}</p>
                 </motion.div>
                 <motion.div
                   variants={taskDetailsItem}
@@ -357,7 +357,7 @@ export default function TaskDetails() {
                       alt="Picture of the author"
                       className={styles.member}
                     />
-                    <p>{data.assignee}</p>
+                    <p>{tasksData.assignee}</p>
                   </div>
                 </motion.div>
                 <motion.div
@@ -379,7 +379,7 @@ export default function TaskDetails() {
                   className={styles.taskDetailsInfoItem}
                 >
                   <p>Project</p>
-                  <p>{data.project}</p>
+                  <p>{tasksData.project}</p>
                 </motion.div>
               </motion.div>
               <motion.button
@@ -403,11 +403,11 @@ export default function TaskDetails() {
             </div>
             <div className={styles.createdAt}>
               <p>
-                Created {dates.createdAt} by {data.assignee}
+                Created {dates.createdAt} by {tasksData.assignee}
               </p>
               {dates.lastUpdated && (
                 <p>
-                  Last updated {dates.lastUpdated} by {data.assignee}
+                  Last updated {dates.lastUpdated} by {tasksData.assignee}
                 </p>
               )}
             </div>

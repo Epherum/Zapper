@@ -38,6 +38,16 @@ export async function getProjects() {
   }
 }
 
+export async function getProject(projectName: string) {
+  try {
+    const project = await axios.get(`/api/projects/${projectName}`);
+    return project.data;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}
+
 export async function getProjectTasks(projectName: string) {
   try {
     const tasks = await axios.get(`/api/tasks/project/${projectName}`);

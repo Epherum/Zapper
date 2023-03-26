@@ -53,13 +53,7 @@ export default function ProjectTasksList({ tasksData, removeFromData }: any) {
                         setSwitchP((prev) => !prev);
                       }}
                     >
-                      <Tasks
-                        id={"ID LG-21"}
-                        title={task.title}
-                        priority={task.priority}
-                        startDate={task.startDate}
-                        targetDate={task.targetDate}
-                      />
+                      <Tasks task={task} />
                     </motion.div>
                   ))}
               </motion.div>

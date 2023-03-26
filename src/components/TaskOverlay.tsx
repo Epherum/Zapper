@@ -13,11 +13,13 @@ import {
   doc,
   getDocs,
   query,
+  setDoc,
 } from "firebase/firestore";
 import { useRouter } from "next/router";
 import { useFormik, Field, FormikProvider } from "formik";
 import { useTaskDataContext } from "@/contexts/TaskDataContext";
 import { useQueryClient } from "@tanstack/react-query";
+import { getProject } from "@/lib/api";
 
 export default function TaskOverlay() {
   const router = useRouter();
@@ -110,14 +112,30 @@ export default function TaskOverlay() {
     );
     const createdAt = new Date();
 
-    const docRef = await addDoc(tasksCollection, {
+    const project = await getProject(formik.values.project);
+
+    const taskID =
+      project.name.substring(0, 2).toUpperCase() + "-" + (project.nTasks + 1);
+
+    await setDoc(doc(tasksCollection, taskID), {
       ...formik.values,
       createdAt,
+      id: taskID,
     });
 
-    const docId = docRef.id;
-    await updateDoc(docRef, { id: docId });
-    setDocID(docId);
+    const projectRef = doc(
+      db,
+      "companies",
+      "DunderMifflin",
+      "projects",
+      formik.values.project
+    );
+
+    await updateDoc(projectRef, {
+      nTasks: project.nTasks + 1,
+    });
+
+    setDocID(taskID);
   };
 
   const editTask = async () => {

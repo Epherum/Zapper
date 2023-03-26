@@ -23,7 +23,7 @@ function ProjectsTask({ task }: ProjectsTaskProps) {
   return (
     <div className={styles.projectDetailsTasksListItem}>
       <div className={styles.projectDetailsTasksListItemLeft}>
-        <p>{"ID LG-12"}</p>
+        <p>ID {id}</p>
         <p>{title}</p>
       </div>
       <div className={styles.projectDetailsTasksListItemRight}>
