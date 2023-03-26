@@ -5,6 +5,8 @@ interface TaskDataContextType {
   isTaskModalVisible: boolean;
   setTaskData: React.Dispatch<React.SetStateAction<any>>;
   setisTaskModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  subtaskProject: [string, string];
+  setSubtaskProject: React.Dispatch<React.SetStateAction<[string, string]>>;
 }
 
 export const TaskDataContext = createContext<TaskDataContextType>({
@@ -12,6 +14,8 @@ export const TaskDataContext = createContext<TaskDataContextType>({
   setisTaskModalVisible: () => {},
   isTaskModalVisible: false,
   setTaskData: () => {},
+  subtaskProject: ["", ""],
+  setSubtaskProject: () => {},
 });
 
 interface TaskDataProviderProps {
@@ -26,6 +30,7 @@ export const TaskDataProvider: React.FC<TaskDataProviderProps> = ({
 }: any) => {
   const [taskData, setTaskData] = useState("");
   const [isTaskModalVisible, setisTaskModalVisible] = useState(false);
+  const [subtaskProject, setSubtaskProject] = useState(["", ""]);
 
   return (
     <TaskDataContext.Provider
@@ -34,6 +39,8 @@ export const TaskDataProvider: React.FC<TaskDataProviderProps> = ({
         setTaskData,
         isTaskModalVisible,
         setisTaskModalVisible,
+        subtaskProject,
+        setSubtaskProject,
       }}
     >
       {children}

@@ -130,6 +130,12 @@
                     padding-right: min(1.6rem, 1.3vw);
                     border: 1px solid $border-dark-gray;
                     border-radius: 13px;
+                    transition: border-color .3s ease-in-out;
+
+                    &:hover {
+                        cursor: pointer;
+                        border-color: black;
+                    }
 
                     .subtaskLeftSide {
                         display: flex;
@@ -159,10 +165,11 @@
                     padding: min(1.4rem, 1.1vw) min(1.7rem, 1.3vw);
                     border: 2px dashed $border-purple;
                     border-radius: 13px;
-                    transition: background-color .3s ease-in-out;
                     margin-bottom: 3rem;
                     font-size: min(1.2rem, 1vw);
                     color: $purple;
+                    background-color: transparent;
+                    transition: background-color .3s ease-in-out;
 
                     &:hover {
                         cursor: pointer;
@@ -293,7 +300,7 @@
     .taskDetails {
         position: sticky;
         grid-column: 3;
-        grid-row: 1;
+        grid-row: 1/4;
         margin-top: min(4.8rem, 4vw);
 
         .taskDetailsHeadline {
@@ -372,6 +379,10 @@
                     gap: min(.5rem, .4vw);
                 }
 
+                .subtaskOf {
+                    color: $blue;
+                }
+
             }
         }
 
@@ -389,6 +400,7 @@
         padding: min(.9rem, .7vw) min(1.2rem, 1vw);
         transition: background-color .3s ease-in-out, color .3s ease-in-out;
         margin-right: 1rem;
+        margin-bottom: min(3.5rem, 3vw);
 
         &:hover {
             background-color: #fde68a;
@@ -405,6 +417,8 @@
 
 
     .createdAt {
+        grid-column: 3;
+        grid-row: 5;
         display: flex;
         flex-direction: column;
         gap: min(.8rem, .6vw);

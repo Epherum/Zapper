@@ -34,6 +34,7 @@ import {
   getDoc,
   doc,
   deleteDoc,
+  getDocs,
 } from "firebase/firestore";
 import { db } from "@/firebase/firebaseConfig";
 import { useRouter } from "next/router";
@@ -41,12 +42,18 @@ import { useQuery } from "@tanstack/react-query";
 import { useTaskDataContext } from "@/contexts/TaskDataContext";
 
 import moment from "moment";
+import Link from "@/components/Link";
 
 export default function TaskDetails() {
   const [priority, setPriority] = useState("");
   const [status, setStatus] = useState("");
-  const { setTaskData, setisTaskModalVisible, isTaskModalVisible } =
-    useTaskDataContext();
+  const {
+    setTaskData,
+    setisTaskModalVisible,
+    isTaskModalVisible,
+    setSubtaskProject,
+    subtaskProject,
+  } = useTaskDataContext();
   const router = useRouter();
   const TaskID = router.query.TaskID as string;
   const ProjectID = router.query.ProjectID as string;
@@ -56,6 +63,32 @@ export default function TaskDetails() {
     createdAt: "",
     lastUpdated: "",
   });
+
+  function handleSubtask() {
+    setSubtaskProject([ProjectID, TaskID]);
+    setisTaskModalVisible(!isTaskModalVisible);
+  }
+
+  async function getSubtasks() {
+    const subtasksQuery = query(
+      collection(
+        db,
+        "companies",
+        "DunderMifflin",
+        "projects",
+        ProjectID,
+        "tasks"
+      ),
+      where("subtaskOf", "==", TaskID)
+    );
+
+    const subtasksSnapshot = await getDocs(subtasksQuery);
+    const subtasks = subtasksSnapshot.docs.map((doc: any) => doc.data());
+
+    console.log("subtasks", subtasks);
+
+    return subtasks;
+  }
 
   async function getTasks() {
     const taskQuery = doc(
@@ -70,6 +103,7 @@ export default function TaskDetails() {
 
     const taskSnapshot = await getDoc(taskQuery);
     const task = taskSnapshot.data();
+
     setPriority(task?.priority);
     setStatus(task?.status);
     setDates({
@@ -92,37 +126,57 @@ export default function TaskDetails() {
     return task;
   }
   function deleteTask() {
-    if (tasksData) {
+    if (taskData) {
       deleteDoc(
         doc(
           db,
           "companies",
           "DunderMifflin",
           "projects",
-          tasksData.project,
+          taskData.project,
           "tasks",
-          tasksData.id
+          taskData.id
         )
       );
-      router.push(`/dashboard/projects/${tasksData.project}`);
+
+      //delete subtasks
+      subtaskData?.forEach((subtask) => {
+        deleteDoc(
+          doc(
+            db,
+            "companies",
+            "DunderMifflin",
+            "projects",
+            taskData.project,
+            "tasks",
+            subtask.id
+          )
+        );
+      });
+
+      router.push(`/dashboard/projects/${taskData.project}`);
     }
   }
 
   function editTask() {
-    setTaskData(tasksData);
+    setTaskData(taskData);
     setisTaskModalVisible(!isTaskModalVisible);
   }
 
-  const { data: tasksData } = useQuery(["task", TaskID], getTasks, {
+  const { data: taskData } = useQuery(["task", TaskID], getTasks, {
+    enabled: !!TaskID && !!ProjectID,
+  });
+
+  const { data: subtaskData } = useQuery(["subtasks", TaskID], getSubtasks, {
     enabled: !!TaskID && !!ProjectID,
   });
 
   return (
     <section>
-      {tasksData && TaskID && ProjectID && (
+      {taskData && TaskID && ProjectID && (
         <>
           <Headline
-            title={tasksData.title}
+            title={taskData.title}
             location={["home", "projects", ProjectID, TaskID]}
           />
           <motion.div
@@ -185,52 +239,60 @@ export default function TaskDetails() {
                 animate="visible"
                 className={styles.taskDescription}
               >
-                {tasksData.description}
+                {taskData.description}
               </motion.p>
-              <div className={styles.subtasks}>
-                <motion.h2
-                  variants={substasksHeadline}
-                  initial="hidden"
-                  animate="visible"
-                  className={styles.subtasksHeadline}
-                >
-                  Subtasks
-                </motion.h2>
-                <motion.div
-                  variants={subtasks}
-                  initial="hidden"
-                  animate="visible"
-                  className={styles.subtasksList}
-                >
-                  <motion.div
-                    variants={subtasksItem}
-                    className={styles.subtasksListItem}
+              {taskData?.subtaskOf ? (
+                <></>
+              ) : (
+                <div className={styles.subtasks}>
+                  <motion.h2
+                    variants={substasksHeadline}
+                    initial="hidden"
+                    animate="visible"
+                    className={styles.subtasksHeadline}
                   >
-                    <div className={styles.subtaskLeftSide}>
-                      <p>ID LG-12</p>
-                      <p>I have access to the enitre arsenal of the...</p>
-                    </div>
-                    <p className={styles.subtaskRightSide}>yesterday</p>
-                  </motion.div>
+                    Subtasks
+                  </motion.h2>
                   <motion.div
-                    variants={subtasksItem}
-                    className={styles.subtasksListItem}
+                    variants={subtasks}
+                    initial="hidden"
+                    animate="visible"
+                    className={styles.subtasksList}
                   >
-                    <div className={styles.subtaskLeftSide}>
-                      <p>ID LG-12</p>
-                      <p>I have access to the enitre arsenal of the...</p>
-                    </div>
-                    <p className={styles.subtaskRightSide}>yesterday</p>
+                    {subtaskData?.map((subtask: any, index: number) => (
+                      <Link
+                        href={`/dashboard/projects/${taskData.project}/${subtask.id}`}
+                        key={index}
+                      >
+                        <motion.div
+                          variants={subtasksItem}
+                          className={styles.subtasksListItem}
+                        >
+                          <div className={styles.subtaskLeftSide}>
+                            <p>ID {subtask.id}</p>
+                            <p>
+                              {subtask.title.substring(0, 20)}
+                              {subtask.title.length > 20 ? "..." : ""}
+                            </p>
+                          </div>
+                          <p className={styles.subtaskRightSide}>
+                            {subtask.status}
+                          </p>
+                        </motion.div>
+                      </Link>
+                    ))}
+
+                    <motion.button
+                      variants={subtasksItem}
+                      className={styles.addSubtask}
+                      onClick={() => handleSubtask()}
+                    >
+                      Add new task
+                      <AiOutlinePlus />
+                    </motion.button>
                   </motion.div>
-                  <motion.div
-                    variants={subtasksItem}
-                    className={styles.addSubtask}
-                  >
-                    <p>Add new task</p>
-                    <AiOutlinePlus />
-                  </motion.div>
-                </motion.div>
-              </div>
+                </div>
+              )}
             </div>
 
             <div className={styles.activity}>
@@ -320,7 +382,7 @@ export default function TaskDetails() {
               >
                 <div>
                   <h2>Task details</h2>
-                  <p>ID {tasksData.id}</p>
+                  <p>ID {taskData.id}</p>
                 </div>
               </motion.div>
 
@@ -330,19 +392,35 @@ export default function TaskDetails() {
                 animate="visible"
                 className={styles.taskDetailsInfo}
               >
+                {taskData?.subtaskOf ? (
+                  <motion.div
+                    variants={taskDetailsItem}
+                    className={styles.taskDetailsInfoItem}
+                  >
+                    <p>Subtask of</p>
+                    <Link
+                      className={styles.subtaskOf}
+                      href={`/dashboard/projects/${taskData.project}/${taskData.subtaskOf}`}
+                    >
+                      {taskData.subtaskOf}
+                    </Link>
+                  </motion.div>
+                ) : (
+                  <></>
+                )}
                 <motion.div
                   variants={taskDetailsItem}
                   className={styles.taskDetailsInfoItem}
                 >
                   <p>Status</p>
-                  <p>{tasksData.status}</p>
+                  <p>{taskData.status}</p>
                 </motion.div>
                 <motion.div
                   variants={taskDetailsItem}
                   className={styles.taskDetailsInfoItem}
                 >
                   <p>Priority</p>
-                  <p className={styles.priority}>{tasksData.priority}</p>
+                  <p className={styles.priority}>{taskData.priority}</p>
                 </motion.div>
                 <motion.div
                   variants={taskDetailsItem}
@@ -357,7 +435,7 @@ export default function TaskDetails() {
                       alt="Picture of the author"
                       className={styles.member}
                     />
-                    <p>{tasksData.assignee}</p>
+                    <p>{taskData.assignee}</p>
                   </div>
                 </motion.div>
                 <motion.div
@@ -379,7 +457,7 @@ export default function TaskDetails() {
                   className={styles.taskDetailsInfoItem}
                 >
                   <p>Project</p>
-                  <p>{tasksData.project}</p>
+                  <p>{taskData.project}</p>
                 </motion.div>
               </motion.div>
               <motion.button
@@ -403,11 +481,11 @@ export default function TaskDetails() {
             </div>
             <div className={styles.createdAt}>
               <p>
-                Created {dates.createdAt} by {tasksData.assignee}
+                Created {dates.createdAt} by {taskData.assignee}
               </p>
               {dates.lastUpdated && (
                 <p>
-                  Last updated {dates.lastUpdated} by {tasksData.assignee}
+                  Last updated {dates.lastUpdated} by {taskData.assignee}
                 </p>
               )}
             </div>
