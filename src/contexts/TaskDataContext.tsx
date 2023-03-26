@@ -30,7 +30,10 @@ export const TaskDataProvider: React.FC<TaskDataProviderProps> = ({
 }: any) => {
   const [taskData, setTaskData] = useState("");
   const [isTaskModalVisible, setisTaskModalVisible] = useState(false);
-  const [subtaskProject, setSubtaskProject] = useState(["", ""]);
+  const [subtaskProject, setSubtaskProject] = useState(["", ""] as [
+    string,
+    string
+  ]);
 
   return (
     <TaskDataContext.Provider
