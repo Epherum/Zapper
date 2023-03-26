@@ -1,8 +1,12 @@
 import { useTaskDataContext } from "@/contexts/TaskDataContext";
 import { useProjectDataContext } from "@/contexts/ProjectDataContext";
 function ModalDim() {
-  const { setTaskData, setisTaskModalVisible, isTaskModalVisible } =
-    useTaskDataContext();
+  const {
+    setTaskData,
+    setisTaskModalVisible,
+    isTaskModalVisible,
+    setSubtaskProject,
+  } = useTaskDataContext();
   const { setProjectData, setisProjectModalVisible, isProjectModalVisible } =
     useProjectDataContext();
 
@@ -11,6 +15,7 @@ function ModalDim() {
       onClick={() => {
         setisTaskModalVisible(false);
         setisProjectModalVisible(false);
+        setSubtaskProject(["", ""]);
         setTaskData("");
         setProjectData("");
       }}

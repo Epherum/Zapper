@@ -23,10 +23,16 @@ import { getProject } from "@/lib/api";
 
 export default function TaskOverlay() {
   const router = useRouter();
-  const { taskData, setTaskData, isTaskModalVisible, setisTaskModalVisible } =
-    useTaskDataContext();
+  const {
+    taskData,
+    setTaskData,
+    isTaskModalVisible,
+    setSubtaskProject,
+    subtaskProject,
+    setisTaskModalVisible,
+  } = useTaskDataContext();
   const [project, setProject] = useState("");
-  const [docID, setDocID] = useState("");
+  const [taskUrl, setTaskUrl] = useState(["", ""]);
   const queryClient = useQueryClient();
 
   const formik = useFormik({
@@ -53,6 +59,16 @@ export default function TaskOverlay() {
         targetDate: taskData.targetDate,
         project: taskData.project,
       });
+    } else if (subtaskProject[0]) {
+      formik.setValues({
+        title: "",
+        description: "",
+        status: "To do",
+        priority: "low",
+        assignee: "",
+        targetDate: "",
+        project: subtaskProject[0],
+      });
     } else {
       const timer = setTimeout(() => {
         formik.setValues({
@@ -67,7 +83,7 @@ export default function TaskOverlay() {
       }, 500);
       return () => clearTimeout(timer);
     }
-  }, [taskData]);
+  }, [taskData, subtaskProject]);
 
   function handleSubmit(e: any) {
     if (taskData) {
@@ -75,8 +91,6 @@ export default function TaskOverlay() {
     } else {
       addTaskMutation.mutate();
     }
-    setisTaskModalVisible(false);
-    formik.resetForm();
   }
 
   const getAllMembers = async () => {
@@ -92,8 +106,6 @@ export default function TaskOverlay() {
     );
     const querySnapshot = await getDocs(q);
     const users = querySnapshot.docs.map((doc) => doc.data());
-    console.log("users: ", users);
-    console.log(formik.values.project);
     return users;
   };
 
@@ -117,11 +129,20 @@ export default function TaskOverlay() {
     const taskID =
       project.name.substring(0, 2).toUpperCase() + "-" + (project.nTasks + 1);
 
-    await setDoc(doc(tasksCollection, taskID), {
-      ...formik.values,
-      createdAt,
-      id: taskID,
-    });
+    if (subtaskProject[0]) {
+      await setDoc(doc(tasksCollection, taskID), {
+        ...formik.values,
+        createdAt,
+        subtaskOf: subtaskProject[1],
+        id: taskID,
+      });
+    } else {
+      await setDoc(doc(tasksCollection, taskID), {
+        ...formik.values,
+        createdAt,
+        id: taskID,
+      });
+    }
 
     const projectRef = doc(
       db,
@@ -135,7 +156,7 @@ export default function TaskOverlay() {
       nTasks: project.nTasks + 1,
     });
 
-    setDocID(taskID);
+    setTaskUrl([formik.values.project, taskID]);
   };
 
   const editTask = async () => {
@@ -160,6 +181,9 @@ export default function TaskOverlay() {
     onSuccess: () => {
       queryClient.invalidateQueries(["currentUserTasks"]);
       queryClient.invalidateQueries(["tasks", formik.values.project]);
+      setisTaskModalVisible(false);
+      setSubtaskProject(["", ""]);
+      formik.resetForm();
     },
   });
 
@@ -167,14 +191,21 @@ export default function TaskOverlay() {
     onSuccess: () => {
       queryClient.invalidateQueries(["currentUserTasks"]);
       queryClient.invalidateQueries(["tasks", formik.values.project]);
+      setisTaskModalVisible(false);
+      setSubtaskProject(["", ""]);
+      formik.resetForm();
     },
   });
 
   useEffect(() => {
-    if (docID !== "") {
-      router.push(`/dashboard/projects/${project}/${docID}`);
+    if (taskUrl[0] !== "") {
+      router.push(`/dashboard/projects/${taskUrl[0]}/${taskUrl[1]}`);
     }
-  }, [docID]);
+  }, [taskUrl]);
+
+  useEffect(() => {
+    console.log(subtaskProject);
+  }, [subtaskProject]);
 
   return (
     <div
@@ -198,6 +229,9 @@ export default function TaskOverlay() {
                   queryClient.invalidateQueries(["projectMembers"]);
                 }}
                 className={styles.select}
+                {...(subtaskProject[0] && {
+                  disabled: true,
+                })}
                 required
               >
                 <option value="" disabled style={{ display: "none" }}>
@@ -207,11 +241,18 @@ export default function TaskOverlay() {
                 <option value="Missguided">Missguided</option>
               </Field>
               <MdExpandMore />
-              <p className={styles.newTask}>New Task</p>
+              {subtaskProject[0] ? (
+                <p className={styles.newTask}>New Subtask</p>
+              ) : (
+                <p className={styles.newTask}>New Task</p>
+              )}
             </div>
             <button
               className={styles.close}
-              onClick={() => setisTaskModalVisible(false)}
+              onClick={() => {
+                setisTaskModalVisible(false);
+                setSubtaskProject(["", ""]);
+              }}
             >
               <GrClose />
             </button>
