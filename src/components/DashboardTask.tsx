@@ -42,7 +42,7 @@ export default function Task({ task, expandedFirst = false }: TaskProps) {
         <div>
           <div className={styles.taskID}>
             <p>
-              <span>{"ID LG-12"}</span>
+              <span>ID {id}</span>
             </p>
           </div>
           <div className={styles.taskName}>

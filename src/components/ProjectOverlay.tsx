@@ -14,6 +14,8 @@ import { useRouter } from "next/router";
 import { useFormik, Field, FormikProvider } from "formik";
 import { useQueryClient } from "@tanstack/react-query";
 import { useProjectDataContext } from "@/contexts/ProjectDataContext";
+import Select from "react-select";
+import makeAnimated from "react-select/animated";
 
 export default function ProjectOverlay() {
   const router = useRouter();
@@ -73,22 +75,21 @@ export default function ProjectOverlay() {
     setProjectData("");
   }
 
-  const getAllMembers = async () => {
+  const getAllEmployees = async () => {
     const membersCollection = collection(
       db,
       "companies",
       "DunderMifflin",
-      "members"
+      "employees"
     );
 
     const querySnapshot = await getDocs(membersCollection);
     const users = querySnapshot.docs.map((doc) => doc.data());
-    console.log(users);
     return users;
   };
 
-  const { data: membersData } = useQuery(["allEmployees"], getAllMembers, {
-    enabled: isProjectModalVisible,
+  const { data: employeesData } = useQuery(["allEmployees"], getAllEmployees, {
+    enabled: !!isProjectModalVisible,
   });
 
   const addProject = async () => {
@@ -103,10 +104,14 @@ export default function ProjectOverlay() {
 
     await setDoc(projectsCollection, {
       ...formik.values,
+      nTasks: 0,
       createdAt,
     });
 
-    queryClient.invalidateQueries(["currentUserprojects"]);
+    queryClient.invalidateQueries([
+      ["currentUserprojects"],
+      ["projects", formik.values.name],
+    ]);
   };
 
   const editProject = async () => {
@@ -181,31 +186,36 @@ export default function ProjectOverlay() {
               <option value="" disabled style={{ display: "none" }}>
                 manager
               </option>
-              {membersData &&
-                membersData.map((member: any) => (
+              {employeesData &&
+                employeesData.map((member: any) => (
                   <option value={member.email} key={member.email}>
                     {member.email}
                   </option>
                 ))}
             </Field>
-            <Field
-              as="select"
-              name="members"
-              id="members"
-              onChange={formik.handleChange}
-              className={styles.select}
-              required
-            >
-              <option value="" disabled style={{ display: "none" }}>
-                members
-              </option>
-              {membersData &&
-                membersData.map((member: any) => (
-                  <option value={member.email} key={member.email}>
-                    {member.email}
-                  </option>
-                ))}
-            </Field>
+            {employeesData && (
+              <Field name="fruit">
+                {({ field }: any) => (
+                  <Select
+                    {...field}
+                    options={employeesData.map((member: any) => ({
+                      value: member.email,
+                      label: member.email,
+                    }))}
+                    onChange={(e) => {
+                      formik.setFieldValue(
+                        "members",
+                        //@ts-ignore
+                        e.map((e: any) => e.value)
+                      );
+                    }}
+                    isClearable={true}
+                    isSearchable={true}
+                    isMulti
+                  />
+                )}
+              </Field>
+            )}
 
             <Field name="targetDate">
               {({ field, form }: { field: any; form: any }) => (
