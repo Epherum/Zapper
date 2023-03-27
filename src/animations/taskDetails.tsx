@@ -120,7 +120,7 @@ const activityItem = {
   },
 };
 
-const comment = {
+const commentAni = {
   hidden: { y: 20, opacity: 0 },
   visible: {
     y: 0,
@@ -220,7 +220,7 @@ export {
   activityHeadline,
   activity,
   activityItem,
-  comment,
+  commentAni,
   taskDetailsHeadline,
   taskDetails,
   taskDetailsItem,

@@ -6,7 +6,10 @@ import { ImAttachment } from "react-icons/im";
 import Headline from "@/components/Headline";
 import { VscAccount } from "react-icons/vsc";
 import { MdExpandLess } from "react-icons/md";
+import { useSession } from "next-auth/react";
+import { v4 as uuidv4 } from "uuid";
 import Image from "next/image";
+import moment from "moment";
 import {
   filters,
   filterItem,
@@ -18,7 +21,7 @@ import {
   activityHeadline,
   activity,
   activityItem,
-  comment,
+  commentAni,
   taskDetailsHeadline,
   taskDetails,
   taskDetailsItem,
@@ -35,18 +38,29 @@ import {
   doc,
   deleteDoc,
   getDocs,
+  setDoc,
 } from "firebase/firestore";
 import { db } from "@/firebase/firebaseConfig";
 import { useRouter } from "next/router";
-import { useQuery } from "@tanstack/react-query";
+import {
+  useQuery,
+  useQueryClient,
+  useMutation,
+  Mutation,
+} from "@tanstack/react-query";
 import { useTaskDataContext } from "@/contexts/TaskDataContext";
 
-import moment from "moment";
 import Link from "@/components/Link";
 
 export default function TaskDetails() {
+  const { data: session } = useSession({
+    required: true,
+  });
   const [priority, setPriority] = useState("");
+  const [comment, setComment] = useState("");
   const [status, setStatus] = useState("");
+  const queryClient = useQueryClient();
+
   const {
     setTaskData,
     setisTaskModalVisible,
@@ -158,10 +172,98 @@ export default function TaskDetails() {
     }
   }
 
+  async function handleCommentSubmit(e: any) {
+    e.preventDefault();
+
+    if (comment) {
+      const commentData = {
+        id: uuidv4(),
+        comment,
+        createdAt: new Date(),
+        user: session?.user?.email,
+      };
+      if (taskData?.comments) {
+        queryClient.setQueryData(["task", TaskID], (prev: any) => ({
+          ...prev,
+          comments: [...prev.comments, commentData],
+        }));
+      } else {
+        queryClient.setQueryData(["task", TaskID], (prev: any) => ({
+          ...prev,
+          comments: [commentData],
+        }));
+      }
+
+      const commentsRef = doc(
+        db,
+        "companies",
+        "DunderMifflin",
+        "projects",
+        ProjectID,
+        "tasks",
+        TaskID,
+        "comments",
+        commentData.id
+      );
+
+      await setDoc(commentsRef, commentData);
+
+      setComment("");
+
+      queryClient.invalidateQueries(["comments", TaskID]);
+    }
+  }
+
+  async function deleteComment(commentID: string) {
+    const commentRef = doc(
+      db,
+      "companies",
+      "DunderMifflin",
+      "projects",
+      ProjectID,
+      "tasks",
+      TaskID,
+      "comments",
+      commentID
+    );
+
+    await deleteDoc(commentRef);
+
+    queryClient.invalidateQueries(["comments", TaskID]);
+  }
+
   function editTask() {
     setTaskData(taskData);
     setisTaskModalVisible(!isTaskModalVisible);
   }
+
+  async function getTaskComments() {
+    const commentsQuery = query(
+      collection(
+        db,
+        "companies",
+        "DunderMifflin",
+        "projects",
+        ProjectID,
+        "tasks",
+        TaskID,
+        "comments"
+      )
+    );
+
+    const commentsSnapshot = await getDocs(commentsQuery);
+    const comments = commentsSnapshot.docs.map((doc: any) => doc.data());
+
+    return comments;
+  }
+
+  const { data: commentsData } = useQuery(
+    ["comments", TaskID],
+    getTaskComments,
+    {
+      enabled: !!TaskID && !!ProjectID,
+    }
+  );
 
   const { data: taskData } = useQuery(["task", TaskID], getTasks, {
     enabled: !!TaskID && !!ProjectID,
@@ -287,7 +389,7 @@ export default function TaskDetails() {
                       className={styles.addSubtask}
                       onClick={() => handleSubtask()}
                     >
-                      Add new task
+                      Add new subtask
                       <AiOutlinePlus />
                     </motion.button>
                   </motion.div>
@@ -310,9 +412,9 @@ export default function TaskDetails() {
                 animate="visible"
                 className={styles.activityList}
               >
-                {["1", "2"].map((item, index) => (
+                {commentsData?.map((comment: any) => (
                   <motion.div
-                    key={index}
+                    key={comment.id}
                     variants={activityItem}
                     className={styles.activityItem}
                   >
@@ -325,26 +427,38 @@ export default function TaskDetails() {
                           alt="Picture of the author"
                           className={styles.member}
                         />
-                        <p>Mark B</p>
-                        <p>added comment</p>
+                        {session?.user?.email === comment.user ? (
+                          <p className={styles.commenter}>You</p>
+                        ) : (
+                          <p className={styles.commenter}> {comment.user}</p>
+                        )}
+                        <p className={styles.addedComment}>added comment</p>
+                        {session?.user?.email === comment.user && (
+                          <button
+                            className={styles.deleteComment}
+                            onClick={() => {
+                              deleteComment(comment.id);
+                            }}
+                          >
+                            delete
+                          </button>
+                        )}
                       </div>
-                      <p className={styles.activityItemHeadlineRightSide}>
-                        1 hour ago
+                      <p className={styles.commentDate}>
+                        {moment
+                          .unix(comment.createdAt.seconds)
+                          .format("MMM DD hh:mm a")}
                       </p>
                     </div>
                     <div className={styles.activityItemDescription}>
-                      <p>
-                        what the fuck did you just fucking say about me, you
-                        little bitch? Ill have you know I graduated top of my
-                        class in the Navy Seals, and Ive been
-                      </p>
+                      <p>{comment.comment.substring(0, 100)}</p>
                     </div>
                   </motion.div>
                 ))}
               </motion.div>
 
               <motion.div
-                variants={comment}
+                variants={commentAni}
                 initial="hidden"
                 animate="visible"
                 className={styles.activityComment}
@@ -352,17 +466,22 @@ export default function TaskDetails() {
                 <p className={styles.commentProfile}>
                   <VscAccount />
                 </p>
-                <div className={styles.commentRightSide}>
-                  <input type="text" placeholder="Add a comment" />
+                <form
+                  className={styles.commentBox}
+                  onSubmit={(e) => handleCommentSubmit(e)}
+                >
+                  <input
+                    type="text"
+                    placeholder="Add a comment"
+                    value={comment}
+                    onChange={(e) => setComment(e.target.value)}
+                  />
                   <div className={styles.commentIcons}>
-                    <button>
+                    <button type="submit">
                       <FiSend />
                     </button>
-                    <button>
-                      <ImAttachment />
-                    </button>
                   </div>
-                </div>
+                </form>
               </motion.div>
             </div>
 
@@ -420,7 +539,20 @@ export default function TaskDetails() {
                   className={styles.taskDetailsInfoItem}
                 >
                   <p>Priority</p>
-                  <p className={styles.priority}>{taskData.priority}</p>
+                  <p
+                    className={styles.priority}
+                    style={
+                      priority === "high"
+                        ? { backgroundColor: "#FF8080" }
+                        : priority === "medium"
+                        ? { backgroundColor: "#FFE0B2" }
+                        : priority === "low"
+                        ? { backgroundColor: "#DFFFDE" }
+                        : { backgroundColor: "black" }
+                    }
+                  >
+                    {taskData.priority}
+                  </p>
                 </motion.div>
                 <motion.div
                   variants={taskDetailsItem}

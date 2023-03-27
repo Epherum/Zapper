@@ -207,7 +207,7 @@
                         align-items: center;
                         gap: min(1rem, .8vw);
 
-                        p:first-child {
+                        .commenter {
                             font-size: min(1rem, .8vw);
                         }
 
@@ -217,14 +217,31 @@
                         }
                     }
 
-                    p:last-child {
+                    .addedComment {
                         font-size: min(1rem, .8vw);
                         color: $dark-gray;
                     }
+
+                    .deleteComment {
+                        all: unset;
+                        font-size: min(1rem, .8vw);
+                        color: $dark-gray;
+                        border: 1px solid $border-dark-gray;
+                        border-radius: 5px;
+                        padding: min(.5rem, .3vw);
+                        transition: color .3s ease-in-out, border-color .3s ease-in-out;
+                        cursor: pointer;
+
+                        &:hover {
+                            color: black;
+                            border-color: black;
+                        }
+
+                    }
                 }
 
-                .activityItemHeadlineRighttSide {
-                    font-size: min(1.2rem, 1vw);
+                .commentDate {
+                    font-size: min(1rem, .8vw);
                     color: $dark-gray;
                 }
 
@@ -254,7 +271,7 @@
                 color: $dark-gray;
             }
 
-            .commentRightSide {
+            .commentBox {
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
@@ -265,7 +282,7 @@
 
                 input {
                     height: 100%;
-                    width: 80%;
+                    width: 95%;
                     border: none;
                     outline: none;
                     font-size: min(1rem, .8vw);
