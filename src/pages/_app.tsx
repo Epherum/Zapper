@@ -15,7 +15,7 @@ import ModalDim from "@/components/ModalDim";
 import TaskOverlay from "@/components/TaskOverlay";
 import ProjectOverlay from "@/components/ProjectOverlay";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { SessionProvider } from "next-auth/react";
 const inter = Inter({ subsets: ["latin"] });

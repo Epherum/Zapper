@@ -19,7 +19,6 @@ interface ProjectsTaskProps {
 }
 function ProjectsTask({ task }: ProjectsTaskProps) {
   const { id, title, priority, project } = task;
-  console.log(task);
   return (
     <div className={styles.projectDetailsTasksListItem}>
       <div className={styles.projectDetailsTasksListItemLeft}>

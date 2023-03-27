@@ -9,6 +9,16 @@ export async function getUserData(userEmail: string) {
     return null;
   }
 }
+export async function getUserCompanyData(userEmail: string) {
+  try {
+    const user = await axios.get(`/api/users/company/${userEmail}`);
+    return user.data;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}
+
 export async function getTasksAssignedToUser(userEmail: string) {
   try {
     const tasks = await axios.get(`/api/tasks/user/${userEmail}`);
