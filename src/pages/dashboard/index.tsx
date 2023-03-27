@@ -30,7 +30,7 @@ import {
 import { useQuery, useQueries } from "@tanstack/react-query";
 import Link from "@/components/Link";
 import {
-  getUserData,
+  getUserCompanyData,
   getTasksAssignedToUser,
   getProjectsAssignedToUser,
 } from "@/lib/api";
@@ -98,8 +98,12 @@ export default function Dashboard() {
     queries: [
       {
         queryKey: ["user"],
-        queryFn: () => getUserData(session?.user?.email as string),
+        queryFn: () => getUserCompanyData(session?.user?.email as string),
         enabled: !!session,
+        onSuccess(data: any) {
+          session && (session.user = data);
+          console.log(session);
+        },
       },
       {
         queryKey: ["currentUserProjects"],
@@ -174,7 +178,7 @@ export default function Dashboard() {
           <div className={styles.headline}>
             <div className={styles.title}>
               <motion.h1 variants={title} initial="hidden" animate="visible">
-                Welcome back, <span>{currentUser.username}</span>
+                Welcome back, <span>{currentUser.name}</span>
               </motion.h1>
               <motion.p variants={subtitle} initial="hidden" animate="visible">
                 Track, manage and forecast projects and timeline

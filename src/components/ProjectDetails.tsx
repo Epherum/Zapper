@@ -15,8 +15,11 @@ import {
 import { db } from "@/firebase/firebaseConfig";
 import { useProjectDataContext } from "@/contexts/ProjectDataContext";
 import { useQueryClient } from "@tanstack/react-query";
+import { useSession } from "next-auth/react";
 
 function ProjectDetails(props: any) {
+  const { data: session } = useSession();
+
   const queryClient = useQueryClient();
   const { setProjectData, isProjectModalVisible, setisProjectModalVisible } =
     useProjectDataContext();
@@ -123,13 +126,17 @@ function ProjectDetails(props: any) {
           <p>43%</p>
         </div>
       </div>
-      <button className={styles.edit} onClick={editTask}>
-        Edit project
-      </button>
+      {session?.user?.role === "project manager" && (
+        <>
+          <button className={styles.edit} onClick={editTask}>
+            Edit project
+          </button>
 
-      <button className={styles.delete} onClick={deleteTask}>
-        Delete project
-      </button>
+          <button className={styles.delete} onClick={deleteTask}>
+            Delete project
+          </button>
+        </>
+      )}
     </>
   );
 }
