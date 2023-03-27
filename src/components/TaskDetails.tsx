@@ -57,7 +57,20 @@ function TaskDetails(props: any) {
         </div>
         <div className={styles.taskDetailsInfoItem}>
           <p>Priority</p>
-          <p className={styles.priority}>{priority}</p>
+          <p
+            className={styles.priority}
+            style={
+              priority === "high"
+                ? { backgroundColor: "#FF8080" }
+                : priority === "medium"
+                ? { backgroundColor: "#FFE0B2" }
+                : priority === "low"
+                ? { backgroundColor: "#DFFFDE" }
+                : { backgroundColor: "black" }
+            }
+          >
+            {priority}
+          </p>
         </div>
         <div className={styles.taskDetailsInfoItem}>
           <p>Assignee</p>

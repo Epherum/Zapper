@@ -16,6 +16,7 @@ import Image from "next/image";
 import { doc, setDoc, collection } from "firebase/firestore";
 import { db } from "@/firebase/firebaseConfig";
 import { useRouter } from "next/router";
+import moment from "moment";
 
 export default function ProjectTasksBoard({ tasksData, project }: any) {
   const [isBrowser, setIsBrowser] = useState(false);
@@ -173,7 +174,7 @@ export default function ProjectTasksBoard({ tasksData, project }: any) {
                                         <Link href="/dashboard/projects/missguided/LG-12">
                                           {item.title}
                                         </Link>
-                                        <p>{item.idd}</p>
+                                        <p>ID {item.id}</p>
                                       </div>
                                       <div className={styles.itemBottomHalf}>
                                         <div
@@ -191,23 +192,20 @@ export default function ProjectTasksBoard({ tasksData, project }: any) {
                                           >
                                             {item.priority}
                                           </p>
-                                          <p>{item.date}</p>
+                                          <p>{`${moment
+                                            .unix(item.createdAt.seconds)
+                                            .format("MMM DD")} - ${moment(
+                                            item.targetDate
+                                          ).format("MMM DD")}`}</p>
                                         </div>
-                                        <div className={styles.members}>
-                                          {[
-                                            "/profile1.png",
-                                            "/profile2.png",
-                                          ].map((item, index) => (
-                                            <Image
-                                              key={index}
-                                              src={item}
-                                              width={35}
-                                              height={35}
-                                              alt="Picture of the author"
-                                              className={styles.member}
-                                            />
-                                          ))}
-                                        </div>
+                                        <Image
+                                          key={index}
+                                          src={"/profile2.png"}
+                                          width={35}
+                                          height={35}
+                                          alt="Picture of the author"
+                                          className={styles.assignee}
+                                        />
                                       </div>
                                     </div>
                                   );

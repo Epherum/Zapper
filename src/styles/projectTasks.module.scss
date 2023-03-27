@@ -358,19 +358,14 @@
                     }
 
                     p:last-child {
-                        font-size: .8rem;
                         font-size: min(.75rem, .65vw);
                     }
 
-                    .members {
-                        display: flex;
-                        margin-right: min(.8rem, .4vw);
 
-                        .member {
-                            width: min(2rem, 1.7vw);
-                            height: min(2rem, 1.7vw);
-                            margin-right: min(-.5rem, -.4vw);
-                        }
+                    .assignee {
+                        width: min(2rem, 1.7vw);
+                        height: min(2rem, 1.7vw);
+                        margin-right: min(.5rem, .2vw);
                     }
                 }
             }
