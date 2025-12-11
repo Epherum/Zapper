@@ -2,6 +2,7 @@ import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { compare } from "bcryptjs";
+import { prisma } from "@/lib/prisma";
 
 export default NextAuth({
   pages: {
@@ -10,26 +11,24 @@ export default NextAuth({
   providers: [
     CredentialsProvider({
       name: "Credentials",
-      async authorize(credentials, req) {
-        const res = await fetch(
-          `${process.env.NEXTAUTH_URL}/api/users/${credentials.email}`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
+      async authorize(credentials) {
+        const user = await prisma.profile.findUnique({
+          where: { email: credentials.email },
+        });
 
-        const user = await res.json();
-
-        if (user) {
-          const isValid = await compare(credentials.password, user.password);
-          if (isValid) {
-            return user;
-          }
+        if (!user || !user.passwordHash) {
+          return null;
         }
-        return res.status(401).json({ message: "Invalid credentials" });
+
+        const isValid = await compare(credentials.password, user.passwordHash);
+        if (!isValid) return null;
+
+        return {
+          id: user.id,
+          email: user.email,
+          name: user.fullName || user.email,
+          role: user.role,
+        };
       },
     }),
 
@@ -38,4 +37,19 @@ export default NextAuth({
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     }),
   ],
+  callbacks: {
+    async session({ session, token }) {
+      if (session?.user) {
+        session.user.id = token.sub;
+        session.user.role = token.role;
+      }
+      return session;
+    },
+    async jwt({ token, user }) {
+      if (user) {
+        token.role = user.role;
+      }
+      return token;
+    },
+  },
 });

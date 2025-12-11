@@ -1,38 +1,70 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Zapper
 
-## Getting Started
+Team workspace for projects, tasks, and delivery health built with Next.js 14, Prisma, and NextAuth. Authenticated users land on a personalized dashboard, drill into projects, manage tasks in board/list views, and collaborate through subtasks and comments.
 
-First, run the development server:
+## Key features
+- Email/Google auth via NextAuth with credential hashing and session handling.
+- Project hub with create/edit/archive, membership assignments, and manager selection.
+- Task board (drag-and-drop) and list views with statuses, priorities, due dates, and assignees.
+- Task detail pages with subtasks, threaded comments, and inline status/priority controls.
+- React Query–powered data fetching and optimistic UI for task/project CRUD.
+- Animated, responsive UI using Framer Motion, Sass modules, and custom components.
 
+## Tech stack
+- Next.js 14 + TypeScript
+- Prisma ORM on PostgreSQL
+- NextAuth (Credentials + Google)
+- React Query, Formik, Axios
+- React Beautiful DnD, Framer Motion, Chart.js
+- Sass modules
+
+## Getting started
+1. Install dependencies:
+   ```bash
+   npm install
+   ```
+2. Create `.env.local` with the values below.
+3. Apply database schema and seed demo data:
+   ```bash
+   npx prisma migrate dev
+   npm run db:seed
+   ```
+4. Run the app:
+   ```bash
+   npm run dev
+   ```
+   Visit http://localhost:3000.
+
+### Environment variables
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
+DATABASE_URL="postgresql://USER:PASSWORD@HOST:PORT/DB"
+DIRECT_URL="postgresql://USER:PASSWORD@HOST:PORT/DB"  # optional shadow URL
+NEXTAUTH_URL="http://localhost:3000"
+NEXTAUTH_SECRET="generate-with-openssl-rand-32-hex"
+GOOGLE_CLIENT_ID="..."
+GOOGLE_CLIENT_SECRET="..."
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The seed script creates an admin account you can use to sign in:
+- Email: `admin@example.com`
+- Password: `Password123!`
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+### Useful scripts
+- `npm run dev` – start Next.js in development.
+- `npm run build` / `npm start` – production build and serve.
+- `npm run lint` – run ESLint.
+- `npm run prisma:migrate` – run Prisma migrations in dev.
+- `npm run prisma:studio` – open Prisma Studio.
+- `npm run db:seed` – seed the database with demo data.
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+## Project structure
+- `src/pages` – Next.js pages (dashboard, projects, task details, and API routes).
+- `src/components` – UI building blocks (boards, lists, overlays, charts, navigation).
+- `src/contexts` – React context for task/project modal state.
+- `src/lib` – Prisma client, API helpers, auth/validation utilities.
+- `prisma/` – Prisma schema and seed script.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## Notes
+- API routes under `src/pages/api` back the UI with Prisma-backed CRUD for projects, tasks, comments, roles, and users.
+- Drag-and-drop moves update task status via the API; list view supports inline edit/delete.
+- Charts and dashboard metrics are driven by cached queries for the signed-in user.

@@ -68,6 +68,36 @@ export async function getProjectTasks(projectName: string) {
   }
 }
 
+export async function createProject(data: any) {
+  const res = await axios.post("/api/projects", data);
+  return res.data;
+}
+
+export async function updateProject(id: string, data: any) {
+  const res = await axios.put(`/api/projects/${id}`, data);
+  return res.data;
+}
+
+export async function deleteProject(id: string) {
+  const res = await axios.delete(`/api/projects/${id}`);
+  return res.data;
+}
+
+export async function createTask(data: any) {
+  const res = await axios.post("/api/tasks", data);
+  return res.data;
+}
+
+export async function updateTask(id: string, data: any) {
+  const res = await axios.put(`/api/tasks/${id}`, data);
+  return res.data;
+}
+
+export async function deleteTask(id: string) {
+  const res = await axios.delete(`/api/tasks/${id}`);
+  return res.data;
+}
+
 // export async function deleteTask(id: string, project: string) {
 //   try {
 //     const tasks = await axios.delete(`/api/tasks/${id}`);

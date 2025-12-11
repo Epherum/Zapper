@@ -1,0 +1,139 @@
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+        
+
+enum TaskStatus {
+  to_do
+  in_progress
+  backlog
+  done
+}
+
+enum TaskPriority {
+  low
+  medium
+  high
+}
+
+enum ProfileRole {
+  admin
+  project_manager
+  developer
+  submitter
+}
+
+model Profile {
+  id         String          @id @default(uuid()) @db.Uuid
+  userId     String          @db.Uuid
+  email      String          @unique
+  passwordHash String?
+  fullName   String?
+  role       ProfileRole?
+  avatarUrl  String?
+  createdAt  DateTime        @default(now())
+  updatedAt  DateTime        @updatedAt
+  organizations OrganizationMember[]
+  projectMemberships ProjectMember[]
+  managedProjects   Project[]       @relation("ManagedProjects")
+  tasks             Task[]          @relation("TaskAssignee")
+  comments          TaskComment[]
+}
+
+model Organization {
+  id        String               @id @default(uuid()) @db.Uuid
+  name      String               @unique
+  createdBy String?              @db.Uuid
+  createdAt DateTime             @default(now())
+  updatedAt DateTime             @updatedAt
+  members   OrganizationMember[]
+  projects  Project[]
+}
+
+model OrganizationMember {
+  orgId     String       @db.Uuid
+  userId    String       @db.Uuid
+  role      ProfileRole?
+  createdAt DateTime     @default(now())
+  organization Organization @relation(fields: [orgId], references: [id])
+  profile      Profile      @relation(fields: [userId], references: [id])
+
+  @@id([orgId, userId])
+  @@map("organization_members")
+}
+
+model Project {
+  id          String          @id @default(uuid()) @db.Uuid
+  orgId       String          @db.Uuid
+  name        String
+  description String?
+  targetDate  DateTime?
+  managerId   String?         @db.Uuid
+  archived    Boolean         @default(false)
+  legacyKey   String?
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+  organization Organization   @relation(fields: [orgId], references: [id])
+  manager      Profile?       @relation("ManagedProjects", fields: [managerId], references: [id])
+  members      ProjectMember[]
+  tasks        Task[]
+
+  @@index([orgId])
+  @@index([managerId])
+}
+
+model ProjectMember {
+  projectId String   @db.Uuid
+  userId    String   @db.Uuid
+  createdAt DateTime @default(now())
+  project Project    @relation(fields: [projectId], references: [id])
+  profile Profile    @relation(fields: [userId], references: [id])
+
+  @@id([projectId, userId])
+  @@map("project_members")
+}
+
+model Task {
+  id           String        @id @default(uuid()) @db.Uuid
+  projectId    String        @db.Uuid
+  parentTaskId String?       @db.Uuid
+  title        String
+  description  String?
+  status       TaskStatus    @default(to_do)
+  priority     TaskPriority  @default(low)
+  assigneeId   String?       @db.Uuid
+  targetDate   DateTime?
+  legacyId     String?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  project      Project       @relation(fields: [projectId], references: [id])
+  parent       Task?         @relation("Subtasks", fields: [parentTaskId], references: [id])
+  subtasks     Task[]        @relation("Subtasks")
+  assignee     Profile?      @relation("TaskAssignee", fields: [assigneeId], references: [id])
+  comments     TaskComment[]
+
+  @@index([projectId])
+  @@index([assigneeId])
+  @@index([status])
+}
+
+model TaskComment {
+  id        String   @id @default(uuid()) @db.Uuid
+  taskId    String   @db.Uuid
+  authorId  String   @db.Uuid
+  body      String
+  createdAt DateTime @default(now())
+  task      Task     @relation(fields: [taskId], references: [id])
+  author    Profile  @relation(fields: [authorId], references: [id])
+
+  @@index([taskId])
+  @@index([authorId])
+  @@map("task_comments")
+}

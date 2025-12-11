@@ -13,10 +13,9 @@ import { TbCircleDotted } from "react-icons/tb";
 import { AiOutlineCheckCircle } from "react-icons/ai";
 import Link from "@/components/Link";
 import Image from "next/image";
-import { doc, setDoc, collection } from "firebase/firestore";
-import { db } from "@/firebase/firebaseConfig";
 import { useRouter } from "next/router";
 import moment from "moment";
+import axios from "axios";
 
 export default function ProjectTasksBoard({ tasksData, project }: any) {
   const [isBrowser, setIsBrowser] = useState(false);
@@ -77,25 +76,11 @@ export default function ProjectTasksBoard({ tasksData, project }: any) {
           items: destItems,
         },
       });
-      // we update the status of the task in the database
-      const updateTask = async () => {
-        const docRef = doc(
-          collection(
-            db,
-            "companies",
-            "DunderMifflin",
-            "projects",
-            project,
-            "tasks"
-          ),
-          removed.id
-        );
-        await setDoc(docRef, {
-          ...removed,
-          status: destColumn.name,
-        });
-      };
-      updateTask();
+      // update status in API
+      axios.put(`/api/tasks/${removed.id}`, {
+        ...removed,
+        status: destColumn.name,
+      });
     } else {
       // if we are moving inside the same list, we just update the items array
       const column = columns[source.droppableId];

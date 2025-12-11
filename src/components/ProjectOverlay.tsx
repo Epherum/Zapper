@@ -2,20 +2,14 @@ import styles from "@/styles/taskOverlay.module.scss";
 import { useState, useEffect } from "react";
 import { GrClose } from "react-icons/gr";
 import { useQuery, useMutation } from "@tanstack/react-query";
-import { db } from "@/firebase/firebaseConfig";
-import {
-  collection,
-  updateDoc,
-  doc,
-  getDocs,
-  setDoc,
-} from "firebase/firestore";
 import { useRouter } from "next/router";
 import { useFormik, Field, FormikProvider } from "formik";
 import { useQueryClient } from "@tanstack/react-query";
 import { useProjectDataContext } from "@/contexts/ProjectDataContext";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
+import axios from "axios";
+import { createProject, updateProject } from "@/lib/api";
 
 export default function ProjectOverlay() {
   const router = useRouter();
@@ -76,70 +70,46 @@ export default function ProjectOverlay() {
   }
 
   const getAllEmployees = async () => {
-    const membersCollection = collection(
-      db,
-      "companies",
-      "DunderMifflin",
-      "employees"
-    );
-
-    const querySnapshot = await getDocs(membersCollection);
-    const users = querySnapshot.docs.map((doc) => doc.data());
-    return users;
+    const res = await axios.get("/api/users");
+    return res.data;
   };
 
   const { data: employeesData } = useQuery(["allEmployees"], getAllEmployees, {
     enabled: !!isProjectModalVisible,
   });
 
-  const addProject = async () => {
-    const projectsCollection = doc(
-      db,
-      "companies",
-      "DunderMifflin",
-      "projects",
-      formik.values.name
-    );
-    const createdAt = new Date();
+  const editProjectMutation = useMutation(
+    () =>
+      updateProject(projectData.id || projectData.name, {
+        description: formik.values.description,
+        targetDate: formik.values.targetDate,
+        archived: formik.values.archived,
+        manager: formik.values.manager,
+        members: formik.values.members,
+      }),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(["projects"]);
+      },
+    }
+  );
 
-    await setDoc(projectsCollection, {
-      ...formik.values,
-      nTasks: 0,
-      createdAt,
-    });
-
-    queryClient.invalidateQueries([
-      ["currentUserprojects"],
-      ["projects", formik.values.name],
-    ]);
-  };
-
-  const editProject = async () => {
-    const projectsCollection = doc(
-      db,
-      "companies",
-      "DunderMifflin",
-      "projects",
-      projectData.name
-    );
-
-    const lastUpdated = new Date();
-
-    await updateDoc(projectsCollection, {
-      ...formik.values,
-      name: projectData.name,
-      lastUpdated,
-    });
-    queryClient.invalidateQueries(["projects", formik.values.name]);
-  };
-
-  const editProjectMutation = useMutation(editProject, {});
-
-  const addProjectMutation = useMutation(addProject, {
-    onSuccess: () => {
-      router.push(`/dashboard/projects/${formik.values.name}`);
-    },
-  });
+  const addProjectMutation = useMutation(
+    () =>
+      createProject({
+        name: formik.values.name,
+        description: formik.values.description,
+        targetDate: formik.values.targetDate,
+        manager: formik.values.manager,
+        members: formik.values.members,
+      }),
+    {
+      onSuccess: (data: any) => {
+        queryClient.invalidateQueries(["projects"]);
+        router.push(`/dashboard/projects/${data.name || data.id}`);
+      },
+    }
+  );
 
   return (
     <div

@@ -1,37 +1,89 @@
-import { db } from "@/firebase/firebaseConfig";
-import { collection, query, getDocs, limit } from "firebase/firestore";
+import { prisma } from "@/lib/prisma";
+
+function toTimestamp(date) {
+  return date ? { seconds: Math.floor(new Date(date).getTime() / 1000) } : null;
+}
+
+async function ensureDefaultOrg() {
+  return prisma.organization.upsert({
+    where: { name: "Default Org" },
+    update: {},
+    create: {
+      name: "Default Org",
+    },
+  });
+}
 
 export default async function handler(req, res) {
-  const projectsData = [];
-  const projectsQuery = query(
-    collection(db, "companies", "DunderMifflin", "projects")
-  );
-  const projectsSnapshot = await getDocs(projectsQuery);
+  if (req.method === "GET") {
+    const projects = await prisma.project.findMany({
+      include: {
+        tasks: {
+          take: 3,
+          orderBy: { createdAt: "desc" },
+        },
+      },
+      orderBy: { createdAt: "desc" },
+    });
 
-  for (const projectDoc of projectsSnapshot.docs) {
-    const project = projectDoc.data();
+    const shaped = projects.map((project) => ({
+      ...project,
+      createdAt: toTimestamp(project.createdAt),
+      targetDate: project.targetDate,
+      tasks: project.tasks.map((task) => ({
+        ...task,
+        createdAt: toTimestamp(task.createdAt),
+        targetDate: task.targetDate,
+      })),
+    }));
 
-    const tasksQuery = query(
-      collection(
-        db,
-        "companies",
-        "DunderMifflin",
-        "projects",
-        projectDoc.id,
-        "tasks"
-      ),
-      limit(3)
-    );
-    const tasksSnapshot = await getDocs(tasksQuery);
-    const tasks = [];
+    return res.status(200).json(shaped);
+  }
 
-    for (const issueDoc of tasksSnapshot.docs) {
-      const issue = issueDoc.data();
-      tasks.push(issue);
+  if (req.method === "POST") {
+    const org = await ensureDefaultOrg();
+    const { name, description, targetDate, manager, members = [] } = req.body;
+
+    const project = await prisma.project.create({
+      data: {
+        orgId: org.id,
+        name,
+        description,
+        targetDate: targetDate ? new Date(targetDate) : null,
+        managerId: manager
+          ? (
+              await prisma.profile.upsert({
+                where: { email: manager },
+                update: {},
+                create: { email: manager, userId: crypto.randomUUID() },
+              })
+            ).id
+          : null,
+      },
+    });
+
+    // attach members
+    for (const email of members) {
+      const profile = await prisma.profile.upsert({
+        where: { email },
+        update: {},
+        create: { email, userId: crypto.randomUUID() },
+      });
+      await prisma.projectMember.upsert({
+        where: { projectId_userId: { projectId: project.id, userId: profile.id } },
+        update: {},
+        create: { projectId: project.id, userId: profile.id },
+      });
     }
 
-    project.tasks = tasks;
-    projectsData.push(project);
+    return res.status(201).json({
+      ...project,
+      createdAt: toTimestamp(project.createdAt),
+      targetDate: project.targetDate,
+      tasks: [],
+    });
   }
-  res.status(200).json(projectsData);
+
+  res.setHeader("Allow", "GET, POST");
+  return res.status(405).json({ message: "Method not allowed" });
 }

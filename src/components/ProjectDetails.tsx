@@ -4,18 +4,10 @@ import Task from "@/components/ProjectsTask";
 import Link from "@/components/Link";
 import Image from "next/image";
 import moment from "moment";
-import {
-  doc,
-  deleteDoc,
-  collection,
-  query,
-  getDocs,
-  where,
-} from "firebase/firestore";
-import { db } from "@/firebase/firebaseConfig";
 import { useProjectDataContext } from "@/contexts/ProjectDataContext";
 import { useQueryClient } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
+import { deleteProject } from "@/lib/api";
 
 function ProjectDetails(props: any) {
   const { data: session } = useSession();
@@ -32,18 +24,7 @@ function ProjectDetails(props: any) {
   const formattedTargetDate = moment(targetDate).format("MMMM DD, YYYY");
 
   async function deleteTask() {
-    const q = query(
-      collection(db, "companies", "DunderMifflin", "projects", name, "tasks"),
-      where("project", "==", name)
-    );
-
-    const querySnapshot = await getDocs(q);
-    querySnapshot.forEach(async (doc) => {
-      await deleteDoc(doc.ref);
-    });
-
-    await deleteDoc(doc(db, "companies", "DunderMifflin", "projects", name));
-
+    await deleteProject(props.selectedProject.id || name);
     props.removeFromData(name);
     props.removeSelectedProject("");
     queryClient.invalidateQueries(["tasks", name]);

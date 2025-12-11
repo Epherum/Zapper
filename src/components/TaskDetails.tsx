@@ -2,10 +2,9 @@ import styles from "@/styles/projectTasks.module.scss";
 import { CgArrowsExpandRight } from "react-icons/cg";
 import Link from "@/components/Link";
 import Image from "next/image";
-import { doc, deleteDoc } from "firebase/firestore";
-import { db } from "@/firebase/firebaseConfig";
 import { useTaskDataContext } from "@/contexts/TaskDataContext";
 import moment from "moment";
+import { deleteTask } from "@/lib/api";
 function TaskDetails(props: any) {
   const {
     title,
@@ -25,10 +24,8 @@ function TaskDetails(props: any) {
     .format("MMMM DD, YYYY");
   const formattedTargetDate = moment(targetDate).format("MMMM DD, YYYY");
 
-  function deleteTask() {
-    deleteDoc(
-      doc(db, "companies", "DunderMifflin", "projects", project, "tasks", id)
-    );
+  async function deleteTaskItem() {
+    await deleteTask(id);
     props.removeFromData(id);
     props.removeSelectedTask();
   }
@@ -101,7 +98,7 @@ function TaskDetails(props: any) {
       <button className={styles.edit} onClick={editTask}>
         Edit Task
       </button>
-      <button className={styles.delete} onClick={deleteTask}>
+      <button className={styles.delete} onClick={deleteTaskItem}>
         Delete Task
       </button>
     </div>

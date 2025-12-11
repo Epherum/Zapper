@@ -1,28 +1,28 @@
-import { db } from "@/firebase/firebaseConfig";
-import {
-  getDocs,
-  getDoc,
-  doc,
-  query,
-  where,
-  collectionGroup,
-} from "firebase/firestore";
+import { prisma } from "@/lib/prisma";
+
+function toTimestamp(date) {
+  return date ? { seconds: Math.floor(new Date(date).getTime() / 1000) } : null;
+}
 
 export default async function handler(req, res) {
   const { email } = req.query;
 
-  const projects = [];
-  const userProjects = await getDocs(
-    query(
-      collectionGroup(db, "projects"),
-      where("members", "array-contains", email)
-    )
-  );
-  userProjects?.forEach((issue) => {
-    const issueData = issue.data();
-    issueData.id = issue.id;
-    projects.push(issueData);
+  const profile = await prisma.profile.findUnique({
+    where: { email },
+    include: {
+      projectMemberships: {
+        include: { project: true },
+      },
+    },
   });
 
-  res.status(200).json(projects);
+  if (!profile) return res.status(200).json([]);
+
+  const projects = profile.projectMemberships.map((m) => ({
+    ...m.project,
+    createdAt: toTimestamp(m.project.createdAt),
+    targetDate: m.project.targetDate,
+  }));
+
+  return res.status(200).json(projects);
 }

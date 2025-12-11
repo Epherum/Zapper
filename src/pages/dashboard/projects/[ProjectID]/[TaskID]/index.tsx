@@ -10,6 +10,7 @@ import { useSession } from "next-auth/react";
 import { v4 as uuidv4 } from "uuid";
 import Image from "next/image";
 import moment from "moment";
+import axios from "axios";
 import {
   filters,
   filterItem,
@@ -30,24 +31,8 @@ import {
   deleteButton,
 } from "@/animations/taskDetails";
 import { motion } from "framer-motion";
-import {
-  collection,
-  query,
-  where,
-  getDoc,
-  doc,
-  deleteDoc,
-  getDocs,
-  setDoc,
-} from "firebase/firestore";
-import { db } from "@/firebase/firebaseConfig";
 import { useRouter } from "next/router";
-import {
-  useQuery,
-  useQueryClient,
-  useMutation,
-  Mutation,
-} from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTaskDataContext } from "@/contexts/TaskDataContext";
 
 import Link from "@/components/Link";
@@ -84,39 +69,16 @@ export default function TaskDetails() {
   }
 
   async function getSubtasks() {
-    const subtasksQuery = query(
-      collection(
-        db,
-        "companies",
-        "DunderMifflin",
-        "projects",
-        ProjectID,
-        "tasks"
-      ),
-      where("subtaskOf", "==", TaskID)
+    const res = await axios.get(`/api/tasks/project/${ProjectID}`);
+    const tasks = res.data || [];
+    return tasks.filter(
+      (task: any) => task.parentTaskId === TaskID || task.subtaskOf === TaskID
     );
-
-    const subtasksSnapshot = await getDocs(subtasksQuery);
-    const subtasks = subtasksSnapshot.docs.map((doc: any) => doc.data());
-
-    console.log("subtasks", subtasks);
-
-    return subtasks;
   }
 
   async function getTasks() {
-    const taskQuery = doc(
-      db,
-      "companies",
-      "DunderMifflin",
-      "projects",
-      ProjectID,
-      "tasks",
-      TaskID
-    );
-
-    const taskSnapshot = await getDoc(taskQuery);
-    const task = taskSnapshot.data();
+    const res = await axios.get(`/api/tasks/${TaskID}`);
+    const task = res.data;
 
     setPriority(task?.priority);
     setStatus(task?.status);
@@ -141,31 +103,10 @@ export default function TaskDetails() {
   }
   function deleteTask() {
     if (taskData) {
-      deleteDoc(
-        doc(
-          db,
-          "companies",
-          "DunderMifflin",
-          "projects",
-          taskData.project,
-          "tasks",
-          taskData.id
-        )
-      );
+      axios.delete(`/api/tasks/${taskData.id}`);
 
-      //delete subtasks
-      subtaskData?.forEach((subtask) => {
-        deleteDoc(
-          doc(
-            db,
-            "companies",
-            "DunderMifflin",
-            "projects",
-            taskData.project,
-            "tasks",
-            subtask.id
-          )
-        );
+      subtaskData?.forEach((subtask: any) => {
+        axios.delete(`/api/tasks/${subtask.id}`);
       });
 
       router.push(`/dashboard/projects/${taskData.project}`);
@@ -174,61 +115,26 @@ export default function TaskDetails() {
 
   async function handleCommentSubmit(e: any) {
     e.preventDefault();
-
-    if (comment) {
-      const commentData = {
-        id: uuidv4(),
-        comment,
-        createdAt: new Date(),
-        user: session?.user?.email,
-      };
-      if (taskData?.comments) {
-        queryClient.setQueryData(["task", TaskID], (prev: any) => ({
-          ...prev,
-          comments: [...prev.comments, commentData],
-        }));
-      } else {
-        queryClient.setQueryData(["task", TaskID], (prev: any) => ({
-          ...prev,
-          comments: [commentData],
-        }));
-      }
-
-      const commentsRef = doc(
-        db,
-        "companies",
-        "DunderMifflin",
-        "projects",
-        ProjectID,
-        "tasks",
-        TaskID,
-        "comments",
-        commentData.id
-      );
-
-      await setDoc(commentsRef, commentData);
-
-      setComment("");
-
-      queryClient.invalidateQueries(["comments", TaskID]);
-    }
+    if (!comment) return;
+    const payload = {
+      comment,
+      userEmail: session?.user?.email,
+    };
+    const res = await axios.post(
+      `/api/tasks/comments/${TaskID}`,
+      payload
+    );
+    queryClient.setQueryData(["comments", TaskID], (prev: any = []) => [
+      res.data,
+      ...prev,
+    ]);
+    setComment("");
   }
 
   async function deleteComment(commentID: string) {
-    const commentRef = doc(
-      db,
-      "companies",
-      "DunderMifflin",
-      "projects",
-      ProjectID,
-      "tasks",
-      TaskID,
-      "comments",
-      commentID
-    );
-
-    await deleteDoc(commentRef);
-
+    await axios.delete(`/api/tasks/comments/${TaskID}`, {
+      data: { id: commentID },
+    });
     queryClient.invalidateQueries(["comments", TaskID]);
   }
 
@@ -237,37 +143,20 @@ export default function TaskDetails() {
     setisTaskModalVisible(!isTaskModalVisible);
   }
 
-  async function getTaskComments() {
-    const commentsQuery = query(
-      collection(
-        db,
-        "companies",
-        "DunderMifflin",
-        "projects",
-        ProjectID,
-        "tasks",
-        TaskID,
-        "comments"
-      )
-    );
-
-    const commentsSnapshot = await getDocs(commentsQuery);
-    const comments = commentsSnapshot.docs.map((doc: any) => doc.data());
-
-    return comments;
-  }
-
-  const { data: commentsData } = useQuery(
-    ["comments", TaskID],
-    getTaskComments,
-    {
-      enabled: !!TaskID && !!ProjectID,
-    }
-  );
-
   const { data: taskData } = useQuery(["task", TaskID], getTasks, {
     enabled: !!TaskID && !!ProjectID,
   });
+
+  const { data: commentsData } = useQuery(
+    ["comments", TaskID],
+    async () => {
+      const res = await axios.get(`/api/tasks/comments/${TaskID}`);
+      return res.data;
+    },
+    {
+      enabled: !!TaskID,
+    }
+  );
 
   const { data: subtaskData } = useQuery(["subtasks", TaskID], getSubtasks, {
     enabled: !!TaskID && !!ProjectID,
@@ -451,7 +340,7 @@ export default function TaskDetails() {
                       </p>
                     </div>
                     <div className={styles.activityItemDescription}>
-                      <p>{comment.comment.substring(0, 100)}</p>
+                      <p>{(comment.comment || comment.body || "").substring(0, 100)}</p>
                     </div>
                   </motion.div>
                 ))}

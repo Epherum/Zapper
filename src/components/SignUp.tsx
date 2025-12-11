@@ -1,31 +1,23 @@
 import styles from "@/styles/login.module.scss";
 import { signIn } from "next-auth/react";
-import { useState } from "react";
 import { useRouter } from "next/router";
 import { FcGoogle } from "react-icons/fc";
-import Image from "next/image";
 import { useFormik } from "formik";
-import LoginValidate from "@/lib/formValidate";
-import { hash } from "bcryptjs";
-import {
-  getDoc,
-  doc,
-  getFirestore,
-  collection,
-  getDocs,
-  query,
-  where,
-  setDoc,
-  addDoc,
-  Timestamp,
-  serverTimestamp,
-} from "firebase/firestore";
-import { db } from "@/firebase/firebaseConfig";
+import axios from "axios";
+
+type RoleShape = {
+  key: string;
+  name: string;
+  description: string;
+  capabilities?: string[];
+};
 
 export default function SignUp({
   setShowSignIn,
+  roles,
 }: {
   setShowSignIn: React.Dispatch<React.SetStateAction<boolean>>;
+  roles: RoleShape[];
 }) {
   const router = useRouter();
   const formik = useFormik({
@@ -33,8 +25,9 @@ export default function SignUp({
       username: "",
       email: "",
       password: "",
+      role: roles[0]?.key || "admin",
     },
-    // validate: LoginValidate,
+    enableReinitialize: true,
     onSubmit,
   });
 
@@ -42,90 +35,113 @@ export default function SignUp({
     username: string;
     email: string;
     password: string;
+    role: string;
   }) {
-    const q = query(
-      collection(db, "users"),
-      where("email", "==", values.email)
-    );
-    getDocs(q).then(async (querySnapshot) => {
-      if (querySnapshot.size > 0) {
-        console.log("email already exists");
-      } else {
-        await hash(values.password, 12)
-          .then(async (hashedPassword) => {
-            const newUser = {
-              username: values.username,
-              email: values.email,
-              password: hashedPassword,
-              createdAt: serverTimestamp(),
-            };
-            await setDoc(doc(db, "users", newUser.email), newUser);
-          })
-          .finally(() => {
-            signIn("credentials", {
-              email: values.email,
-              password: values.password,
-              redirect: false,
-            }).then((res) => {
-              if (res?.status === 200) {
-                router.push("/dashboard");
-              }
-            });
-          });
+    try {
+      await axios.post("/api/users", {
+        username: values.username,
+        email: values.email,
+        password: values.password,
+        role: values.role,
+      });
+
+      const res = await signIn("credentials", {
+        email: values.email,
+        password: values.password,
+        redirect: false,
+      });
+      if (res?.status === 200) {
+        router.push("/dashboard");
       }
-    });
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   return (
-    <div className={styles.signup}>
-      <div className={styles.zapper}>
-        <Image src="zapper.svg" alt="zapper" width={24} height={24} />
-        <p>zapper</p>
+    <div className={styles.formPanel}>
+      <div className={styles.panelHeader}>
+        <p className={styles.kicker}>Create account</p>
+        <h2 className={styles.titleLarge}>Set up your workspace access</h2>
+        <p className={styles.hint}>
+          Choose a role to tailor your dashboard. We’ll wire granular permissions soon.
+        </p>
       </div>
-      <h1 className={styles.headline}>Create an account</h1>
-      <p className={styles.subHeadline}>
-        Let’s get started with your 30 day free trial
-      </p>
       <form className={styles.form} onSubmit={formik.handleSubmit}>
-        <div className={styles.input}>
+        <label className={styles.field}>
+          <div className={styles.labelRow}>
+            <span>Name</span>
+          </div>
           <input
             type="text"
-            placeholder="Name"
+            placeholder="Frances Hall"
             {...formik.getFieldProps("username")}
+            className={styles.inputControl}
           />
+        </label>
+        <label className={styles.field}>
+          <div className={styles.labelRow}>
+            <span>Email</span>
+          </div>
           <input
             type="email"
-            placeholder="Email"
+            placeholder="you@company.com"
             {...formik.getFieldProps("email")}
-            className={` ${
+            className={`${styles.inputControl} ${
               formik.errors.email && formik.touched.email ? styles.error : ""
-            }
-                `}
+            }`}
           />
+        </label>
+        <label className={styles.field}>
+          <div className={styles.labelRow}>
+            <span>Password</span>
+          </div>
           <input
             type="password"
-            placeholder="Password"
+            placeholder="••••••••"
             {...formik.getFieldProps("password")}
-            className={` ${
+            className={`${styles.inputControl} ${
               formik.errors.password && formik.touched.password
                 ? styles.error
                 : ""
-            }
-                `}
+            }`}
           />
-        </div>
-        <button className={styles.create} type="submit">
+        </label>
+        <label className={styles.field}>
+          <div className={styles.labelRow}>
+            <span>Role</span>
+            <span className={styles.optionalTag}>Optional</span>
+          </div>
+          <div className={styles.selectWrapper}>
+            <select
+              {...formik.getFieldProps("role")}
+              className={styles.selectControl}
+            >
+              {roles.map((role) => (
+                <option value={role.key} key={role.key}>
+                  {role.name}
+                </option>
+              ))}
+            </select>
+          </div>
+          <p className={styles.helper}>
+            Roles don’t restrict access yet—they help personalize onboarding today.
+          </p>
+        </label>
+
+        <button className={styles.primaryButton} type="submit">
           Create account
         </button>
       </form>
       <button
-        className={styles.google}
+        className={styles.oauthButton}
         onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
+        type="button"
       >
         <FcGoogle /> Sign in with Google
       </button>
-      <p className={styles.already}>
-        Already have an account ?{" "}
+      <p className={styles.switcher}>
+        <span>Already have an account?</span>{" "}
         <button onClick={() => setShowSignIn(true)}>Log in</button>
       </p>
     </div>

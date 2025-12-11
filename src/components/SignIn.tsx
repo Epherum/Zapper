@@ -1,23 +1,18 @@
 import styles from "@/styles/login.module.scss";
-import { signIn, signOut, useSession } from "next-auth/react";
-import { useRouter } from "next/router";
-import { FcGoogle } from "react-icons/fc";
-import Image from "next/image";
+import { signIn } from "next-auth/react";
 import { useFormik } from "formik";
-import LoginValidate from "@/lib/formValidate";
+import { FcGoogle } from "react-icons/fc";
 
 export default function SignIn({
   setShowSignIn,
 }: {
   setShowSignIn: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
-  const router = useRouter();
   const formik = useFormik({
     initialValues: {
       email: "",
       password: "",
     },
-    // validate: LoginValidate,
     onSubmit,
   });
 
@@ -31,53 +26,60 @@ export default function SignIn({
   }
 
   return (
-    <div className={styles.signup}>
-      <div className={styles.zapper}>
-        <Image src="zapper.svg" alt="zapper" width={24} height={24} />
-        <p>zappersss</p>
+    <div className={styles.formPanel}>
+      <div className={styles.panelHeader}>
+        <p className={styles.kicker}>Sign in</p>
+        <h2 className={styles.titleLarge}>Welcome back</h2>
+        <p className={styles.hint}>
+          Pick up where you left off. Your dashboard, filters, and last open project will
+          be right here.
+        </p>
       </div>
-      <h1 className={styles.headline}>Welcome Back</h1>
-      <p className={styles.subHeadline}>
-        Let’s get started with your 30 day free trial
-      </p>
       <form className={styles.form} onSubmit={formik.handleSubmit}>
-        <div className={styles.input}>
+        <label className={styles.field}>
+          <div className={styles.labelRow}>
+            <span>Email</span>
+          </div>
           <input
             type="email"
-            placeholder="Email"
+            placeholder="you@company.com"
             {...formik.getFieldProps("email")}
-            className={` ${
+            className={`${styles.inputControl} ${
               formik.errors.email && formik.touched.email ? styles.error : ""
-            }
-                `}
+            }`}
           />
-
+        </label>
+        <label className={styles.field}>
+          <div className={styles.labelRow}>
+            <span>Password</span>
+          </div>
           <input
             type="password"
-            placeholder="Password"
+            placeholder="••••••••"
             {...formik.getFieldProps("password")}
-            className={` ${
+            className={`${styles.inputControl} ${
               formik.errors.password && formik.touched.password
                 ? styles.error
                 : ""
-            }
-                `}
+            }`}
           />
-        </div>
-        <button className={styles.create} type="submit">
+        </label>
+
+        <button className={styles.primaryButton} type="submit">
           Log in
         </button>
       </form>
       <button
-        className={styles.google}
+        className={styles.oauthButton}
         onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
+        type="button"
       >
         <FcGoogle /> Sign in with Google
       </button>
 
-      <p className={styles.already}>
-        Don&apos;t have an account ?{" "}
-        <button onClick={() => setShowSignIn(false)}>Sign up</button>
+      <p className={styles.switcher}>
+        <span>Need an account?</span>{" "}
+        <button onClick={() => setShowSignIn(false)}>Create one</button>
       </p>
     </div>
   );

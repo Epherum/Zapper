@@ -1,6 +1,6 @@
 import "@/styles/globals.scss";
 import type { AppProps } from "next/app";
-import { Inter } from "@next/font/google";
+import { Inter } from "next/font/google";
 import Menu from "@/components/Menu";
 import Search from "@/components/Search";
 import { motion } from "framer-motion";
