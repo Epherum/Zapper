@@ -49,5 +49,8 @@
     "eslint-config-next": "16.0.8",
     "prisma": "5.19.1",
     "ts-node": "^10.9.2"
+  },
+  "engines": {
+    "node": "22.x"
   }
 }
