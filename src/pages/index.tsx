@@ -46,8 +46,8 @@ export default function Login() {
   function signInAdmin() {
     setShowSignIn(true);
     signIn("credentials", {
-      email: "michaelscott@gmail.com",
-      password: "1234",
+      email: "admin@example.com",
+      password: "Password123!",
       redirect: false,
       callbackUrl: "/dashboard",
     });

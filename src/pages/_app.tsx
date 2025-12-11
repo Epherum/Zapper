@@ -1,6 +1,5 @@
 import "@/styles/globals.scss";
 import type { AppProps } from "next/app";
-import { Inter } from "next/font/google";
 import Menu from "@/components/Menu";
 import Search from "@/components/Search";
 import { motion } from "framer-motion";
@@ -8,6 +7,7 @@ import { useRouter } from "next/router";
 import PageTransition from "@/components/PageTransition";
 import styles from "@/styles/circles.module.scss";
 import { circleBlue, circleGreen } from "@/animations/projects";
+import { Inter } from "next/font/google";
 
 import { TaskDataProvider } from "@/contexts/TaskDataContext";
 import { ProjectDataProvider } from "@/contexts/ProjectDataContext";
