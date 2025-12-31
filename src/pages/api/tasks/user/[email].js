@@ -23,10 +23,12 @@ export default async function handler(req, res) {
   const tasks = await prisma.task.findMany({
     where: { assigneeId: profile.id },
     orderBy: { createdAt: "desc" },
+    include: { project: true },
   });
 
   const shaped = tasks.map((task) => ({
     ...task,
+    project: task.project?.name || task.projectId,
     status: presentStatus[task.status] || task.status,
     createdAt: toTimestamp(task.createdAt),
     targetDate: task.targetDate,

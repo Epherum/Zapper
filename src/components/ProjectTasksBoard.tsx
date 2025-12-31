@@ -16,6 +16,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import moment from "moment";
 import axios from "axios";
+import { formatShortId } from "@/lib/format";
 
 export default function ProjectTasksBoard({ tasksData, project }: any) {
   const [isBrowser, setIsBrowser] = useState(false);
@@ -159,7 +160,7 @@ export default function ProjectTasksBoard({ tasksData, project }: any) {
                                         <Link href="/dashboard/projects/missguided/LG-12">
                                           {item.title}
                                         </Link>
-                                        <p>ID {item.id}</p>
+                                        <p>ID {formatShortId(item.id)}</p>
                                       </div>
                                       <div className={styles.itemBottomHalf}>
                                         <div

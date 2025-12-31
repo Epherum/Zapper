@@ -2,6 +2,7 @@ import styles from "@/styles/projectTasks.module.scss";
 import { MdExpandMore } from "react-icons/md";
 import Image from "next/image";
 import moment from "moment";
+import { formatShortId } from "@/lib/format";
 interface ProjectTasksTasksProps {
   task: {
     id: string;
@@ -21,7 +22,7 @@ function ProjectTasksTasks({ task }: ProjectTasksTasksProps) {
   return (
     <div className={styles.taskItem}>
       <div className={styles.taskLeftSide}>
-        <p>ID {id}</p>
+        <p>ID {formatShortId(id)}</p>
         <p>{title}</p>
       </div>
       <div className={styles.taskRightSide}>

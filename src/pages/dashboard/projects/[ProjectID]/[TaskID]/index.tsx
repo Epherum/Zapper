@@ -34,6 +34,7 @@ import { motion } from "framer-motion";
 import { useRouter } from "next/router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTaskDataContext } from "@/contexts/TaskDataContext";
+import { formatShortId } from "@/lib/format";
 
 import Link from "@/components/Link";
 
@@ -168,7 +169,12 @@ export default function TaskDetails() {
         <>
           <Headline
             title={taskData.title}
-            location={["home", "projects", ProjectID, TaskID]}
+            location={[
+              "home",
+              "projects",
+              taskData.project || ProjectID,
+              taskData.title || TaskID,
+            ]}
           />
           <motion.div
             variants={filters}
@@ -260,7 +266,7 @@ export default function TaskDetails() {
                           className={styles.subtasksListItem}
                         >
                           <div className={styles.subtaskLeftSide}>
-                            <p>ID {subtask.id}</p>
+                            <p>ID {formatShortId(subtask.id)}</p>
                             <p>
                               {subtask.title.substring(0, 20)}
                               {subtask.title.length > 20 ? "..." : ""}
@@ -390,7 +396,7 @@ export default function TaskDetails() {
               >
                 <div>
                   <h2>Task details</h2>
-                  <p>ID {taskData.id}</p>
+                  <p>ID {formatShortId(taskData.id)}</p>
                 </div>
               </motion.div>
 
@@ -410,7 +416,7 @@ export default function TaskDetails() {
                       className={styles.subtaskOf}
                       href={`/dashboard/projects/${taskData.project}/${taskData.subtaskOf}`}
                     >
-                      {taskData.subtaskOf}
+                      {formatShortId(taskData.subtaskOf)}
                     </Link>
                   </motion.div>
                 ) : (

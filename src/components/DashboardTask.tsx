@@ -6,6 +6,7 @@ import { MdExpandMore } from "react-icons/md";
 import Link from "@/components/Link";
 import Image from "next/image";
 import moment from "moment";
+import { formatShortId } from "@/lib/format";
 
 interface TaskProps {
   task: {
@@ -42,7 +43,7 @@ export default function Task({ task, expandedFirst = false }: TaskProps) {
         <div>
           <div className={styles.taskID}>
             <p>
-              <span>ID {id}</span>
+              <span>ID {formatShortId(id)}</span>
             </p>
           </div>
           <div className={styles.taskName}>

@@ -1,22 +1,16 @@
 .login {
-  --bg: #070a16;
-  --panel: rgba(16, 22, 39, 0.72);
-  --card: rgba(255, 255, 255, 0.04);
-  --border: rgba(255, 255, 255, 0.08);
-  --accent: #7bf1a8;
-  --accent-2: #f7c948;
-  --text: #e9f1ff;
-  --muted: #9db2ce;
+  --border: #bfbfbf;
+  --border-strong: #ababab;
+  --accent: #{$purple};
+  --accent-soft: #{$light-purple};
+  --info: #{$blue};
+  --info-soft: #{$light-blue};
+  --text: #000;
+  --muted: #{$dark-gray};
   min-height: 100vh;
   padding: clamp(2rem, 4vw, 3.5rem) clamp(1.2rem, 3vw, 2.5rem)
     clamp(3rem, 6vw, 4rem);
-  background: radial-gradient(
-        circle at 12% 20%,
-        rgba(123, 241, 168, 0.16),
-        transparent 25%
-      ),
-    radial-gradient(circle at 82% 10%, rgba(247, 201, 72, 0.14), transparent 30%),
-    linear-gradient(135deg, #050711, #090d1f 45%, #0a1023);
+  background: linear-gradient(180deg, #f9f9f9 0%, #ffffff 45%);
   color: var(--text);
   display: flex;
   align-items: center;
@@ -31,21 +25,21 @@
   position: absolute;
   width: 520px;
   height: 520px;
-  background: radial-gradient(circle, rgba(123, 241, 168, 0.1), transparent 45%);
-  filter: blur(60px);
+  background: radial-gradient(circle, rgba(113, 100, 198, 0.18), transparent 60%);
+  filter: blur(30px);
   z-index: 0;
-  opacity: 0.8;
+  opacity: 0.6;
 }
 
 .login::before {
-  bottom: -220px;
-  left: -120px;
+  bottom: -240px;
+  left: -160px;
 }
 
 .login::after {
-  top: -180px;
-  right: -160px;
-  background: radial-gradient(circle, rgba(247, 201, 72, 0.12), transparent 48%);
+  top: -220px;
+  right: -180px;
+  background: radial-gradient(circle, rgba(40, 191, 255, 0.16), transparent 62%);
 }
 
 .shell {
@@ -58,12 +52,11 @@
 }
 
 .hero {
-  background: linear-gradient(145deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
+  background: #fff;
   border: 1px solid var(--border);
-  border-radius: 28px;
+  border-radius: 18px;
   padding: clamp(1.6rem, 4vw, 2.7rem);
-  backdrop-filter: blur(12px);
-  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.06);
   position: relative;
   overflow: hidden;
 }
@@ -72,8 +65,8 @@
   content: "";
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 15% 15%, rgba(123, 241, 168, 0.18), transparent 28%),
-    radial-gradient(circle at 85% 20%, rgba(247, 201, 72, 0.18), transparent 32%);
+  background: radial-gradient(circle at 10% 15%, rgba(113, 100, 198, 0.08), transparent 38%),
+    radial-gradient(circle at 85% 20%, rgba(40, 191, 255, 0.08), transparent 40%);
   opacity: 0.7;
   pointer-events: none;
 }
@@ -91,12 +84,12 @@
   width: 42px;
   height: 42px;
   border-radius: 14px;
-  background: linear-gradient(135deg, #7bf1a8, #9ef4c5);
+  background: var(--accent-soft);
+  border: 1px solid rgba(113, 100, 198, 0.3);
   display: grid;
   place-items: center;
-  color: #0a0d15;
-  font-weight: 800;
-  box-shadow: 0 12px 30px rgba(123, 241, 168, 0.35);
+  color: var(--accent);
+  font-weight: 700;
 }
 
 .brandCopy {
@@ -108,16 +101,17 @@
 .brandName {
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  font-weight: 800;
+  font-weight: 700;
   color: var(--text);
 }
 
 .heroTitle {
-  font-size: clamp(2rem, 4vw, 2.9rem);
-  line-height: 1.1;
+  font-size: clamp(2rem, 4vw, 2.7rem);
+  line-height: 1.15;
   margin-bottom: 0.6rem;
   position: relative;
   z-index: 1;
+  font-weight: 500;
 }
 
 .heroCopy {
@@ -140,28 +134,27 @@
   gap: 1rem;
   align-items: flex-start;
   padding: 1rem 1.1rem;
-  border-radius: 16px;
-  background: var(--panel);
+  border-radius: 14px;
+  background: #fafafa;
   border: 1px solid var(--border);
-  box-shadow: 0 18px 36px rgba(0, 0, 0, 0.28);
   flex-wrap: wrap;
 }
 
 .quickButton {
-  background: linear-gradient(120deg, var(--accent), #9ef4c5);
-  color: #06101d;
-  border: none;
+  background: #000;
+  color: #fff;
+  border: 1px solid #000;
   border-radius: 12px;
   padding: 0.85rem 1.35rem;
-  font-weight: 800;
+  font-weight: 600;
   cursor: pointer;
-  box-shadow: 0 14px 30px rgba(123, 241, 168, 0.25);
-  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  transition: background 0.18s ease, color 0.18s ease, transform 0.18s ease;
 }
 
 .quickButton:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 16px 34px rgba(123, 241, 168, 0.32);
+  background: #fff;
+  color: #000;
+  transform: translateY(-1px);
 }
 
 .quickText {
@@ -189,7 +182,7 @@
 
 .roleCard {
   text-align: left;
-  background: rgba(255, 255, 255, 0.03);
+  background: #fff;
   border: 1px solid var(--border);
   border-radius: 14px;
   padding: 0.95rem 1.05rem;
@@ -200,19 +193,19 @@
 }
 
 .roleCard:hover {
-  transform: translateY(-4px);
-  border-color: rgba(255, 255, 255, 0.18);
-  background: rgba(255, 255, 255, 0.05);
+  transform: translateY(-3px);
+  border-color: rgba(113, 100, 198, 0.35);
+  background: var(--accent-soft);
 }
 
 .roleCardActive {
-  border-color: rgba(123, 241, 168, 0.35);
-  box-shadow: 0 12px 30px rgba(123, 241, 168, 0.15);
-  background: linear-gradient(140deg, rgba(123, 241, 168, 0.08), rgba(255, 255, 255, 0.03));
+  border-color: rgba(113, 100, 198, 0.55);
+  box-shadow: 0 12px 26px rgba(113, 100, 198, 0.12);
+  background: var(--accent-soft);
 }
 
 .roleTitle {
-  font-weight: 800;
+  font-weight: 600;
   margin-bottom: 0.35rem;
 }
 
@@ -235,19 +228,18 @@
   gap: 0.35rem;
   padding: 0.35rem 0.75rem;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.06);
+  background: #fff;
   border: 1px solid var(--border);
   color: var(--text);
   font-size: 0.85rem;
 }
 
 .authCard {
-  background: linear-gradient(165deg, rgba(15, 19, 35, 0.9), rgba(14, 16, 30, 0.8));
+  background: #fff;
   border: 1px solid var(--border);
-  border-radius: 20px;
+  border-radius: 18px;
   padding: clamp(1.4rem, 3vw, 2rem);
-  backdrop-filter: blur(14px);
-  box-shadow: 0 26px 60px rgba(0, 0, 0, 0.45);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.06);
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
@@ -257,9 +249,9 @@
 .tabs {
   display: flex;
   gap: 0.35rem;
-  background: rgba(255, 255, 255, 0.04);
+  background: #f6f6f6;
   border: 1px solid var(--border);
-  border-radius: 14px;
+  border-radius: 12px;
   padding: 0.25rem;
 }
 
@@ -268,17 +260,17 @@
   background: transparent;
   border: none;
   color: var(--muted);
-  font-weight: 700;
-  padding: 0.85rem 1rem;
+  font-weight: 600;
+  padding: 0.8rem 1rem;
   border-radius: 10px;
   cursor: pointer;
   transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .tabButtonActive {
-  background: rgba(255, 255, 255, 0.08);
-  color: var(--text);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+  background: var(--accent-soft);
+  color: #000;
+  box-shadow: inset 0 0 0 1px rgba(113, 100, 198, 0.2);
 }
 
 .formPanel {
@@ -296,13 +288,14 @@
 .kicker {
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: var(--accent-2);
-  font-weight: 800;
-  font-size: 0.95rem;
+  color: var(--accent);
+  font-weight: 600;
+  font-size: 0.9rem;
 }
 
 .titleLarge {
   font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 600;
 }
 
 .hint {
@@ -320,10 +313,16 @@
   display: flex;
   flex-direction: column;
   gap: 0.45rem;
-  background: rgba(255, 255, 255, 0.03);
+  background: #fff;
   border: 1px solid var(--border);
   border-radius: 12px;
   padding: 0.75rem 0.85rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.field:focus-within {
+  border-color: rgba(113, 100, 198, 0.45);
+  box-shadow: 0 0 0 3px rgba(113, 100, 198, 0.12);
 }
 
 .labelRow {
@@ -344,7 +343,7 @@
 }
 
 .inputControl::placeholder {
-  color: rgba(233, 241, 255, 0.45);
+  color: #b8b8b8;
 }
 
 .selectWrapper {
@@ -377,33 +376,33 @@
   align-items: center;
   padding: 0.2rem 0.55rem;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid var(--border);
-  color: var(--muted);
+  background: var(--accent-soft);
+  border: 1px solid rgba(113, 100, 198, 0.25);
+  color: var(--accent);
   font-size: 0.85rem;
 }
 
 .error {
   border-color: #f87171;
-  box-shadow: 0 0 0 1px rgba(248, 113, 113, 0.3);
+  box-shadow: 0 0 0 2px rgba(248, 113, 113, 0.2);
 }
 
 .primaryButton {
   margin-top: 0.3rem;
-  background: linear-gradient(120deg, var(--accent), #9ef4c5);
-  color: #04101f;
-  font-weight: 800;
-  border: none;
+  background: #000;
+  color: #fff;
+  font-weight: 600;
+  border: 1px solid #000;
   border-radius: 12px;
   padding: 0.95rem 1.2rem;
   cursor: pointer;
-  transition: transform 0.18s ease, box-shadow 0.18s ease;
-  box-shadow: 0 14px 30px rgba(123, 241, 168, 0.25);
+  transition: background 0.18s ease, color 0.18s ease, transform 0.18s ease;
 }
 
 .primaryButton:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 16px 34px rgba(123, 241, 168, 0.32);
+  background: #fff;
+  color: #000;
+  transform: translateY(-1px);
 }
 
 .oauthButton {
@@ -412,18 +411,19 @@
   justify-content: center;
   gap: 0.55rem;
   width: 100%;
-  background: transparent;
+  background: #fff;
   border: 1px solid var(--border);
   color: var(--text);
   border-radius: 12px;
   padding: 0.9rem 1.1rem;
   cursor: pointer;
-  transition: border-color 0.18s ease, transform 0.18s ease;
+  transition: border-color 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
 }
 
 .oauthButton:hover {
-  border-color: rgba(255, 255, 255, 0.16);
+  border-color: var(--border-strong);
   transform: translateY(-1px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.05);
 }
 
 .switcher {
@@ -437,8 +437,8 @@
 .switcher button {
   background: none;
   border: none;
-  color: var(--text);
-  font-weight: 700;
+  color: var(--accent);
+  font-weight: 600;
   text-decoration: underline;
   cursor: pointer;
   padding: 0;

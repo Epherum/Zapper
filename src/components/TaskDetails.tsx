@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useTaskDataContext } from "@/contexts/TaskDataContext";
 import moment from "moment";
 import { deleteTask } from "@/lib/api";
+import { formatShortId } from "@/lib/format";
 function TaskDetails(props: any) {
   const {
     title,
@@ -41,7 +42,7 @@ function TaskDetails(props: any) {
         <div className={styles.taskDetailsHeadline}>
           <div>
             <h2>{title}</h2>
-            <p>ID {id}</p>
+            <p>ID {formatShortId(id)}</p>
           </div>
           <CgArrowsExpandRight />
         </div>

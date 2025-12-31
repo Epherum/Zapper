@@ -1,5 +1,6 @@
 import styles from "@/styles/projects.module.scss";
 import { MdExpandMore } from "react-icons/md";
+import { formatShortId } from "@/lib/format";
 
 interface ProjectsTaskProps {
   task: {
@@ -22,7 +23,7 @@ function ProjectsTask({ task }: ProjectsTaskProps) {
   return (
     <div className={styles.projectDetailsTasksListItem}>
       <div className={styles.projectDetailsTasksListItemLeft}>
-        <p>ID {id}</p>
+        <p>ID {formatShortId(id)}</p>
         <p>{title}</p>
       </div>
       <div className={styles.projectDetailsTasksListItemRight}>
