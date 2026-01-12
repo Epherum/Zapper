@@ -47,9 +47,7 @@ export default function App({ Component, pageProps }: AppProps) {
     overflow: "hidden",
   };
 
-  const pageTitle = router.route.includes("/dashboard")
-    ? "Zapper — Dashboard"
-    : "Zapper";
+  const pageTitle = "Zapper";
 
   return (
     <SessionProvider session={pageProps.session}>
