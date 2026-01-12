@@ -372,6 +372,22 @@
   }
 }
 
+.loadingState {
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loadingCard {
+  border: 1px solid $border-gray;
+  border-radius: 14px;
+  padding: 1.1rem 1.5rem;
+  color: $dark-gray;
+  background: #fff;
+  font-weight: 500;
+}
+
 .projects {
   grid-column: 2/4;
   grid-row: 2/2;

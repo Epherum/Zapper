@@ -27,12 +27,10 @@ import {
   projectsHeadline,
 } from "@/animations/dashboard";
 
-import { useQuery, useQueries } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import Link from "@/components/Link";
 import {
-  getUserCompanyData,
-  getTasksAssignedToUser,
-  getProjectsAssignedToUser,
+  getDashboardData,
 } from "@/lib/api";
 import { useProjectDataContext } from "@/contexts/ProjectDataContext";
 import { useTaskDataContext } from "@/contexts/TaskDataContext";
@@ -75,6 +73,7 @@ export default function Dashboard() {
   const { data: session } = useSession({
     required: true,
   });
+  const userEmail = session?.user?.email as string;
   function showTaskModal() {
     setisTaskModalVisible(!isTaskModalVisible);
   }
@@ -94,38 +93,18 @@ export default function Dashboard() {
 
     setFormattedDate(newFormattedDate);
   };
-  const results = useQueries({
-    queries: [
-      {
-        queryKey: ["user"],
-        queryFn: () => getUserCompanyData(session?.user?.email as string),
-        enabled: !!session,
-        onSuccess(data: any) {
-          session && (session.user = data);
-          console.log(session);
-        },
-      },
-      {
-        queryKey: ["currentUserProjects"],
-        queryFn: () =>
-          getProjectsAssignedToUser(session?.user?.email as string),
-        enabled: !!session,
-      },
-      {
-        queryKey: ["currentUserTasks"],
-        queryFn: () => getTasksAssignedToUser(session?.user?.email as string),
-        enabled: !!session,
-      },
-    ],
+  const { data: dashboardData, isLoading } = useQuery({
+    queryKey: ["dashboard", userEmail],
+    queryFn: () => getDashboardData(userEmail),
+    enabled: !!userEmail,
   });
 
-  const [currentUser, userProjects, userTasks] = results.map((result) => {
-    return result.data;
-  });
+  const currentUser = dashboardData?.user;
+  const userProjects = dashboardData?.projects ?? [];
+  const userTasks = dashboardData?.tasks ?? [];
 
   useEffect(() => {
     formatDate();
-    console.log(session);
 
     const intervalId = setInterval(() => {
       formatDate();
@@ -135,7 +114,7 @@ export default function Dashboard() {
   }, [session]);
 
   useEffect(() => {
-    if (userTasks) {
+    if (userTasks?.length) {
       setOverviewData((prev) => {
         return [
           {
@@ -166,14 +145,30 @@ export default function Dashboard() {
             100
         )
       );
+    } else {
+      setOverviewData((prev) => {
+        return prev.map((item) => ({
+          ...item,
+          tasks: 0,
+        }));
+      });
+      setCompletedPercentage(0);
     }
   }, [userTasks]);
+
+  if (isLoading || !dashboardData) {
+    return (
+      <section className={styles.loadingState}>
+        <div className={styles.loadingCard}>Loading dashboard...</div>
+      </section>
+    );
+  }
 
   if (!currentUser) return <></>;
 
   return (
     <section>
-      {currentUser && userTasks && userProjects && (
+      {currentUser && (
         <>
           <div className={styles.headline}>
             <div className={styles.title}>

@@ -46,9 +46,46 @@
         }
 
         .profile {
-            font-size: min(2.8rem, 2.3vw);
+            font-size: min(1.7rem, 1.4vw);
+            position: relative;
         }
 
 
     }
+}
+
+.profileButton {
+    all: unset;
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.profileMenu {
+    position: absolute;
+    right: 0;
+    top: calc(100% + min(.6rem, .5vw));
+    background: #fff;
+    border: 1px solid $border-gray;
+    border-radius: 12px;
+    padding: min(.4rem, .3vw);
+    min-width: 8.5rem;
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+    z-index: 5;
+}
+
+.profileMenuItem {
+    all: unset;
+    width: 100%;
+    display: block;
+    padding: min(.7rem, .5vw) min(.9rem, .7vw);
+    font-size: min(1.1rem, .9vw);
+    color: $dark-gray;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.profileMenuItem:hover {
+    background-color: $light-purple;
+    color: #000;
 }

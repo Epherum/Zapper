@@ -157,6 +157,12 @@
   transform: translateY(-1px);
 }
 
+.quickButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+  transform: none;
+}
+
 .quickText {
   flex: 1;
   min-width: 240px;
@@ -405,6 +411,12 @@
   transform: translateY(-1px);
 }
 
+.primaryButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+  transform: none;
+}
+
 .oauthButton {
   display: inline-flex;
   align-items: center;
@@ -424,6 +436,13 @@
   border-color: var(--border-strong);
   transform: translateY(-1px);
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.05);
+}
+
+.oauthButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+  transform: none;
+  box-shadow: none;
 }
 
 .switcher {

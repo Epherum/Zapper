@@ -42,15 +42,21 @@ export default function Login() {
   const [selectedRoleKey, setSelectedRoleKey] = useState<string>(
     fallbackRoles[0].key
   );
+  const [isQuickLoading, setIsQuickLoading] = useState(false);
 
-  function signInAdmin() {
+  async function signInAdmin() {
     setShowSignIn(true);
-    signIn("credentials", {
-      email: "admin@example.com",
-      password: "Password123!",
-      redirect: false,
-      callbackUrl: "/dashboard",
-    });
+    setIsQuickLoading(true);
+    try {
+      await signIn("credentials", {
+        email: "admin@example.com",
+        password: "Password123!",
+        redirect: false,
+        callbackUrl: "/dashboard",
+      });
+    } finally {
+      setIsQuickLoading(false);
+    }
   }
 
   useEffect(() => {
@@ -120,28 +126,23 @@ export default function Login() {
           <h1 className={styles.heroTitle}>
             One place to track every deliverable with momentum.
           </h1>
-          <p className={styles.heroCopy}>
-            Fast authentication, a clean dashboard, and role-aware workflows keep your
-            team aligned from kickoff to delivery.
-          </p>
 
           <div className={styles.quickLogin}>
-            <button onClick={signInAdmin} className={styles.quickButton}>
-              Quick login (Admin)
+            <button
+              onClick={signInAdmin}
+              className={styles.quickButton}
+              disabled={isQuickLoading}
+              aria-busy={isQuickLoading}
+            >
+              {isQuickLoading ? "Logging in..." : "Quick login (Admin)"}
             </button>
             <div className={styles.quickText}>
-              <p>Jump straight into a live demo workspace—no setup required.</p>
-              <p className={styles.mutedText}>
-                We spin up the admin view so you can explore dashboards and task boards in seconds.
-              </p>
+              <p>Jump into a demo workspace with one click.</p>
             </div>
           </div>
 
           <div className={styles.rolesHeader}>
             <p className={styles.kicker}>Roles</p>
-            <p className={styles.mutedText}>
-              Pick a lens to preview responsibilities. Roles will soon drive permissions.
-            </p>
           </div>
           <div className={styles.rolesGrid}>
             {roles.map((role) => (
@@ -192,10 +193,6 @@ export default function Login() {
           {!showSignIn && (
             <SignUp roles={roles} setShowSignIn={setShowSignIn} />
           )}
-          <p className={styles.helper}>
-            Single sign-on is supported via Google. We’ll remember your session on this
-            device for a smoother handoff to the dashboard.
-          </p>
         </div>
       </div>
     </section>

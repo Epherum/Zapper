@@ -2,12 +2,16 @@ import styles from "@/styles/login.module.scss";
 import { signIn } from "next-auth/react";
 import { useFormik } from "formik";
 import { FcGoogle } from "react-icons/fc";
+import { useState } from "react";
 
 export default function SignIn({
   setShowSignIn,
 }: {
   setShowSignIn: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
+  const [authAction, setAuthAction] = useState<"credentials" | "google" | null>(
+    null
+  );
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -17,12 +21,17 @@ export default function SignIn({
   });
 
   async function onSubmit(values: { email: string; password: string }) {
-    await signIn("credentials", {
-      email: values.email,
-      password: values.password,
-      callbackUrl: "/dashboard",
-      redirect: false,
-    });
+    setAuthAction("credentials");
+    try {
+      await signIn("credentials", {
+        email: values.email,
+        password: values.password,
+        callbackUrl: "/dashboard",
+        redirect: false,
+      });
+    } finally {
+      setAuthAction(null);
+    }
   }
 
   return (
@@ -30,10 +39,6 @@ export default function SignIn({
       <div className={styles.panelHeader}>
         <p className={styles.kicker}>Sign in</p>
         <h2 className={styles.titleLarge}>Welcome back</h2>
-        <p className={styles.hint}>
-          Pick up where you left off. Your dashboard, filters, and last open project will
-          be right here.
-        </p>
       </div>
       <form className={styles.form} onSubmit={formik.handleSubmit}>
         <label className={styles.field}>
@@ -65,16 +70,31 @@ export default function SignIn({
           />
         </label>
 
-        <button className={styles.primaryButton} type="submit">
-          Log in
+        <button
+          className={styles.primaryButton}
+          type="submit"
+          disabled={authAction !== null}
+          aria-busy={authAction === "credentials"}
+        >
+          {authAction === "credentials" ? "Signing in..." : "Log in"}
         </button>
       </form>
       <button
         className={styles.oauthButton}
-        onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
+        onClick={async () => {
+          setAuthAction("google");
+          try {
+            await signIn("google", { callbackUrl: "/dashboard" });
+          } finally {
+            setAuthAction(null);
+          }
+        }}
         type="button"
+        disabled={authAction !== null}
+        aria-busy={authAction === "google"}
       >
-        <FcGoogle /> Sign in with Google
+        <FcGoogle />{" "}
+        {authAction === "google" ? "Signing in..." : "Sign in with Google"}
       </button>
 
       <p className={styles.switcher}>

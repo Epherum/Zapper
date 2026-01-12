@@ -18,6 +18,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useState, useEffect } from "react";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { SessionProvider } from "next-auth/react";
+import Head from "next/head";
 const inter = Inter({ subsets: ["latin"] });
 
 export default function App({ Component, pageProps }: AppProps) {
@@ -46,9 +47,16 @@ export default function App({ Component, pageProps }: AppProps) {
     overflow: "hidden",
   };
 
+  const pageTitle = router.route.includes("/dashboard")
+    ? "Zapper — Dashboard"
+    : "Zapper";
+
   return (
     <SessionProvider session={pageProps.session}>
       <QueryClientProvider client={queryClient}>
+        <Head>
+          <title>{pageTitle}</title>
+        </Head>
         <main className={inter.className} style={style}>
           {router.route.includes("/dashboard") && (
             <div>
