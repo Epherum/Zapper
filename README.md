@@ -43,6 +43,8 @@ NEXTAUTH_URL="http://localhost:3000"
 NEXTAUTH_SECRET="generate-with-openssl-rand-32-hex"
 GOOGLE_CLIENT_ID="..."
 GOOGLE_CLIENT_SECRET="..."
+NEXT_PUBLIC_SUPABASE_URL="https://project.supabase.co"
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY="supabase_anon_key"
 ```
 
 The seed script creates an admin account you can use to sign in:
@@ -68,3 +70,14 @@ The seed script creates an admin account you can use to sign in:
 - API routes under `src/pages/api` back the UI with Prisma-backed CRUD for projects, tasks, comments, roles, and users.
 - Drag-and-drop moves update task status via the API; list view supports inline edit/delete.
 - Charts and dashboard metrics are driven by cached queries for the signed-in user.
+
+## Backup & Restore (resetting your PC)
+Back up before wiping:
+- `.env.local`
+- Your Postgres data (local DB volume, or export a dump from your hosted DB).
+
+Restore steps:
+1. Recreate `.env.local`.
+2. Restore your Postgres DB (or create a new one and update `DATABASE_URL`).
+3. Run `npx prisma migrate dev` and `npm run db:seed` if you need the demo data.
+4. `npm run dev` to start the app.
